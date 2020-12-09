@@ -23,11 +23,4 @@ venv.bak/
 .history/
 
 # custom
-stuff.txt
-my-stuff.py
-example_captchas/
-old_models/
-validation-dataset/
-training-dataset/
-validate-dataset/
-train-dataset/
+src/config/iot_core.py
