@@ -1,0 +1,33 @@
+#python
+__pycache__/
+
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+
+# custom
+stuff.txt
+my-stuff.py
+example_captchas/
+old_models/
+validation-dataset/
+training-dataset/
+validate-dataset/
+train-dataset/
