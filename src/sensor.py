@@ -46,6 +46,7 @@ def simulate_speed():
         values = [INITIAL_SPEED, INITIAL_ACCELERATION, SPEED, ACCELERATION, str(
             SPEED) + " km/h", str(ACCELERATION) + " km/h"]
 
+        # I guess we make this packet available to gram from some port?
         myPacket = construct_packet(keys, values)
         print(myPacket)
         print("")
