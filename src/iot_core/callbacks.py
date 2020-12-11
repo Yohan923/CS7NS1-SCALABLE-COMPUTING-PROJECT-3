@@ -1,4 +1,5 @@
 from awscrt import mqtt
+import sys
 
 
 # Callback when connection is accidentally lost.
@@ -20,13 +21,13 @@ def on_connection_resumed(connection, return_code, session_present, **kwargs):
 
 
 def on_resubscribe_complete(resubscribe_future):
-    pass
-    # resubscribe_results = resubscribe_future.result()
-    # print("Resubscribe results: {}".format(resubscribe_results))
+    
+    resubscribe_results = resubscribe_future.result()
+    print("Resubscribe results: {}".format(resubscribe_results))
 
-    # for topic, qos in resubscribe_results['topics']:
-    #     if qos is None:
-    #         sys.exit("Server rejected resubscribe to topic: {}".format(topic))
+    for topic, qos in resubscribe_results['topics']:
+        if qos is None:
+            sys.exit("Server rejected resubscribe to topic: {}".format(topic))
 
 
 # Callback when the subscribed topic receives a message

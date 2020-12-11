@@ -1,4 +1,11 @@
-from os import path
+from os import path, mkdir, system
+from src.iot_core.utils import create_a_thing, get_endpoint, describe_thing
+
+# the commands are setup specific to linux
+COMMANDS = [
+    '. ./venv/bin/activate',
+    'pip install awsiotsdk'
+]
 
 
 def get_input(instruction, validate=None, default=None):
@@ -6,7 +13,7 @@ def get_input(instruction, validate=None, default=None):
     while True:
         result = input(instruction)
 
-        if not result and default:
+        if not result and default is not None:
             return default
         elif not result:
             print('default value is not supported for this option please manually type in one')
@@ -22,40 +29,69 @@ def get_input(instruction, validate=None, default=None):
         return result
 
 
-def match_endpoint(endpoint):
-    return '.iot.eu-west-1.amazonaws.com' in endpoint
-
-
-def check_path(file_path):
-    return path.exists(file_path)
-
-
 def check_verbosity(verbosity):
     return verbosity in ['NoLogs', 'Fatal', 'Error', 'Warn', 'Info', 'Debug', 'Trace']
+
+
+def setup_aws():
+    if not path.exists('~/.aws'):
+        mkdir('~/.aws')
+
+    with open('./src/consts/iot_core.py', 'w') as f:
+        with open('~/.aws/credentials') as cred:
+            with open('~/.aws/config') as conf:
+                thing_name = get_input('enter a name for your thing, e.g. username-device: ')
+                thing_type = get_input('enter a type for your thing or leave it blank: ', default='')
+                aws_key = get_input('enter aws access key id: ')
+                aws_secret = get_input('enter aws secret access key: ')
+                root_cert_path = '../certs/root-CA.crt'
+                client_id = get_input('enter client_id, press enter for default[pie]: ', default='pie')
+                signing_region = 'eu-west-1'
+                proxy_host = get_input('enter host address of proxy, press enter for default[www-proxy.scss.tcd.ie]: ', default='www-proxy.scss.tcd.ie')
+                proxy_port = get_input('enter port of proxy, press enter for default[8080]: ', default='8080')
+                verbosity = get_input('enter log verbosity, choices = {NoLogs,Fatal,Error,Warn,Info,Debug,Trace}, default[NoLogs]: ', check_verbosity, 'NoLogs')
+                
+                thing_arn = create_a_thing(thing_name, thing_type)
+                while not thing_arn:
+                    thing_arn = describe_thing(thing_name)
+
+                f.writelines([
+                    f'ENDPOINT=\'{get_endpoint()}\'\n',
+                    f'THING_ARN=\'{thing_arn}\'\n'
+                    f'ROOT_CERT_PATH=\'{root_cert_path}\'\n',
+                    f'CLIENT_ID=\'{client_id}\'\n',
+                    f'SIGNING_REGION=\'{signing_region}\'\n',
+                    f'PROXY_HOST=\'{proxy_host}\'\n',
+                    f'PROXY_PORT={proxy_port}\n',
+                    f'VERBOSITY=\'{verbosity}\'\n'
+                ])
+
+                cred.writelines([
+                    f'[default]',
+                    f'aws_access_key_id = {aws_key}',
+                    f'aws_secret_access_key = {aws_secret}'
+                ])
+
+                conf.writelines([
+                    f'[default]',
+                    f'region = eu-west-1'
+                ])
+
+                f.close()
+                cred.close()
+                conf.close()
         
 
 if __name__ == "__main__":
 
-    with open('./src/config/iot_core.py', 'w') as f:
+    if not path.exists('venv'):
+        system('python3 -m venv ./venv')
 
-        endpoint = get_input('enter endpoint of your thing: ', match_endpoint)
-        assume_role_arn = get_input('enter the arn of your assumed role connecting to iot core: ')
-        root_cert_path = get_input('enter path to root CA, press enter for default[../certs/root-CA.crt]: ', check_path, '../certs/root-CA.crt')
-        client_id = get_input('enter client_id, press enter for default[pie]: ', default='pie')
-        signing_region = 'eu-west-1'
-        proxy_host = get_input('enter host address of proxy, press enter for default[www-proxy.scss.tcd.ie]: ', default='www-proxy.scss.tcd.ie')
-        proxy_port = get_input('enter port of proxy, press enter for default[8080]: ', default='8080')
-        verbosity = get_input('enter log verbosity, choices = {NoLogs,Fatal,Error,Warn,Info,Debug,Trace}, default[NoLogs]: ', check_verbosity, 'NoLogs')
-        
-        f.writelines([
-            f'ENDPOINT=\'{endpoint}\'\n',
-            f'ASSUME_ROLE_ARN=\'{assume_role_arn}\'\n',
-            f'ROOT_CERT_PATH=\'{root_cert_path}\'\n',
-            f'CLIENT_ID=\'{client_id}\'\n',
-            f'SIGNING_REGION=\'{signing_region}\'\n',
-            f'PROXY_HOST=\'{proxy_host}\'\n',
-            f'PROXY_PORT={proxy_port}\n',
-            f'VERBOSITY=\'{verbosity}\'\n'
-        ])
+    if not path.exists('./certs/root-CA.crt'):
+        mkdir('./certs')
+        system('curl https://www.amazontrust.com/repository/AmazonRootCA1.pem > ./certs/root-CA.crt')
 
-        f.close()
+    # activate venv and install dependencies
+    system(' && '.join(COMMANDS))
+
+    setup_aws()

@@ -1,14 +1,36 @@
-def subscribe(): # to be implemented
-    # Subscribe
-    print("Subscribing to topic '{}'...".format(args.topic))
-    subscribe_future, packet_id = mqtt_connection.subscribe(
-        topic=args.topic,
-        qos=mqtt.QoS.AT_LEAST_ONCE,
-        callback=on_message_received)
+import boto3
 
-    subscribe_result = subscribe_future.result()
-    print("Subscribed with {}".format(str(subscribe_result['qos'])))
+iot = boto3.client('iot')
+
+def create_a_thing(name, type=None, attributes=None):
+
+    response = iot.create_thing(
+        thingName='string',
+        thingTypeName='string',
+        attributePayload={
+            'attributes': {
+                'string': 'string'
+            },
+            'merge': True|False
+        },
+        billingGroupName='string'
+    )
+
+    return response.get('thingArn')
 
 
-def publish(): # to be implemented
-    pass
+def describe_thing(name):
+
+    response = iot.describe_thing(
+        thingName=name
+    )
+
+    return response.get('thingArn')
+
+
+def get_endpoint():
+    response = iot.describe_endpoint(
+        endpointType='iot:Data-ATS'
+    )
+
+    return response.get('endpointAddress')

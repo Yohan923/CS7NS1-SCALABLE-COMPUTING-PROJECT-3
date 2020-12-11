@@ -3,7 +3,7 @@
 
 from awscrt import io, mqtt, auth, http
 from awsiot import mqtt_connection_builder
-from config import iot_core as conf
+from consts import iot_core as conf
 from iot_core.auth import get_cred_provider_with_assumed_role
 import iot_core.callbacks as cb
 import uuid
@@ -13,12 +13,14 @@ import time
 from uuid import uuid4
 
 
-io.init_logging(getattr(io.LogLevel, conf.VERBOSITY), 'stderr')
+class MQTTConnection:
 
-received_all_event = threading.Event()
+    def __init__(self):
+        io.init_logging(getattr(io.LogLevel, conf.VERBOSITY), 'stderr')
+        self.init_mqtt_connection_over_websocket()
 
-def connect_to_thing_via_mqtt_with_websock():
-    try:
+
+    def init_mqtt_connection_over_websocket(self):
         client_id = conf.CLIENT_ID + str(uuid.uuid4())
         # Spin up resources
         event_loop_group = io.EventLoopGroup(1)
@@ -28,7 +30,7 @@ def connect_to_thing_via_mqtt_with_websock():
         # use websocket
         proxy_options = http.HttpProxyOptions(host_name=conf.PROXY_HOST, port=conf.PROXY_PORT)
 
-        credentials_provider = get_cred_provider_with_assumed_role(role_arn=conf.ASSUME_ROLE_ARN)
+        credentials_provider = auth.AwsCredentialsProvider.new_default_chain(client_bootstrap)
         mqtt_connection = mqtt_connection_builder.websockets_with_default_aws_signing(
             endpoint=conf.ENDPOINT,
             client_bootstrap=client_bootstrap,
@@ -42,18 +44,46 @@ def connect_to_thing_via_mqtt_with_websock():
             clean_session=False,
             keep_alive_secs=6)
 
+        self._connection = mqtt_connection
+
+
+    def connect(self):
         print("Connecting to {} with client ID '{}'...".format(
-            conf.ENDPOINT, conf.client_id))
-
-        connect_future = mqtt_connection.connect()
-
+        conf.ENDPOINT, conf.client_id))
+        connect_future = self._connection.connect()
+        
         # Future.result() waits until a result is available
         connect_future.result()
         print("Connected!")
 
-    except KeyboardInterrupt:
+
+    def disconnect(self):
         # Disconnect
         print("Disconnecting...")
-        disconnect_future = mqtt_connection.disconnect()
+        disconnect_future = self._connection.disconnect()
         disconnect_future.result()
         print("Disconnected!")
+
+
+    def subscribe(self, topic, qos=mqtt.QoS.AT_LEAST_ONCE, callback=None):
+        print("Subscribing to topic '{}'...".format(topic))
+        subscribe_future, packet_id = self._connection.subscribe(
+            topic=topic,
+            qos=qos,
+            callback=callback)
+
+        subscribe_result = subscribe_future.result()
+        print("Subscribed with {}".format(str(subscribe_result['qos'])))
+        return packet_id
+
+    
+    def publish(self, topic, message, qos=mqtt.QoS.AT_LEAST_ONCE):
+        if not topic:
+            print('topic is not specified for publish')
+            return
+
+        print(f'Publishing message to topic = {topic}: {message}')
+        self._connection.publish(
+            topic=topic,
+            payload=message,
+            qos=qos)

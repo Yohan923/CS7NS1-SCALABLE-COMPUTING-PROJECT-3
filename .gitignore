@@ -24,3 +24,5 @@ venv.bak/
 
 # custom
 src/config/iot_core.py
+certs/
+certs/*
