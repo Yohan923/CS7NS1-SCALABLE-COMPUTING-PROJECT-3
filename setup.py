@@ -1,10 +1,10 @@
 from os import path, mkdir, system
-from src.iot_core.utils import create_a_thing, get_endpoint, describe_thing
 
 # the commands are setup specific to linux
 COMMANDS = [
     '. ./venv/bin/activate',
-    'pip install awsiotsdk'
+    'pip install awsiotsdk',
+    'pip install boto3'
 ]
 
 
@@ -34,6 +34,8 @@ def check_verbosity(verbosity):
 
 
 def setup_aws():
+    from src.iot_core.utils import create_a_thing, get_endpoint, describe_thing
+    
     if not path.exists('~/.aws'):
         mkdir('~/.aws')
 
