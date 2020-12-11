@@ -16,14 +16,14 @@ def setup_aws():
             aws_secret = get_input('enter aws secret access key: ')
             
             cred.writelines([
-                f'[default]',
-                f'aws_access_key_id = {aws_key}',
-                f'aws_secret_access_key = {aws_secret}'
+                f'[default]\n',
+                f'aws_access_key_id = {aws_key}\n',
+                f'aws_secret_access_key = {aws_secret}\n'
             ])
 
             conf.writelines([
-                f'[default]',
-                f'region = eu-west-1'
+                f'[default]\n',
+                f'region = eu-west-1\n'
             ])
             
             cred.close()
