@@ -33,12 +33,15 @@ def check_verbosity(verbosity):
 
 
 def setup_aws():
-    
-    if not path.exists('~/.aws/'):
-        mkdir('~/.aws/')
+    home_path = path.expanduser('~')
+    aws_dir_path = ''.join([home_path, '/.aws'])
+    aws_cred_path = ''.join([home_path, '/.aws/credentials'])
+    aws_conf_path = ''.join([home_path, '~/.aws/config'])
+    if not path.exists(aws_dir_path):
+        mkdir(aws_dir_path)
 
-    with open('~/.aws/credentials', 'w') as cred:
-        with open('~/.aws/config', 'w') as conf:
+    with open(aws_cred_path, 'w') as cred:
+        with open(aws_conf_path, 'w') as conf:
             aws_key = get_input('enter aws access key id: ')
             aws_secret = get_input('enter aws secret access key: ')
             
