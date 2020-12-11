@@ -23,6 +23,6 @@ venv.bak/
 .history/
 
 # custom
-src/config/iot_core.py
+src/consts/iot_core.py
 certs/
 certs/*

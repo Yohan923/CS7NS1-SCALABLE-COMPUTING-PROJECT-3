@@ -2,18 +2,15 @@ import boto3
 
 iot = boto3.client('iot')
 
-def create_a_thing(name, type=None, attributes=None):
+def create_a_thing(thing_name, thing_type=None, attributes=None):
+    param_dict = {}
+    for name, val in [('thingTypeName', thing_type), ('attributePayload', attributes)]:
+        if val:
+            param_dict.update({name: val})
 
     response = iot.create_thing(
-        thingName='string',
-        thingTypeName='string',
-        attributePayload={
-            'attributes': {
-                'string': 'string'
-            },
-            'merge': True|False
-        },
-        billingGroupName='string'
+        thingName=thing_name,
+        **param_dict
     )
 
     return response.get('thingArn')

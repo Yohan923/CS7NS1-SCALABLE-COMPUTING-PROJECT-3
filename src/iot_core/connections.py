@@ -4,7 +4,6 @@
 from awscrt import io, mqtt, auth, http
 from awsiot import mqtt_connection_builder
 from consts import iot_core as conf
-from iot_core.auth import get_cred_provider_with_assumed_role
 import iot_core.callbacks as cb
 import uuid
 import sys
@@ -49,7 +48,7 @@ class MQTTConnection:
 
     def connect(self):
         print("Connecting to {} with client ID '{}'...".format(
-        conf.ENDPOINT, conf.client_id))
+        conf.ENDPOINT, conf.CLIENT_ID))
         connect_future = self._connection.connect()
         
         # Future.result() waits until a result is available
