@@ -34,8 +34,8 @@ def check_verbosity(verbosity):
 
 def setup_aws():
     
-    if not path.exists('~/.aws'):
-        mkdir('~/.aws')
+    if not path.exists('~/.aws/'):
+        mkdir('~/.aws/')
 
     with open('~/.aws/credentials', 'w') as cred:
         with open('~/.aws/config', 'w') as conf:
