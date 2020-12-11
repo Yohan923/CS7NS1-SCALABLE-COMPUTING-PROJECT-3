@@ -5,7 +5,7 @@ COMMANDS = [
     '. ./venv/bin/activate',
     'pip install awsiotsdk',
     'pip install boto3',
-    'python setup_aws.py'
+    'python setup_aws.py',
     'python setup_thing.py'
 ]
 
