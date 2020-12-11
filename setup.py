@@ -6,6 +6,7 @@ COMMANDS = [
     'pip install awsiotsdk',
     'pip install boto3',
     'python setup_aws.py'
+    'python setup_thing.py'
 ]
 
 if __name__ == "__main__":
