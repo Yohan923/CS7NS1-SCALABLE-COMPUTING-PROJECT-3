@@ -26,3 +26,4 @@ venv.bak/
 src/consts/iot_core.py
 certs/
 certs/*
+aodv_log*

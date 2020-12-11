@@ -3,7 +3,7 @@
 
 from awscrt import io, mqtt, auth, http
 from awsiot import mqtt_connection_builder
-from consts import iot_core as conf
+import consts.iot_core as conf
 import iot_core.callbacks as cb
 import uuid
 import sys
