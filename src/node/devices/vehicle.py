@@ -72,7 +72,7 @@ listener = listener.listener()
 speed_sensor=speed_sensor.SpeedSensor()
 # wiper_controller=wiper_controller.WiperController()
 # light_controller=light_controller.LightController()
-headway_sensor=headway_sensor
+headway_sensor=headway_sensor.HeadwaySensor()
 
 V=Vehicle(x,y,communication_device,listener,#mqtt_client,
     speed_sensor,#wiper_controller,
