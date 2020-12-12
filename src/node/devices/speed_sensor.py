@@ -1,4 +1,4 @@
-from threading import Thread
+import threading
 import time
 import sys, socket, time
 import logging,re,random
@@ -6,7 +6,7 @@ from opensimplex import OpenSimplex
 import json
 delta_t=0.1#0.1s
 
-class SpeedSensor(Thread):
+class SpeedSensor(threading.Thread):
     
     def __init__(self):
         threading.Thread.__init__(self)
