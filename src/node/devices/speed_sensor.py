@@ -101,7 +101,7 @@ class SpeedSensor(threading.Thread):
             noise = OpenSimplex()
             accelleration_change = noise.noise2d(self.noise_counter, 0)
             myPacket = self.update(accelleration_change)
-            with open('speed_'+self.node_id+'.txt', 'a') as f:
+            with open('speed.txt', 'a') as f:
                 f.write(myPacket+"\n")
             sensor_type="LOCATION"
             myPacket=sensor_type+":"+myPacket
