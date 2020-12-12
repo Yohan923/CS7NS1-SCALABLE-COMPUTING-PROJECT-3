@@ -82,29 +82,29 @@ class Vehicle():
         for device in self.devices:
             device.start()
         while True:
-        # Setup the socket list we expect to read via select()
-        inputs = [self.speed_sock, self.headway_sensor, self.aodv_sock]
-        outputs = []
-        
-        # Run the main loop
-        while inputs:
-            readable, _, _ = select.select(inputs, outputs, inputs)
-            for r in readable:
-                if r is self.speed_sock:
-                    command, _ = self.listener_sock.recvfrom(100)
-                    command = command.decode('utf-8')
-                    print(command)
-                    
-                elif r is self.headway_sensor:
-                    command, _ = self.tester_sock.recvfrom(1000)
-                    command = command.decode('utf-8')
-                    print(command)
+            
+            inputs = [self.speed_sock, self.headway_sensor, self.aodv_sock]
+            outputs = []
+            
+            # Run the main loop
+            while inputs:
+                readable, _, _ = select.select(inputs, outputs, inputs)
+                for r in readable:
+                    if r is self.speed_sock:
+                        command, _ = self.listener_sock.recvfrom(100)
+                        command = command.decode('utf-8')
+                        print(command)
+                        
+                    elif r is self.headway_sensor:
+                        command, _ = self.tester_sock.recvfrom(1000)
+                        command = command.decode('utf-8')
+                        print(command)
 
-                elif r is self.aodv_sock:
-                    # We got a message from the network
-                    message, _ = self.aodv_sock.recvfrom(2000)
-                    message = message.decode('utf-8')  
-                    print(command)         
+                    elif r is self.aodv_sock:
+                        # We got a message from the network
+                        message, _ = self.aodv_sock.recvfrom(2000)
+                        message = message.decode('utf-8')  
+                        print(command)         
                 
 
 x=0 
