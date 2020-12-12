@@ -264,18 +264,6 @@ class aodv(threading.Thread):
                                    'RREQ_ID_List': per_node_list}
         path_discovery_timer.start()
 
-        # 
-        # Check if we have a route to the source. If we have, see if we need
-        # to update it. Specifically, update it only if:
-        #
-        # 1. The destination sequence number for the route is less than the
-        #    originator sequence number in the packet
-        # 2. The sequence numbers are equal, but the hop_count in the packet
-        #    + 1 is lesser than the one in routing table
-        # 3. The sequence number in the routing table is unknown
-        #
-        # If we don't have a route for the originator, add an entry
-
         if orig in self.routing_table.keys():
             # TODO update lifetime timer for this route
             route = self.routing_table[orig]
@@ -661,13 +649,6 @@ class aodv(threading.Thread):
         
     # Simulate a link-down event for the current node
     def aodv_simulate_link_down(self, from_tester):
-        #
-        # Stop sending hello messages. Keep the neighbor list as it is.
-        # This command is used for debugging purposes to simulate link
-        # failures and RERR messages.
-        #
-
-        # Don't proceed if the node is already down
         if (self.status == "Inactive"):
             print("Node is already down!")
             return
@@ -819,6 +800,7 @@ class aodv(threading.Thread):
             readable, _, _ = select.select(inputs, outputs, inputs)
             for r in readable:
                 if r is self.listener_sock:
+
                     # We got a message from the listener thread. Process it.
                     command, _ = self.listener_sock.recvfrom(100)
                     command = command.decode('utf-8')
@@ -862,10 +844,10 @@ class aodv(threading.Thread):
                     sensor_data = json.loads(command[1])
 
 
-                    if sensor_type == "LOCATION":
-                        self.aodv_simulate_link_up(True)
-                    else:
-                        self.aodv_default()
+                    # if sensor_type == "LOCATION":
+
+                    # else:
+                    #     self.aodv_default()
 
 
 
