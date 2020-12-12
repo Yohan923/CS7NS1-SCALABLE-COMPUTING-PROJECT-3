@@ -92,12 +92,12 @@ class Vehicle():
                 readable, _, _ = select.select(inputs, outputs, inputs)
                 for r in readable:
                     if r is self.speed_sock:
-                        command, _ = self.listener_sock.recvfrom(100)
+                        command, _ = self.speed_sock.recvfrom(100)
                         command = command.decode('utf-8')
                         print(command)
                         
                     elif r is self.headway_sensor:
-                        command, _ = self.tester_sock.recvfrom(1000)
+                        command, _ = self.headway_sensor.recvfrom(1000)
                         command = command.decode('utf-8')
                         print(command)
 
