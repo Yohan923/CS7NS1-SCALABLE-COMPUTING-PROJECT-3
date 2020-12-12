@@ -1,4 +1,4 @@
-from node.devices.photo_sensor import PhotoIntensity
+from photo_sensor import PhotoIntensity
 import time
 from threading import Thread
 

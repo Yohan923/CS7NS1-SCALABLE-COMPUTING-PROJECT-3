@@ -1,10 +1,11 @@
-from devices import SpeedSensor, HeadwaySensor, WiperController, LightController, RainfallSensor, PhotoSensor
-from devices import communication_device,listener
+import speed_sensor, headway_sensor, wiper_controller
+import light_controller, rainfall_sensor, photo_sensor
+import communication_device,listener
 from threading import Thread
 import time
 
 
-class Vehicle(Thread):
+class Vehicle():
 
     def __init__(
         self, 
@@ -18,7 +19,6 @@ class Vehicle(Thread):
         photo_sensor=None, 
         rainfall_sensor=None
     ):
-        Thread.__init__(self)
         self.x = x
         self.y = y
         
@@ -59,3 +59,5 @@ class Vehicle(Thread):
         while True:
             # this is where driving takes place
             pass
+V=Vehicle()
+V.drive()
