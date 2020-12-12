@@ -67,9 +67,6 @@ class Vehicle():
         for device in self.devices:
             device.start()
                 
-        while True:
-            # this is where driving takes place
-            pass
 
 x=0 
 y=0
