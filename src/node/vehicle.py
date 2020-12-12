@@ -52,15 +52,6 @@ class Vehicle(Thread):
 
         for device in self.devices:
             device.start()
-
-        def test_callback(topic, payload, **kwargs):
-            print("Received message from topic '{}': {}".format(topic, payload))
-
-        self.mqtt_client.subscribe('test-topic', callback=test_callback)
-
-        for i in range(10):
-            self.mqtt_client.publish('test-topic', f'wtf {i}')
-            time.sleep(1)
                 
         while True:
             # this is where driving takes place
