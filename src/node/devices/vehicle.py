@@ -25,8 +25,15 @@ class Vehicle():
         self.y = y
         
         self.devices = []
+
+
+        communication_device.set_node_id(1)
+        communication_device.set_node_count(5)
         self.communication_device = communication_device
         self.devices.append(communication_device)
+
+        listener.set_node_id(1)
+        listener.set_node_count(5)
         self.listener = listener
         self.devices.append(listener)
 
