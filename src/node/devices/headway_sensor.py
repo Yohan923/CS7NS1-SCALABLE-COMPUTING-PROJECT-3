@@ -44,10 +44,11 @@ class HeadwaySensor(Thread):
         
         while (True):
             myPacket = self.update()
+            print(myPacket)
             myPacket_bytes = bytes(myPacket, 'utf-8')
             self.send(myPacket_bytes)
 
-            with open('speed.txt', 'a') as f:
+            with open('headway.txt', 'a') as f:
                 f.write(myPacket+"\n")
 
             # receive
@@ -61,4 +62,4 @@ class HeadwaySensor(Thread):
             except:
                 pass  
 
-            time.sleep(1)
+            time.sleep(2)
