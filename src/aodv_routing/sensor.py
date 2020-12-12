@@ -1,5 +1,6 @@
 import sys, socket, time, threading
-import logging,re
+import logging,re,random
+from opensimplex import OpenSimplex
 
 # TESTER_PORT = 33500
 delta_t=0.1#0.1s
@@ -19,7 +20,7 @@ class sensor(threading.Thread):
         self.ACCELERATION = random.randint(-3, 6)
         self.NOISE_COUNTER_INCREMENT = 0.1# Increasing this value would mean moving faster accross perlin noise space, meaning the difference between each value would be greater.
         self.noise_counter =0
-        self.status = "ACTIVE"
+        self.STATUS = "ACTIVE"
         
     def get_tester_port(self, node_id):
         port = 33400
@@ -48,10 +49,8 @@ class sensor(threading.Thread):
             packet[keys[i]] = values[i]
         return json.dumps(packet)
 
-    def update(self):
-        if self.status == "ACTIVE":
-            accelleration_change = noise.noise2d(noise_counter, 0)
-
+    def update(self,accelleration_change):
+        if self.STATUS == "ACTIVE":
             self.ACCELERATION += accelleration_change
             self.SPEED += self.ACCELERATION
 
@@ -67,6 +66,11 @@ class sensor(threading.Thread):
 
             self.noise_counter += self.NOISE_COUNTER_INCREMENT
             
+        # TODO: change this
+        elif self.STATUS == "STOPPING":
+            self.SPEED = 0;
+            self.ACCELERATION =0;
+            
 
     # Default action handler
     def command_default(self):
@@ -75,14 +79,11 @@ class sensor(threading.Thread):
 
     # Thread start routine
     def run(self):
-        print("sensor thread start")
-
-        logging.basicConfig(level=logging.DEBUG,
-                    filename='new.log',
-                    filemode='a',
-                    format='%(asctime)s - %(levelname)s: %(message)s'
-                    )
+        print("vehicle thread start")
+        with open('vehicle.txt', 'w') as f:
+            f.write('speed,acceleration,status')       
         
+        noise = OpenSimplex()
         self.port = self.get_tester_port(self.node_id)
         self.aodv_tester_port = self.get_aodv_tester_port(self.node_id)
         
@@ -95,28 +96,31 @@ class sensor(threading.Thread):
         
         while (True):
             # update vehicle status
-            self.update()
-
+            noise = OpenSimplex()
+            accelleration_change = noise.noise2d(self.noise_counter, 0)
+            self.update(accelleration_change)
             # receive command from protocal handler thread
             try:
                 command, _ = self.sock.recvfrom(100)
                 command = command.decode('utf-8')
                 command = re.split(':', command)
-                print(command[0])
                 command_type = command[0]
                 self.command = command
 
                 if command_type == "COMMAND_STOP":
-                    print("Vehicle receive stop command ")
-                    self.status = "STOP"
+                    self.STATUS = "STOPPING"
                 else:
                     self.command_default()
 
             except:
                 pass  
 
+            with open('vehicle.txt', 'a') as f:
+                f.write(str(self.SPEED)+","
+                    +str(self.ACCELERATION)+","
+                    +self.STATUS+"\n")
 
-            time.sleep(1)
+            time.sleep(0.5)
 
               
 # End of File

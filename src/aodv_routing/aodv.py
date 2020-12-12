@@ -597,6 +597,17 @@ class aodv(threading.Thread):
 
         logging.debug("Activating node " + self.node_id)
         print("Activated node " + self.node_id + ". This node will resume sending hello messages.")
+
+    def aodv_command_stop(self, from_tester):
+        if (from_tester == False):
+            message_type = "COMMAND_STOP"
+            message = message_type + ":" + ""
+            message_bytes = bytes(message, 'utf-8')
+            port = self.get_tester_thread_port(self.node_id)
+            self.tester_sock.sendto(message_bytes, 0,('localhost', int(port)))
+        print("Sent ["+message+"] to vehicle thread")
+
+
     
     # Take the neighbor set for the current node from the user
     def aodv_add_neighbor(self, from_tester):
@@ -823,6 +834,8 @@ class aodv(threading.Thread):
                         self.aodv_show_log(False)
                     elif command_type == "VIEW_MESSAGES":
                         self.aodv_show_messages(False)
+                    elif command_type == "COMMAND_STOP":
+                        self.aodv_command_stop(False)                        
                     else:
                         self.aodv_default()
                      
