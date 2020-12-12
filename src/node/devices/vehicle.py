@@ -3,7 +3,7 @@ import light_controller, rainfall_sensor, photo_sensor
 import communication_device,listener
 from threading import Thread
 import time
-import socket
+import socket,select,json
 
 AODV_PORT=33880
 SPEED_PORT=33881
