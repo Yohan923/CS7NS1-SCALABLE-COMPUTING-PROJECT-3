@@ -84,7 +84,7 @@ class Vehicle():
             device.start()
         while True:
             
-            inputs = [self.speed_sock, self.headway_sensor, self.aodv_sock]
+            inputs = [self.speed_sock, self.headway_sock, self.aodv_sock]
             outputs = []
             
             # Run the main loop
