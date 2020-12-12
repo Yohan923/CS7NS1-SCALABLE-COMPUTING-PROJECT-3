@@ -28,6 +28,7 @@ class SpeedSensor(threading.Thread):
         
     def send(self, message):
         self.sock.sendto(message, 0, ('localhost', self.aodv_tester_port))
+        self.sock.sendto(message, 0, ('localhost', 33881))
 
     # TODO: broadcast the packet?
     def broadcast_packet(self):
