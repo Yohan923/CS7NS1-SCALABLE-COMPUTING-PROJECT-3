@@ -1,4 +1,4 @@
-import speed_sensor, headway_sensor, wiper_controller,mqtt_client
+import speed_sensor, headway_sensor, wiper_controller#,mqtt_client
 import light_controller, rainfall_sensor, photo_sensor
 import communication_device,listener
 from threading import Thread
@@ -13,7 +13,7 @@ class Vehicle():
         y,
         communication_device,
         listener,
-        mqtt_client,
+        #mqtt_client,
         speed_sensor,
         wiper_controller,
         light_controller,
@@ -68,12 +68,12 @@ x=0
 y=0
 communication_device = communication_device.aodv()
 listener = listener.listener()
-mqtt_client=mqtt_client.MQTTClient()
+#mqtt_client=mqtt_client.MQTTClient()
 speed_sensor=speed_sensor.SpeedSensor()
 wiper_controller=wiper_controller.WiperController()
 light_controller=light_controller.LightController()
 headway_sensor=headway_sensor
 
-V=Vehicle(x,y,communication_device,listener,mqtt_client,
+V=Vehicle(x,y,communication_device,listener,#mqtt_client,
     speed_sensor,wiper_controller,light_controller,headway_sensor)
 V.drive()
