@@ -44,9 +44,11 @@ class HeadwaySensor(Thread):
         
         while (True):
             myPacket = self.update()
-            print(myPacket)
             myPacket_bytes = bytes(myPacket, 'utf-8')
-            self.send(myPacket_bytes)
+            try:
+                self.send(myPacket_bytes)
+            except:
+                print("fail")
 
             with open('headway.txt', 'a') as f:
                 f.write(myPacket+"\n")
