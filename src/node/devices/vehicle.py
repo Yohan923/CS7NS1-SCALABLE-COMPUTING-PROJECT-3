@@ -94,9 +94,10 @@ class Vehicle():
                     if r is self.speed_sock:
                         command, _ = self.speed_sock.recvfrom(100)
                         command = command.decode('utf-8')
-                        print(command)
+                        # print(command)
                         
                     elif r is self.headway_sensor:
+                        print("1")
                         command, _ = self.headway_sensor.recvfrom(1000)
                         command = command.decode('utf-8')
                         print(command)
@@ -105,7 +106,7 @@ class Vehicle():
                         # We got a message from the network
                         message, _ = self.aodv_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
-                        print(command)         
+                        print(message)         
                 
 
 x=0 

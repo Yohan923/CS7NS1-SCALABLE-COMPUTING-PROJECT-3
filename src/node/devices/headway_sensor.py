@@ -5,7 +5,7 @@ HEADWAY_PORT=33882
 HEADWAY_THREAD_PORT=33982
 
 class HeadwaySensor(Thread):
-    def __init__(self, distance_to_contact=None):
+    def __init__(self, distance_to_contact=100):
         Thread.__init__(self)
         self._distance_to_contact = distance_to_contact
 
