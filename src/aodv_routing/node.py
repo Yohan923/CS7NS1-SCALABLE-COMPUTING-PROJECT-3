@@ -1,4 +1,6 @@
 import sys, listener, aodv
+import sensor
+import argparse
 
 class node():
 
@@ -23,8 +25,14 @@ class node():
         aodv_thread.set_node_count(n)
         aodv_thread.start()
 
+        # Initialize and start the vehicle simulation thread
+        sensor_thread = sensor.sensor()
+        sensor_thread.set_node_id(node_id)
+        sensor_thread.daemon = True
+        sensor_thread.start()         
+
 # Get the arguments passed by the driver program 
-n = int(sys.argv[1])
+n = 7
 node_id = sys.argv[2]
 
 node = node()

@@ -20,34 +20,10 @@ class listener(threading.Thread):
     # Return the listener port associated with the given node
     def get_listener_port(self, node_id):
         return 33100
-        # port = {'n1':  1000,
-        #         'n2':  1100,
-        #         'n3':  1200,
-        #         'n4':  1300,
-        #         'n5':  1400,
-        #         'n6':  1500,
-        #         'n7':  1600,
-        #         'n8':  1700,
-        #         'n9':  1800,
-        #         'n10': 1900}['n'+str(node_id)]
-                
-        # return port
     
     # Return the listener port associated with the given node
     def get_aodv_listener_port(self, node_id):
         return 33200
-        # port = {'n1':  2000,
-        #         'n2':  2100,
-        #         'n3':  2200,
-        #         'n4':  2300,
-        #         'n5':  2400,
-        #         'n6':  2500,
-        #         'n7':  2600,
-        #         'n8':  2700,
-        #         'n9':  2800,
-        #         'n10': 2900}['n'+str(node_id)]
-                
-        # return port
         
     # Generic routine to send the user request to the protocol handler thread
     def send(self, message):
@@ -159,7 +135,7 @@ class listener(threading.Thread):
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         
         # Set the prompt
-        prompt = "AODV-" + self.node_id + "> "
+        prompt = "NODE-" + self.node_id + "> "
         
         # Listen indefinitely for user inputs and pass them to the AODV protocol handler thread
         while (True):
