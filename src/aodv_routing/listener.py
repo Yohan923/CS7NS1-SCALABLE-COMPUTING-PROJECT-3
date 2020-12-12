@@ -115,6 +115,14 @@ class listener(threading.Thread):
         self.send(message_bytes)
         self.wait_for_response()
     
+    def command_stop(self):
+        message_type = "COMMAND_STOP"
+        message = message_type + ":" + ""
+        message_bytes = bytes(message, 'utf-8')
+        self.send(message_bytes)
+        self.wait_for_response()
+
+
     # Default routine called when invalid command is issued. Do nothing.
     def default(self):
         if (len(self.command) == 0):
@@ -150,7 +158,8 @@ class listener(threading.Thread):
              'send_message'     : self.send_message,
              'show_log'         : self.show_log,
              'show_messages'    : self.show_messages,
-             'show_route'       : self.show_route}.get(command, self.default)()
+             'show_route'       : self.show_route,
+             'command_stop'     : self.command_stop}.get(command, self.default)()
               
 
 
