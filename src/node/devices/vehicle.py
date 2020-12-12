@@ -15,8 +15,8 @@ class Vehicle():
         listener,
         #mqtt_client,
         speed_sensor,
-        wiper_controller,
-        light_controller,
+        #wiper_controller,
+        #light_controller,
         headway_sensor,
         photo_sensor=None, 
         rainfall_sensor=None
@@ -31,17 +31,17 @@ class Vehicle():
         self.devices.append(listener)
 
 
-        self.mqtt_client = mqtt_client
-        self.devices.append(mqtt_client)
+        # self.mqtt_client = mqtt_client
+        # self.devices.append(mqtt_client)
 
         self.speed_sensor = speed_sensor
         self.devices.append(speed_sensor)
 
-        self.wiper_controller = wiper_controller
-        self.devices.append(self.wiper_controller)
+        # self.wiper_controller = wiper_controller
+        # self.devices.append(self.wiper_controller)
 
-        self.light_controller = light_controller
-        self.devices.append(self.light_controller)
+        # self.light_controller = light_controller
+        # self.devices.append(self.light_controller)
 
         self.headway_sensor = headway_sensor
         self.devices.append(self.headway_sensor)
@@ -75,5 +75,8 @@ light_controller=light_controller.LightController()
 headway_sensor=headway_sensor
 
 V=Vehicle(x,y,communication_device,listener,#mqtt_client,
-    speed_sensor,wiper_controller,light_controller,headway_sensor)
+    speed_sensor,#wiper_controller,
+    #light_controller,
+    headway_sensor
+    )
 V.drive()
