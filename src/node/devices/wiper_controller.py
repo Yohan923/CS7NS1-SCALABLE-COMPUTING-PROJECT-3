@@ -1,4 +1,4 @@
-from node.devices.rainfall_sensor import RainfallLevel
+from rainfall_sensor import RainfallLevel
 from threading import Thread
 import time
 
