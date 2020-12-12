@@ -1,3 +1,4 @@
+import headway_sensor
 from headway_sensor import *
 from light_controller import *
 from photo_sensor import *
