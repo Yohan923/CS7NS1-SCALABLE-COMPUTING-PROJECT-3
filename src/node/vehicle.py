@@ -1,4 +1,5 @@
 from node.devices import SpeedSensor, HeadwaySensor, WiperController, LightController, RainfallSensor, PhotoSensor
+from node.devices import communication_device,listener
 from threading import Thread
 import time
 
@@ -22,7 +23,9 @@ class Vehicle(Thread):
         self.y = y
         
         self.devices = []
-        # self.communication_device = 
+        self.communication_device = communication_device
+        self.devices.append(communication_device)
+
 
         self.mqtt_client = mqtt_client
         self.devices.append(mqtt_client)
