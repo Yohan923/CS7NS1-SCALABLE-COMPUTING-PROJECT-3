@@ -65,7 +65,7 @@ class sensor(threading.Thread):
                 self.ACCELERATION = 5
 
             self.noise_counter += self.NOISE_COUNTER_INCREMENT
-            
+
         # TODO: change this
         elif self.STATUS == "STOPPING":
             self.SPEED = 0;
@@ -81,7 +81,7 @@ class sensor(threading.Thread):
     def run(self):
         print("vehicle thread start")
         with open('vehicle.txt', 'w') as f:
-            f.write('speed,acceleration,status')       
+            f.write('speed,acceleration,status\n')       
         
         noise = OpenSimplex()
         self.port = self.get_tester_port(self.node_id)
