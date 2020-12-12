@@ -7,7 +7,6 @@ AODV_HELLO_TIMEOUT          =   30
 AODV_PATH_DISCOVERY_TIME    =   30
 AODV_ACTIVE_ROUTE_TIMEOUT   =   300
 
-# Class Definition
 class aodv(threading.Thread):
 
     # Constructor
@@ -18,14 +17,15 @@ class aodv(threading.Thread):
         self.seq_no = 0
         self.rreq_id = 0
         self.listener_port = 0
+        self.listener_thread_port = 0
         self.aodv_port = 0
         self.tester_port = 0
+        self.tester_thread_port = 0
         self.listener_sock = 0
         self.aodv_sock = 0
         self.tester_sock = 0
         self.log_file = ""
         self.command = ""
-        self.status = ""
         self.neighbors = dict()
         self.routing_table = dict()
         self.message_box = dict()
@@ -45,34 +45,10 @@ class aodv(threading.Thread):
     # Get the port associated with the listener thread for the given node
     def get_listener_thread_port(self, node):
         return 33100
-        # port = {'n1':  1000,
-        #         'n2':  1100,
-        #         'n3':  1200,
-        #         'n4':  1300,
-        #         'n5':  1400,
-        #         'n6':  1500,
-        #         'n7':  1600,
-        #         'n8':  1700,
-        #         'n9':  1800,
-        #         'n10': 1900}['n'+str(node)]
-                
-        # return port
 
     # Get the port used to communicate with the listener thread for this node
     def get_listener_port(self, node):
         return 33200
-        # port = {'n1':  2000,
-        #         'n2':  2100,
-        #         'n3':  2200,
-        #         'n4':  2300,
-        #         'n5':  2400,
-        #         'n6':  2500,
-        #         'n7':  2600,
-        #         'n8':  2700,
-        #         'n9':  2800,
-        #         'n10': 2900}['n'+str(node)]
-                
-        # return port
 
     # Get the port associated with sending and receiving AODV messages
     def get_aodv_port(self, node):
@@ -96,18 +72,9 @@ class aodv(threading.Thread):
     # Get the tester port associated with this node
     def get_tester_port(self, node):
         return 33500
-        # port = {'n1':  5100,
-        #         'n2':  5200,
-        #         'n3':  5300,
-        #         'n4':  5400,
-        #         'n5':  5500,
-        #         'n6':  5600,
-        #         'n7':  5700,
-        #         'n8':  5800,
-        #         'n9':  5900,
-        #         'n10': 6000}['n'+str(node)]
-                
-        # return port
+
+    def get_tester_thread_port(self, node):
+        return 33400
 
     # Create / Restart the lifetime timer for the given route
     def aodv_restart_route_timer(self, route, create):
@@ -800,6 +767,7 @@ class aodv(threading.Thread):
         
         # Get the tester port
         self.tester_port = self.get_tester_port(self.node_id)
+        self.tester_thread_port = self.get_tester_thread_port(self.node_id)
 
         # 
         # Create sockets to communicate with the listener thread, tester
