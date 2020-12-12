@@ -103,7 +103,7 @@ class aodv(threading.Thread):
             for n in self.neighbors.keys():
                 message_type = "HELLO_MESSAGE"
                 sender = self.node_id
-                message_data = "Hello message from " + str(self.node_id)
+                message_data = "Hello message from " + self.node_id
                 location=self.location_sensor_data
                 message = message_type + ":" + sender + ":" + message_data+ ":" +str(location)
                 port = self.get_aodv_port(n)
@@ -771,7 +771,7 @@ class aodv(threading.Thread):
     def run(self):
         
         # Setup logging
-        self.log_file = "aodv_log_" + self.node_id
+        self.log_file = "aodv_log_" + str(self.node_id)
         FORMAT = "%(asctime)s - %(message)s"
         logging.basicConfig(filename=self.log_file, 
                             level=logging.DEBUG, 
