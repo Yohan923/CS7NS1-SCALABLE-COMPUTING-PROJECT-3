@@ -587,12 +587,6 @@ class aodv(threading.Thread):
 
     # Simulate a link-up event for the current node
     def aodv_simulate_link_up(self, from_tester):
-        #
-        # Resume sending hello messages. This command is used for debugging 
-        # purposes to simulate link failures and RERR messages.
-        #
-
-        # Don't proceed if the node is already up
         if (self.status == "Active"):
             print("Node is already active!")
             return

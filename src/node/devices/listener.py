@@ -143,7 +143,7 @@ class listener(threading.Thread):
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         
         # Set the prompt
-        prompt = "NODE-" + self.node_id + "> "
+        prompt = "NODE-" + str(self.node_id) + "> "
         
         # Listen indefinitely for user inputs and pass them to the AODV protocol handler thread
         while (True):
