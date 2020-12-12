@@ -11,6 +11,8 @@ class Vehicle():
         self, 
         x, 
         y,
+        communication_device,
+        listener,
         mqtt_client,
         speed_sensor,
         wiper_controller,
@@ -25,6 +27,8 @@ class Vehicle():
         self.devices = []
         self.communication_device = communication_device
         self.devices.append(communication_device)
+        self.listener = listener
+        self.devices.append(listener)
 
 
         self.mqtt_client = mqtt_client
@@ -59,5 +63,17 @@ class Vehicle():
         while True:
             # this is where driving takes place
             pass
-V=Vehicle()
+
+x=0 
+y=0
+communication_device = communication_device.aodv()
+listener = listener.listener()
+mqtt_client=mqtt_client.MQTTClient()
+speed_sensor=speed_sensor.SpeedSensor()
+wiper_controller=wiper_controller.WiperController()
+light_controller=light_controller.LightController()
+headway_sensor=headway_sensor
+
+V=Vehicle(x,y,communication_device,listener,mqtt_client,
+    speed_sensor,wiper_controller,light_controller,headway_sensor)
 V.drive()
