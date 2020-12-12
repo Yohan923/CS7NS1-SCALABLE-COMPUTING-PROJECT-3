@@ -84,7 +84,7 @@ class SpeedSensor(threading.Thread):
     # Thread start routine
     def run(self):
         print("speed and location sensor start")
-        with open('speed_'+self.node_id+'.txt', 'w') as f:
+        with open('speed.txt', 'w') as f:
             f.write('speed_x,acceleration_y,Ylocation,status\n')       
         
         noise = OpenSimplex()
