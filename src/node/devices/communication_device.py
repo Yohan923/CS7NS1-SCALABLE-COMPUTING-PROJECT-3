@@ -49,14 +49,14 @@ class aodv(threading.Thread):
         return 33200
 
     def get_aodv_port(self, node):
-        # return 33300
-        port = {'n1':  33310,
-                'n2':  33320,
-                'n3':  33330,
-                'n4':  33340,
-                'n5':  33350}['n'+str(node)]
+        return 33300
+        # port = {'n1':  33310,
+        #         'n2':  33320,
+        #         'n3':  33330,
+        #         'n4':  33340,
+        #         'n5':  33350}['n'+str(node)]
                 
-        return port
+        
 
 
     def get_aodv_ip(self, node):
