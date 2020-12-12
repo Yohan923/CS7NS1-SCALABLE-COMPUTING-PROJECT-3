@@ -1,5 +1,5 @@
-from node.devices import SpeedSensor, HeadwaySensor, WiperController, LightController, RainfallSensor, PhotoSensor
-from node.devices import communication_device,listener
+from devices import SpeedSensor, HeadwaySensor, WiperController, LightController, RainfallSensor, PhotoSensor
+from devices import communication_device,listener
 from threading import Thread
 import time
 
