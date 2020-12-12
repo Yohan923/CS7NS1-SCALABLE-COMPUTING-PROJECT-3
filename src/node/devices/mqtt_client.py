@@ -1,10 +1,14 @@
 from awscrt import mqtt
 import consts.iot_core as conf
+from utils import aggregate_full_vehicle_states
+from threading import Thread
+import time
 
 
-class MQTTClient():
+class MQTTClient(Thread):
 
     def __init__(self, connection):
+        Thread.__init__(self)
         self._connection = connection
 
     def connect(self):
@@ -49,5 +53,14 @@ class MQTTClient():
             qos=qos)
 
 
-    def start(self):
+    def run(self):
         self.connect()
+
+        def test_callback(topic, payload, **kwargs):
+            print("Received message from topic '{}': {}".format(topic, payload))
+
+        self.subscribe('vehicles', callback=test_callback)
+
+        while True:
+            self.publish('vehicles', aggregate_full_vehicle_states())
+            time.sleep(1)
