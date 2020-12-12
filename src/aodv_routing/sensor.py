@@ -70,7 +70,12 @@ class sensor(threading.Thread):
         elif self.STATUS == "STOPPING":
             self.SPEED = 0;
             self.ACCELERATION =0;
-            
+
+        keys = ["speed", "acceleration","Ylocation","status"]
+        values = [self.SPEED, self.ACCELERATION, self.YLOC,self.STATUS]
+
+        myPacket = self.construct_packet(keys, values)
+        return myPacket            
 
     # Default action handler
     def command_default(self):
@@ -98,7 +103,12 @@ class sensor(threading.Thread):
             # update vehicle status
             noise = OpenSimplex()
             accelleration_change = noise.noise2d(self.noise_counter, 0)
-            self.update(accelleration_change)
+            myPacket = self.update(accelleration_change)
+            sensor_type="LOCATION"
+            myPacket=sensor_type+":"+myPacket
+            myPacket_bytes = bytes(myPacket, 'utf-8')
+            self.send(myPacket_bytes)
+
             # receive command from protocal handler thread
             try:
                 command, _ = self.sock.recvfrom(100)

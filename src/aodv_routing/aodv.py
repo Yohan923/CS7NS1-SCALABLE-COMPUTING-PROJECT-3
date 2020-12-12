@@ -33,6 +33,7 @@ class aodv(threading.Thread):
         self.pending_msg_q = []
         self.status = "Active"
         self.hello_timer = 0
+        self.location_sensor_data=""
     
     # Set the Node ID
     def set_node_id(self, nid):
@@ -699,9 +700,7 @@ class aodv(threading.Thread):
         message_type = "USER_MESSAGE"
         message = message_type + ":" + source + ":" + dest + ":" + message_data
         
-        # First check if we have a route for the destination
         if dest in self.routing_table.keys():
-            # Route already present. Get the next-hop for the destination.
             destination = self.routing_table[dest]
             
             if (destination['Status'] == 'Inactive'):
@@ -846,36 +845,21 @@ class aodv(threading.Thread):
                                                self.listener_thread_port))
                     
                 elif r is self.tester_sock:
-                    # We got a message from the tester process. Process it.
-                    command, _ = self.tester_sock.recvfrom(100)
+                    command, _ = self.tester_sock.recvfrom(1000)
                     command = command.decode('utf-8')
-                    command = re.split(':', command)
-                    command_type = command[0]
-                    self.command = command
+                    command = command.split(':',1)
+                    sensor_type = command[0]
+                    sensor_data = command[1]
+                    sensor_data = json.loads(command[1])
 
-                    if command_type == "NODE_ACTIVATE":
+
+                    if sensor_type == "LOCATION":
                         self.aodv_simulate_link_up(True)
-                    elif command_type == "ADD_NEIGHBOR":
-                        self.aodv_add_neighbor(True)
-                    elif command_type == "NODE_DEACTIVATE":
-                        self.aodv_simulate_link_down(True)
-                    elif command_type == "DELETE_MESSAGES":
-                        self.aodv_delete_messages(True)
-                    elif command_type == "SEND_MESSAGE":
-                        self.aodv_send_message(True)
-                    elif command_type == "SHOW_ROUTE":
-                        self.aodv_show_routing_table(True)
-                    elif command_type == "VIEW_LOG":
-                        self.aodv_show_log(True)
-                    elif command_type == "VIEW_MESSAGES":
-                        self.aodv_show_messages(True)
                     else:
                         self.aodv_default()
 
-                    self.status = "Success"
-                    message = bytes(self.status, 'utf-8')
-                    self.tester_sock.sendto(message, 0, 
-                                            ('localhost', 5000))
+
+
 
                 elif r is self.aodv_sock:
                     # We got a message from the network
