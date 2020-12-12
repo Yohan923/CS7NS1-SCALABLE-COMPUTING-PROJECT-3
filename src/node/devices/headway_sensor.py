@@ -20,6 +20,5 @@ class HeadwaySensor(Thread):
 
     def run(self):
         while True:
-            # can be where to generate data
-            print(self.get_distance_to_contact())
+            
             time.sleep(1)
