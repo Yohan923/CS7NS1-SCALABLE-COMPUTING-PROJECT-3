@@ -1,4 +1,4 @@
-import speed_sensor, headway_sensor, wiper_controller
+import speed_sensor, headway_sensor, wiper_controller,mqtt_client
 import light_controller, rainfall_sensor, photo_sensor
 import communication_device,listener
 from threading import Thread
