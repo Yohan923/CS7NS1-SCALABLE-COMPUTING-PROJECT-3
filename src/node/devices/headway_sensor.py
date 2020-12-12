@@ -27,7 +27,7 @@ class HeadwaySensor(Thread):
             packet[keys[i]] = values[i]
         return json.dumps(packet)
 
-    def update():
+    def update(self):
         keys = ["headway"]
         values = [self._distance_to_contact]
         myPacket = self.construct_packet(keys, values)
