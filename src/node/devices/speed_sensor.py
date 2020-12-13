@@ -5,12 +5,16 @@ import logging,re,random
 from opensimplex import OpenSimplex
 import json
 delta_t=0.1#0.1s
+SPEED_PORT=33881
+AODV_SPEED_PORT=33500
+SPEED_THREAD_PORT = 33981
+
 
 class SpeedSensor(threading.Thread):
     
     def __init__(self):
         threading.Thread.__init__(self)
-        self.sock = 33400
+        self.sock = SPEED_THREAD_PORT
         self.port = 0
         self.aodv_tester_port = 33500
 
@@ -27,8 +31,8 @@ class SpeedSensor(threading.Thread):
 
         
     def send(self, message):
-        self.sock.sendto(message, 0, ('localhost', self.aodv_tester_port))
-        self.sock.sendto(message, 0, ('localhost', 33881))
+        self.sock.sendto(message, 0, ('localhost', AODV_SPEED_PORT))
+        self.sock.sendto(message, 0, ('localhost', SPEED_PORT))
 
     # TODO: broadcast the packet?
     def broadcast_packet(self):

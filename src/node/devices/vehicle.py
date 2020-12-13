@@ -5,10 +5,19 @@ from threading import Thread
 import time
 import socket,select,json
 
-AODV_PORT=33880
+VEHICLE_PORT=33100
+LIGHT_PORT=33884
+LIGHT_THREAD_PORT=33984
+WIPER_PORT=33883
+WIPER_THREAD_PORT=33983
 SPEED_PORT=33881
+SPEED_THREAD_PORT = 33981
 HEADWAY_PORT=33882
-
+HEADWAY_THREAD_PORT=33982
+AODV_PORT = 33880
+AODV_THREAD_PORT = 33980
+AODV_THREAD_SPEED_PORT=33500
+AODV_SPEED_PORT=33400
 
 
 
@@ -19,11 +28,11 @@ class Vehicle():
         x, 
         y,
         communication_device,
-        listener,
+        #listener,
         #mqtt_client,
         speed_sensor,
-        #wiper_controller,
-        #light_controller,
+        wiper_controller,
+        light_controller,
         headway_sensor,
         photo_sensor=None, 
         rainfall_sensor=None
@@ -42,9 +51,6 @@ class Vehicle():
         self.aodv_sock.setblocking(0)
         self.aodv_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-        listener.set_node_id('1')
-        self.listener = listener
-        self.devices.append(listener)
 
         # self.mqtt_client = mqtt_client
         # self.devices.append(mqtt_client)
@@ -56,11 +62,19 @@ class Vehicle():
         self.speed_sock.setblocking(0)
         self.speed_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-        # self.wiper_controller = wiper_controller
-        # self.devices.append(self.wiper_controller)
+        self.wiper_controller = wiper_controller
+        self.devices.append(self.wiper_controller)
+        self.wiper_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.wiper_sock.bind(('localhost', HEADWAY_PORT))
+        self.wiper_sock.setblocking(0)
+        self.wiper_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-        # self.light_controller = light_controller
-        # self.devices.append(self.light_controller)
+        self.light_controller = light_controller
+        self.devices.append(self.light_controller)
+        self.light_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.light_sock.bind(('localhost', LIGHT_PORT))
+        self.light_sock.setblocking(0)
+        self.light_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         self.headway_sensor = headway_sensor
         self.devices.append(self.headway_sensor)
@@ -84,7 +98,7 @@ class Vehicle():
             device.start()
         while True:
             
-            inputs = [self.speed_sock, self.headway_sock, self.aodv_sock]
+            inputs = [self.speed_sock, self.headway_sock, self.aodv_sock,self.wiper_sock,self.light_sock]
             outputs = []
             
             # Run the main loop
@@ -106,21 +120,28 @@ class Vehicle():
                         message, _ = self.aodv_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         print(message)         
-                
+                    elif r is self.wiper_sock:
+                        message, _ = self.aodv_sock.recvfrom(2000)
+                        message = message.decode('utf-8')  
+                        print(message)  
+                    elif r is self.light_sock:
+                        message, _ = self.aodv_sock.recvfrom(2000)
+                        message = message.decode('utf-8')  
+                        print(message)  
 
 x=0 
 y=0
 communication_device = communication_device.aodv()
-listener = listener.listener()
+#listener = listener.listener()
 #mqtt_client=mqtt_client.MQTTClient()
 speed_sensor=speed_sensor.SpeedSensor()
-# wiper_controller=wiper_controller.WiperController()
-# light_controller=light_controller.LightController()
+wiper_controller=wiper_controller.WiperController()
+light_controller=light_controller.LightController()
 headway_sensor=headway_sensor.HeadwaySensor()
 
 V=Vehicle(x,y,communication_device,listener,#mqtt_client,
-    speed_sensor,#wiper_controller,
-    #light_controller,
+    speed_sensor,wiper_controller,
+    light_controller,
     headway_sensor
     )
 V.drive()
