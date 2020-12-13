@@ -5,7 +5,7 @@ import time
 class ServerMQTTClient(MQTTClient):
 
     def __init__(self, connection):
-        super.__init__(self, connection)
+        super().__init__(self, connection)
     
 
     def run(self):

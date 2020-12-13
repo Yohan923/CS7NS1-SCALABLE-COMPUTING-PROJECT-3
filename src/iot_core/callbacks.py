@@ -30,12 +30,6 @@ def on_resubscribe_complete(resubscribe_future):
             sys.exit("Server rejected resubscribe to topic: {}".format(topic))
 
 
-# Callback when the subscribed topic receives a message
-def on_message_received(topic, payload, **kwargs):
+# Callback on server when data for vehicles are obtained
+def on_full_vehicles_states_received(topic, payload, **kwargs):
     pass
-
-    # print("Received message from topic '{}': {}".format(topic, payload))
-    # global received_count
-    # received_count += 1
-    # if received_count == args.count:
-    #     received_all_event.set()

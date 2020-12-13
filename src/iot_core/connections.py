@@ -55,7 +55,6 @@ class MQTTConnection:
         host_resolver = io.DefaultHostResolver(event_loop_group)
         client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
         
-        credentials_provider = auth.AwsCredentialsProvider.new_default_chain(client_bootstrap)
         mqtt_connection = mqtt_connection_builder.mtls_from_path(
             endpoint=conf.ENDPOINT,
             cert_filepath=cert_path,
