@@ -44,7 +44,7 @@ class SpeedSensor(threading.Thread):
 
     def update(self):
         if self.STATUS == "ACTIVE":
-            self.LOC += self.SPEED_Y * 0.1
+            self.LOC += self.SPEED * 0.1
             self.SPEED += self.ACCELERATION * 0.1
 
             # Some checks to make sure car isn't reversing, or is stationary for too long, etc..
