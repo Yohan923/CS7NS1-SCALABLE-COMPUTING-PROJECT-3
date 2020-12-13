@@ -8,11 +8,18 @@ AODV_HELLO_TIMEOUT          =   30
 AODV_PATH_DISCOVERY_TIME    =   30
 AODV_ACTIVE_ROUTE_TIMEOUT   =   300
 
+VEHICLE_PORT=33100
 AODV_PORT = 33880
-SPEED_THREAD_PORT = 33981
 AODV_THREAD_PORT = 33980
-AODV_THREAD_SPEED_PORT=33500
-AODV_NETWORK_PORT=33300
+SPEED_PORT=33881
+SPEED_THREAD_PORT = 33981
+HEADWAY_PORT=33882
+HEADWAY_THREAD_PORT=33982
+WIPER_PORT=33883
+WIPER_THREAD_PORT=33983
+LIGHT_PORT=33884
+LIGHT_THREAD_PORT=33984
+AODV_SPEED_PORT=33500
 
 
 class CommunicationDevice(threading.Thread):
@@ -710,7 +717,7 @@ class CommunicationDevice(threading.Thread):
         self.listener_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         # tester_sock is responsible for communication to the speed sensor thread
         self.tester_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.tester_sock.bind(('localhost', AODV_THREAD_SPEED_PORT))
+        self.tester_sock.bind(('localhost', AODV_SPEED_PORT))
         self.tester_sock.setblocking(0)
         self.tester_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.aodv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
