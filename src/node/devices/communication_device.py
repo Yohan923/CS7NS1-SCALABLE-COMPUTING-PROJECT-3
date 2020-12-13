@@ -109,21 +109,21 @@ class CommunicationDevice(threading.Thread):
         message[3]=message[3].replace('\'','\"')
         sender_location = json.loads(message[3])
 
-        # TODO change this
-        x1=sender_location['location'];y1=sender_location['lane']
-        x2=self.location_sensor_data['location'];y2=self.location_sensor_data['lane']
-        if (x1-x2)**2+(y1-y2)**2>1000:
-            if (sender in self.routing_table.keys()):
-                route = self.routing_table[sender]
-                if (route['Status'] == 'Active' and route['Next-Hop'] == sender):
-                    route['Status'] = "Inactive"
-            if(sender in self.neighbors.keys()):
-                self.neighbors.pop(sender)
-            print("cut connection")
-            logging.debug("['" +"cut connection"+ "']")
-            return
+        x1=float(sender_location['location']);x2=float(self.location_sensor_data['location']);
+        lane1=int(sender_location['lane'])
+        lane2=int(self.location_sensor_data['lane'])
+        v1=float(sender_location['speed']);v2=float(sender_location['speed']);
+        if x1>x2 && v1<v2 &&(v2-v1)*3 >=x2-x1:
+            if lane1==lane2:
+                # change lane
+                message_type="CHANGE_LANE";
+                message=message_type+":"+" "
+                message_bytes = bytes(message, 'utf-8')
+                self.aodv_sock.sendto(message_bytes, 0, 
+                    ('localhost', SPEED_THREAD_PORT))
+            ########################
+           
 
-        # Get the sender's ID and restart its neighbor liveness timer
         try:
             if (sender in self.neighbors.keys()):
                 neighbor = self.neighbors[sender]
@@ -140,12 +140,6 @@ class CommunicationDevice(threading.Thread):
                 self.aodv_restart_route_timer(route, False)
 
             else:
-                #
-                # We come here when we get a hello message from a node that
-                # is not there in our neighbor list. This happens when a 
-                # node times out and comes back up again. Add the node to
-                # our neighbor table.
-                #
                 timer = Timer(AODV_HELLO_TIMEOUT, 
                               self.aodv_process_neighbor_timeout, [sender])
                 self.neighbors[sender] = {'Neighbor': sender, 
@@ -167,7 +161,6 @@ class CommunicationDevice(threading.Thread):
                     self.aodv_restart_route_timer(self.routing_table[sender], True)
 
         except KeyError:
-            # This neighbor has not been added yet. Ignore the message.
             pass
 
     # Process incoming application message
@@ -189,11 +182,6 @@ class CommunicationDevice(threading.Thread):
             print("New message arrived. Issue 'view_messages' to see the contents")
         
         else:
-            # 
-            # Forward the message by looking up the next-hop. We should have a 
-            # route for the destination.
-            #
-            # TODO update lifetime for the route
             route = self.routing_table[receiver]
             next_hop = route['Next-Hop']
             next_hop_port = int(route['Next-Hop-Port'])
@@ -273,19 +261,10 @@ class CommunicationDevice(threading.Thread):
                                         'Status': 'Active'}
             self.aodv_restart_route_timer(self.routing_table[orig], True)
 
-        # 
-        # Check if we are the destination. If we are, generate and send an
-        # RREP back.
-        #
         if (self.node_id == dest):
             self.aodv_send_rrep(orig, sender, dest, dest, 0, 0)
             return
 
-        # 
-        # We are not the destination. Check if we have a valid route
-        # to the destination. If we have, generate and send back an
-        # RREP.
-        #
         if (dest in self.routing_table.keys()):
             # Verify that the route is valid and has a higher seq number
             route = self.routing_table[dest]
@@ -313,11 +292,6 @@ class CommunicationDevice(threading.Thread):
 
         # Check if we originated the RREQ. If so, consume the RREP.
         if (self.node_id == orig):
-            # 
-            # Update the routing table. If we have already got a route for
-            # this estination, compare the hop count and update the route
-            # if needed.
-            #
             if (dest in self.routing_table.keys()):
                 route = self.routing_table[dest]
                 route_hop_count = int(route['Hop-Count'])
@@ -349,10 +323,6 @@ class CommunicationDevice(threading.Thread):
                     self.pending_msg_q.remove(m)
 
         else:
-            # 
-            # We need to forward the RREP. Before forwarding, update
-            # information about the destination in our routing table.
-            #
             if (dest in self.routing_table.keys()):
                 route = self.routing_table[dest]
                 route['Status'] = 'Active'
@@ -388,10 +358,6 @@ class CommunicationDevice(threading.Thread):
 
         logging.debug("['" + message_type + "', 'Received RERR for " + dest + " from " + sender + "']")
 
-        # 
-        # Take action only if we have an active route to the destination with
-        # sender as the next-hop
-        #
         if (dest in self.routing_table.keys()):
             route = self.routing_table[dest]
             if (route['Status'] == 'Active' and route['Next-Hop'] == sender):
@@ -456,10 +422,7 @@ class CommunicationDevice(threading.Thread):
 
     # Send an RREP message back to the RREQ originator
     def aodv_send_rrep(self, rrep_dest, rrep_nh, rrep_src, rrep_int_node, dest_seq_no, hop_count):
-        # 
-        # Check if we are the destination in the RREP. If not, use the
-        # parameters passed.
-        #
+
         if (rrep_src == rrep_int_node):
             # Increment the sequence number and reset the hop count
             self.seq_no = self.seq_no + 1
