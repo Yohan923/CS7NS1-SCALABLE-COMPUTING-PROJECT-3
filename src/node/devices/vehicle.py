@@ -139,7 +139,7 @@ wiper_controller=wiper_controller.WiperController(1)
 light_controller=light_controller.LightController(1)
 headway_sensor=headway_sensor.HeadwaySensor()
 
-V=Vehicle(x,y,communication_device,listener,#mqtt_client,
+V=Vehicle(x,y,communication_device,#listener,#mqtt_client,
     speed_sensor,wiper_controller,
     light_controller,
     headway_sensor
