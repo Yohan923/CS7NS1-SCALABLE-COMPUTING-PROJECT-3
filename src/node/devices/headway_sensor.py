@@ -61,4 +61,4 @@ class HeadwaySensor(Thread):
             except:
                 pass  
 
-            time.sleep(2)
+            time.sleep(60)

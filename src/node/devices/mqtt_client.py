@@ -47,7 +47,7 @@ class MQTTClient(Thread):
             print('topic is not specified for publish')
             return
 
-        print(f'Publishing message to topic = {topic}: {message}')
+        # print(f'Publishing message to topic = {topic}: {message}')
         self._connection.publish(
             topic=topic,
             payload=message,
