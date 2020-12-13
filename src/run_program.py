@@ -24,6 +24,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     vehicle = Vehicle(
+        id=args.nid,
         communication_device=CommunicationDevice(args.nid,args.neighbors),
         mqtt_client=MQTTClient(MQTTConnection.get_mqtt_connection_over_websocket()),
         speed_sensor=SpeedSensor(), 

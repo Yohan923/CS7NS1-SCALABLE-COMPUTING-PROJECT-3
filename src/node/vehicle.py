@@ -27,6 +27,7 @@ class Vehicle():
 
     def __init__(
         self, 
+        id,
         communication_device,
         #listener,
         speed_sensor,
@@ -37,14 +38,12 @@ class Vehicle():
         photo_sensor=None, 
         rainfall_sensor=None
     ):
-        self.all_sensors={"speed_x": 0.0, "acceleration_x": 0.0, "Xlocation": 0.0,
+        self.all_sensors={"id":id,"speed_x": 0.0, "acceleration_x": 0.0, "Xlocation": 0.0,
         "speed_y": 0.0, "acceleration_y": 0.0, "Ylocation": 0.0,
         "headway": 0,"wiper_speed": 0,"light": 0,'neighbors':[]}
         
         self.devices = []
 
-
-        
         self.communication_device = communication_device
         self.devices.append(communication_device)
         self.aodv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -119,7 +118,6 @@ class Vehicle():
                         message, _ = self.speed_sock.recvfrom(2000)
                         message = message.decode('utf-8')
                         message = json.loads(message)
-                        print(message)
                         keys = ["speed_x", "acceleration_x","Xlocation","speed_y", "acceleration_y","Ylocation"]
                         self.update(message,keys)
 
@@ -128,7 +126,6 @@ class Vehicle():
                         message, _ = self.headway_sock.recvfrom(1000)
                         message = message.decode('utf-8')
                         message = json.loads(message)
-                        print(message)
                         keys = ["headway"]
                         self.update(message,keys)
 
@@ -144,7 +141,6 @@ class Vehicle():
                         message, _ = self.wiper_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         message = json.loads(message)
-                        print(message)
                         keys = ["wiper_speed"]
                         self.update(message,keys)
 
@@ -152,6 +148,5 @@ class Vehicle():
                         message, _ = self.light_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         message = json.loads(message)
-                        print(message)
                         keys = ["light"]
                         self.update(message,keys)
