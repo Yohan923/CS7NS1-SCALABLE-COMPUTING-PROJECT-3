@@ -42,7 +42,7 @@ class SpeedSensor(threading.Thread):
 
 
 
-    def update(self,accelleration_change):
+    def update(self):
         if self.STATUS == "ACTIVE":
             self.LOC += self.SPEED_Y * 0.1
             self.SPEED += self.ACCELERATION * 0.1
