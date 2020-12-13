@@ -9,9 +9,11 @@ AODV_PATH_DISCOVERY_TIME    =   30
 AODV_ACTIVE_ROUTE_TIMEOUT   =   300
 
 AODV_PORT = 33880
+SPEED_THREAD_PORT = 33981
 AODV_THREAD_PORT = 33980
 AODV_THREAD_SPEED_PORT=33500
-AODV_SPEED_PORT=33400
+AODV_NETWORK_PORT=33300
+
 
 class CommunicationDevice(threading.Thread):
 
@@ -38,7 +40,7 @@ class CommunicationDevice(threading.Thread):
         self.aodv_add_neighbor(neighbors)
 
     def get_aodv_port(self, node):
-        return 33300
+        return AODV_NETWORK_PORT
 
     def get_aodv_ip(self, node):
         ip = {'n1':  '10.35.70.38',
@@ -88,7 +90,7 @@ class CommunicationDevice(threading.Thread):
                 message_data = "Hello message from " + self.node_id
                 location=self.location_sensor_data
                 message = message_type + ":" + sender + ":" + message_data+ ":" +str(location)
-                port = self.get_aodv_port(n)
+                port = AODV_NETWORK_PORT
                 
                 self.aodv_send(n, int(port), message)
                 logging.debug("['" + message_type + "', '" + sender + "', " + 
@@ -153,9 +155,9 @@ class CommunicationDevice(threading.Thread):
                     self.aodv_restart_route_timer(route, False)
                 else:
                     self.routing_table[sender] = {'Destination': sender, 
-                                                  'Destination-Port': self.get_aodv_port(sender), 
+                                                  'Destination-Port': AODV_NETWORK_PORT, 
                                                   'Next-Hop': sender, 
-                                                  'Next-Hop-Port': self.get_aodv_port(sender), 
+                                                  'Next-Hop-Port': AODV_NETWORK_PORT, 
                                                   'Seq-No': '1', 
                                                   'Hop-Count': '1', 
                                                   'Status': 'Active'}
@@ -547,7 +549,7 @@ class CommunicationDevice(threading.Thread):
             message_type = "COMMAND_STOP"
             message = message_type + ":" + ""
             message_bytes = bytes(message, 'utf-8')
-            port = AODV_SPEED_PORT
+            port = SPEED_THREAD_PORT
             self.tester_sock.sendto(message_bytes, 0,('localhost', int(port)))
         print("Sent ["+message+"] to vehicle thread")
 
@@ -635,7 +637,6 @@ class CommunicationDevice(threading.Thread):
             destination = self.routing_table[dest]
             
             if (destination['Status'] == 'Inactive'):
-                # We don't have a valid route. Broadcast an RREQ.
                 self.aodv_send_rreq(dest, destination['Seq-No'])
             else:
                 next_hop = destination['Next-Hop']
@@ -701,18 +702,19 @@ class CommunicationDevice(threading.Thread):
         
         self.aodv_port = self.get_aodv_port(self.node_id)
         
-        self.tester_thread_port = AODV_SPEED_PORT
+        self.tester_thread_port = SPEED_THREAD_PORT
 
         self.listener_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.listener_sock.bind(('localhost', AODV_THREAD_PORT))
         self.listener_sock.setblocking(0)
         self.listener_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        # tester_sock is responsible for communication to the speed sensor thread
         self.tester_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.tester_sock.bind(('localhost', AODV_THREAD_SPEED_PORT))
         self.tester_sock.setblocking(0)
         self.tester_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.aodv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.aodv_sock.bind(('', self.aodv_port))
+        self.aodv_sock.bind(('', AODV_NETWORK_PORT))
         self.aodv_sock.setblocking(0)
         self.aodv_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
