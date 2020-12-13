@@ -13,12 +13,12 @@ AODV_THREAD_PORT = 33980
 AODV_THREAD_SPEED_PORT=33500
 AODV_SPEED_PORT=33400
 
-class aodv(threading.Thread):
+class CommunicationDevice(threading.Thread):
 
     # Constructor
-    def __init__(self):
-        threading.Thread.__init__(self)
-        self.node_id = ""
+    def __init__(self,nid,neighbors=[]):
+        threading.Thread.__init__()
+        self.node_id = str(nid)
         self.seq_no = 0
         self.rreq_id = 0
         self.aodv_port = 0
@@ -35,22 +35,10 @@ class aodv(threading.Thread):
         self.status = "Active"
         self.hello_timer = 0
         self.location_sensor_data=""
-    
-    def set_node_id(self, nid):
-        self.node_id = nid
-    
-
+        self.aodv_add_neighbor(neighbors)
 
     def get_aodv_port(self, node):
         return 33300
-        # port = {'n1':  33310,
-        #         'n2':  33320,
-        #         'n3':  33330,
-        #         'n4':  33340,
-        #         'n5':  33350}['n'+str(node)]
-                
-        
-
 
     def get_aodv_ip(self, node):
         ip = {'n1':  '10.35.70.38',
@@ -59,11 +47,6 @@ class aodv(threading.Thread):
                 
         return ip       
 
-
-
-
-
-    # Create / Restart the lifetime timer for the given route
     def aodv_restart_route_timer(self, route, create):
         if (create == False):
             timer = route['Lifetime']
@@ -597,13 +580,7 @@ class aodv(threading.Thread):
 
     
     # Take the neighbor set for the current node from the user
-    def aodv_add_neighbor(self, from_tester):
-        if (from_tester == False):
-            neighbors_raw = input("Enter the neighbors for the current node, separated by a space: ")
-            neighbors = str.split(neighbors_raw)
-        else:
-            neighbors = str.split(self.command[2], ' ')
-
+    def aodv_add_neighbor(self,neighbors):
         for n in neighbors:
             timer = Timer(AODV_HELLO_TIMEOUT, 
                           self.aodv_process_neighbor_timeout, [n])
@@ -789,7 +766,7 @@ class aodv(threading.Thread):
                     if command_type == "NODE_ACTIVATE":
                         self.aodv_simulate_link_up(False)
                     elif command_type == "ADD_NEIGHBOR":
-                        self.aodv_add_neighbor(False)
+                        pass
                     elif command_type == "NODE_DEACTIVATE":
                         self.aodv_simulate_link_down(False)
                     elif command_type == "DELETE_MESSAGES":
@@ -815,10 +792,7 @@ class aodv(threading.Thread):
                 elif r is self.tester_sock:
                     command, _ = self.tester_sock.recvfrom(1000)
                     command = command.decode('utf-8')
-                    command = command.split(':',1)
-                    sensor_type = command[0]
-                    sensor_data = command[1]
-                    sensor_data = json.loads(command[1])
+                    sensor_data = json.loads(command)
 
 
                 elif r is self.aodv_sock:
