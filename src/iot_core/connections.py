@@ -44,3 +44,28 @@ class MQTTConnection:
             keep_alive_secs=6)
 
         return mqtt_connection
+
+    
+    @staticmethod
+    def get_mqtt_connection(cert_path, pri_key_path):
+
+        client_id = conf.CLIENT_ID + str(uuid.uuid4())
+        # Spin up resources
+        event_loop_group = io.EventLoopGroup(1)
+        host_resolver = io.DefaultHostResolver(event_loop_group)
+        client_bootstrap = io.ClientBootstrap(event_loop_group, host_resolver)
+        
+        credentials_provider = auth.AwsCredentialsProvider.new_default_chain(client_bootstrap)
+        mqtt_connection = mqtt_connection_builder.mtls_from_path(
+            endpoint=conf.ENDPOINT,
+            cert_filepath=cert_path,
+            pri_key_filepath=pri_key_path,
+            client_bootstrap=client_bootstrap,
+            ca_filepath=conf.ROOT_CERT_PATH,
+            on_connection_interrupted=cb.on_connection_interrupted,
+            on_connection_resumed=cb.on_connection_resumed,
+            client_id=client_id,
+            clean_session=False,
+            keep_alive_secs=6)
+
+        return mqtt_connection
