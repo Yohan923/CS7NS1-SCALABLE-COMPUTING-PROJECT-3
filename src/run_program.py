@@ -15,10 +15,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("nid", help="enter node id",type=int)
     parser.add_argument("--neighbors", help="enter neighbors", nargs='+')
-    parser.add_argument("--location", help="enter initial x location")
-    parser.add_argument("--lane", help="enter current lane id")
-    parser.add_argument("--speed", help="enter initial speed ")
-    parser.add_argument("--acceleration", help="enter initial acceleration")
+    parser.add_argument("--location", help="enter initial x location",type=float,default=0)
+    parser.add_argument("--lane", help="enter current lane id",type=int,default=0)
+    parser.add_argument("--speed", help="enter initial speed ",type=float,default=0)
+    parser.add_argument("--acceleration", help="enter initial acceleration",type=float,default=3)
 
 
     args = parser.parse_args()
