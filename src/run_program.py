@@ -15,6 +15,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("nid", help="enter node id",type=int)
     parser.add_argument("--neighbors", help="enter neighbors", nargs='+')
+    parser.add_argument("--xLoc", help="enter initial x location")
+    parser.add_argument("--yLoc", help="enter initial y location")    
+    parser.add_argument("--init_speed_x", help="enter initial speed in x direction")
+    parser.add_argument("--init_speed_y", help="enter initial speed in y direction")
+
+
     args = parser.parse_args()
 
     vehicle = Vehicle(

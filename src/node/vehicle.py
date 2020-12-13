@@ -6,17 +6,18 @@ import socket,select,json,time
 
 
 
+
 VEHICLE_PORT=33100
-LIGHT_PORT=33884
-LIGHT_THREAD_PORT=33984
-WIPER_PORT=33883
-WIPER_THREAD_PORT=33983
+AODV_PORT = 33880
+AODV_THREAD_PORT = 33980
 SPEED_PORT=33881
 SPEED_THREAD_PORT = 33981
 HEADWAY_PORT=33882
 HEADWAY_THREAD_PORT=33982
-AODV_PORT = 33880
-AODV_THREAD_PORT = 33980
+WIPER_PORT=33883
+WIPER_THREAD_PORT=33983
+LIGHT_PORT=33884
+LIGHT_THREAD_PORT=33984
 AODV_THREAD_SPEED_PORT=33500
 AODV_SPEED_PORT=33400
 
@@ -38,7 +39,7 @@ class Vehicle():
     ):
         self.all_sensors={"speed_x": 0.0, "acceleration_x": 0.0, "Xlocation": 0.0,
         "speed_y": 0.0, "acceleration_y": 0.0, "Ylocation": 0.0,
-        "headway": 0,"wiper_speed": 0,"light": 0}
+        "headway": 0,"wiper_speed": 0,"light": 0,'neighbors':[]}
         
         self.devices = []
 
@@ -136,6 +137,8 @@ class Vehicle():
                         message, _ = self.aodv_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         print(message)     
+                        keys = ["neighbors"]
+                        self.update(message,keys)
 
                     elif r is self.wiper_sock:
                         message, _ = self.wiper_sock.recvfrom(2000)
