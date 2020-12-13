@@ -815,10 +815,7 @@ class CommunicationDevice(threading.Thread):
                 elif r is self.tester_sock:
                     command, _ = self.tester_sock.recvfrom(1000)
                     command = command.decode('utf-8')
-                    command = command.split(':',1)
-                    sensor_type = command[0]
-                    sensor_data = command[1]
-                    sensor_data = json.loads(command[1])
+                    sensor_data = json.loads(command)
 
 
                 elif r is self.aodv_sock:
