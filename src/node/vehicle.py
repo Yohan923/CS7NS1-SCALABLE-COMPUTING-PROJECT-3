@@ -28,11 +28,11 @@ class Vehicle():
         self, 
         communication_device,
         #listener,
-        mqtt_client=None,
         speed_sensor,
         wiper_controller,
         light_controller,
         headway_sensor,
+        mqtt_client=None,
         photo_sensor=None, 
         rainfall_sensor=None
     ):
