@@ -65,7 +65,7 @@ class Vehicle():
         self.wiper_controller = wiper_controller
         self.devices.append(self.wiper_controller)
         self.wiper_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.wiper_sock.bind(('localhost', HEADWAY_PORT))
+        self.wiper_sock.bind(('localhost', WIPER_PORT))
         self.wiper_sock.setblocking(0)
         self.wiper_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
