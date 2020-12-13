@@ -47,7 +47,7 @@ class MQTTClient(Thread):
             print('topic is not specified for publish')
             return
 
-        #print(f'Publishing message to topic = {topic}: {message}')
+        print(f'Publishing message to topic = {topic}: {message}')
         self._connection.publish(
             topic=topic,
             payload=message,
@@ -59,4 +59,4 @@ class MQTTClient(Thread):
 
         while True:
             self.publish('vehicles', config.my_vehicle.aggregate_full_vehicle_states())
-            time.sleep(1)
+            time.sleep(3)
