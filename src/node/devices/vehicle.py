@@ -136,7 +136,7 @@ communication_device = communication_device.aodv()
 #mqtt_client=mqtt_client.MQTTClient()
 speed_sensor=speed_sensor.SpeedSensor()
 wiper_controller=wiper_controller.WiperController(1)
-light_controller=light_controller.LightController()
+light_controller=light_controller.LightController(1)
 headway_sensor=headway_sensor.HeadwaySensor()
 
 V=Vehicle(x,y,communication_device,listener,#mqtt_client,
