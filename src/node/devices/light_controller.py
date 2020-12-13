@@ -1,6 +1,7 @@
 from photo_sensor import PhotoIntensity
-import time
+import time,socket,json
 from threading import Thread
+
 LIGHT_PORT=33884
 LIGHT_THREAD_PORT=33984
 

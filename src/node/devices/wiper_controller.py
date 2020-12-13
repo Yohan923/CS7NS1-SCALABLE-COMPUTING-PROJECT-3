@@ -1,6 +1,6 @@
 from rainfall_sensor import RainfallLevel
 from threading import Thread
-import time
+import time,socket,json
 
 WIPER_PORT=33883
 WIPER_THREAD_PORT=33983
