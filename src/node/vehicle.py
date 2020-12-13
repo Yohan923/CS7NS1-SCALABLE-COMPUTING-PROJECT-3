@@ -38,8 +38,8 @@ class Vehicle():
         photo_sensor=None, 
         rainfall_sensor=None
     ):
-        self.all_sensors={"id":id,"speed_x": 0.0, "acceleration_x": 0.0, "Xlocation": 0.0,
-        "speed_y": 0.0, "acceleration_y": 0.0, "Ylocation": 0.0,
+        self.all_sensors={"id":id,"speed": 0.0, "acceleration": 0.0, "location": 0.0,
+        "lane":0,"direction":0,
         "headway": 0,"wiper_speed": 0,"light": 0,'neighbors':[]}
         
         self.devices = []
@@ -118,7 +118,8 @@ class Vehicle():
                         message, _ = self.speed_sock.recvfrom(2000)
                         message = message.decode('utf-8')
                         message = json.loads(message)
-                        keys = ["speed_x", "acceleration_x","Xlocation","speed_y", "acceleration_y","Ylocation"]
+                        keys = ["speed", "acceleration","location",
+                        "lane", "direction"]
                         self.update(message,keys)
 
                         
