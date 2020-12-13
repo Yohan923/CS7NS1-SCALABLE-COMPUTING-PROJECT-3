@@ -115,7 +115,7 @@ class SpeedSensor(threading.Thread):
 
             
 
-            time.sleep(1)
+            time.sleep(2)
 
 
 
