@@ -61,14 +61,15 @@ class CommunicationDevice(threading.Thread):
 
     def aodv_restart_route_timer(self, route, create):
         if (create == False):
-            timer = route['Lifetime']
-            timer.cancel()
+            pass
+            # timer = route['Lifetime']
+            # timer.cancel()
 
-        timer = Timer(AODV_ACTIVE_ROUTE_TIMEOUT, 
-                      self.aodv_process_route_timeout, [route])
-        route['Lifetime'] = timer
-        route['Status'] = 'Active'
-        timer.start()
+        # timer = Timer(AODV_ACTIVE_ROUTE_TIMEOUT, 
+        #               self.aodv_process_route_timeout, [route])
+        # route['Lifetime'] = timer
+        # route['Status'] = 'Active'
+        # timer.start()
     
     # Send a message
     def aodv_send(self, destination, destination_port, message):
@@ -488,19 +489,19 @@ class CommunicationDevice(threading.Thread):
     # Handle neighbor timeouts
     def aodv_process_neighbor_timeout(self, neighbor):
         
-        # Update the routing table. Mark the route as inactive.
-        route = self.routing_table[neighbor]
-        route['Status'] = 'Inactive'
+        # # Update the routing table. Mark the route as inactive.
+        # route = self.routing_table[neighbor]
+        # route['Status'] = 'Inactive'
 
-        # Log a message
-        logging.debug("aodv_process_neighbor_timeout: " + neighbor + " went down")
+        # # Log a message
+        # logging.debug("aodv_process_neighbor_timeout: " + neighbor + " went down")
 
-        # Send an RERR to all the neighbors
-        self.aodv_send_rerr(neighbor, int(route['Seq-No']))
+        # # Send an RERR to all the neighbors
+        # self.aodv_send_rerr(neighbor, int(route['Seq-No']))
 
-        # Try to repair the route
-        dest_seq_no = int(route['Seq-No']) + 1
-        self.aodv_send_rreq(neighbor, dest_seq_no)
+        # # Try to repair the route
+        # dest_seq_no = int(route['Seq-No']) + 1
+        # self.aodv_send_rreq(neighbor, dest_seq_no)
         
     # Handle Path Discovery timeouts
     def aodv_process_path_discovery_timeout(self, node, rreq_id):
@@ -541,10 +542,10 @@ class CommunicationDevice(threading.Thread):
         # Restart all the lifetime timers in the routing table
         for r in self.routing_table.keys():
             route = self.routing_table[r]
-            timer = Timer(AODV_ACTIVE_ROUTE_TIMEOUT, 
-                          self.aodv_process_route_timeout, [route])
-            route['Lifetime'] = timer
-            timer.start()
+            # timer = Timer(AODV_ACTIVE_ROUTE_TIMEOUT, 
+            #               self.aodv_process_route_timeout, [route])
+            # route['Lifetime'] = timer
+            # timer.start()
 
         self.status = "Active"
 
