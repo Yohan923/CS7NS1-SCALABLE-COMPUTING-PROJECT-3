@@ -1,6 +1,7 @@
 from awscrt import mqtt
 import consts.iot_core as conf
-from node.devices.utils import aggregate_full_vehicle_states
+# from node.devices.utils import aggregate_full_vehicle_states
+import config
 from threading import Thread
 import time
 
@@ -62,5 +63,5 @@ class MQTTClient(Thread):
         self.subscribe('vehicles', callback=test_callback)
 
         while True:
-            self.publish('vehicles', aggregate_full_vehicle_states())
+            self.publish('vehicles', config.my_vehicle.aggregate_full_vehicle_states())
             time.sleep(1)
