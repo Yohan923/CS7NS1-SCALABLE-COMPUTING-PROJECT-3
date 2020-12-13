@@ -19,6 +19,7 @@ LIGHT_THREAD_PORT=33984
 AODV_NETWORK_PORT = 33300 
 AODV_SPEED_PORT=33500
 
+TIME_INTERVAL=2
 
 class SpeedSensor(threading.Thread):
     
@@ -54,15 +55,15 @@ class SpeedSensor(threading.Thread):
 
     def update(self):
         if self.STATUS == "ACTIVE":
-            self.LOC += (self.SPEED * 1)%400
+            self.LOC += (self.SPEED * TIME_INTERVAL)%400
             if self.SPEED < 10:
-                self.SPEED += self.ACCELERATION * 1
+                self.SPEED += self.ACCELERATION * TIME_INTERVAL
 
             # Some checks to make sure car isn't reversing, or is stationary for too long, etc..
             if self.SPEED < 0:
                 self.SPEED = 0
-            elif self.SPEED > 10:
-                self.SPEED = 10
+            elif self.SPEED > 20:
+                self.SPEED = 20
                 self.ACCELERATION = 0
 
 
@@ -115,7 +116,7 @@ class SpeedSensor(threading.Thread):
 
             
 
-            time.sleep(2)
+            time.sleep(TIME_INTERVAL)
 
 
 
