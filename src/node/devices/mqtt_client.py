@@ -1,7 +1,6 @@
 from awscrt import mqtt
 import consts.iot_core as conf
 from node.devices.utils import aggregate_full_vehicle_states
-from node.
 from threading import Thread
 import time
 
