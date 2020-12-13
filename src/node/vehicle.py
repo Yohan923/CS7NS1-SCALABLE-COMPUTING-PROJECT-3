@@ -97,7 +97,7 @@ class Vehicle():
 
     def aggregate_full_vehicle_states(self):
 
-        return json.dumps(all_sensors)
+        return json.dumps(self.all_sensors)
 
 
 
