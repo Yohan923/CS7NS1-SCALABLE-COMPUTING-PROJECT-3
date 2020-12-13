@@ -488,6 +488,7 @@ class CommunicationDevice(threading.Thread):
 
     # Handle neighbor timeouts
     def aodv_process_neighbor_timeout(self, neighbor):
+        pass
         
         # # Update the routing table. Mark the route as inactive.
         # route = self.routing_table[neighbor]
