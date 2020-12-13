@@ -3,7 +3,7 @@ from threading import Timer
 import json
 
 # Defines
-AODV_HELLO_INTERVAL         =   4
+AODV_HELLO_INTERVAL         =   2
 AODV_HELLO_TIMEOUT          =   600
 AODV_PATH_DISCOVERY_TIME    =   30
 AODV_ACTIVE_ROUTE_TIMEOUT   =   300
@@ -102,10 +102,11 @@ class CommunicationDevice(threading.Thread):
                 
                 self.aodv_send(n, int(port), message)
                 logging.debug("['" + message_type + "', '" + sender + "', " + 
-                              "Sending hello message to " + str(n) + ":" +location + "']")
+                              "Sending hello message to " + str(n) + "']")
         
             # Restart the timer
             self.hello_timer.cancel()
+            print("1")
             self.hello_timer = Timer(AODV_HELLO_INTERVAL, self.aodv_send_hello_message, ())
             self.hello_timer.start()
             
