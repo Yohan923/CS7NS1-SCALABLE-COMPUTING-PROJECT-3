@@ -43,7 +43,8 @@ class CommunicationDevice(threading.Thread):
     def get_aodv_ip(self, node):
         ip = {'n1':  '10.35.70.38',
                 'n2':  '10.35.70.6',
-                'n3':  '10.35.70.26'}['n'+str(node)]
+                'n3':  '10.35.70.26',
+                'n4': '10.35.70.16'}['n'+str(node)]
                 
         return ip       
 
@@ -70,6 +71,12 @@ class CommunicationDevice(threading.Thread):
     
     # Send the hello message to all the neighbors
     def aodv_send_hello_message(self):
+        message={'neighbors':list(self.neighbors.keys())}
+        message=json.dumps(message)
+        message_bytes = bytes(message, 'utf-8')
+        self.aodv_sock.sendto(message_bytes, 0, 
+                                  ('localhost', AODV_PORT))
+
         try:
             # Send message to each neighbor
             for n in self.neighbors.keys():
