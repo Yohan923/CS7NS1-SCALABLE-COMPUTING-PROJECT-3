@@ -13,7 +13,7 @@ AODV_THREAD_PORT = 33980
 AODV_THREAD_SPEED_PORT=33500
 AODV_SPEED_PORT=33400
 
-class aodv(threading.Thread):
+class CommunicationDevice(threading.Thread):
 
     # Constructor
     def __init__(self):
