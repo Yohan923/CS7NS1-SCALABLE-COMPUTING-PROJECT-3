@@ -13,7 +13,7 @@ from node.vehicle import Vehicle
 if __name__ == "__main__":
     vehicle = Vehicle(
         communication_device=CommunicationDevice(),
-        mqtt_client=MQTTClient(MQTTConnection.get_mqtt_connection_over_websocket()),
+        # mqtt_client=MQTTClient(MQTTConnection.get_mqtt_connection_over_websocket()),
         speed_sensor=SpeedSensor(), 
         wiper_controller=WiperController(WIPER_SPEED.SLOW), 
         light_controller=LightController(LIGHT_INTENSITY),

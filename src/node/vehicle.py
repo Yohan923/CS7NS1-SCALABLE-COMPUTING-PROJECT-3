@@ -28,7 +28,7 @@ class Vehicle():
         self, 
         communication_device,
         #listener,
-        mqtt_client,
+        mqtt_client=None,
         speed_sensor,
         wiper_controller,
         light_controller,
@@ -51,9 +51,9 @@ class Vehicle():
         self.aodv_sock.setblocking(0)
         self.aodv_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-
-        # self.mqtt_client = mqtt_client
-        # self.devices.append(mqtt_client)
+        if mqtt_client:
+            self.mqtt_client = mqtt_client
+            self.devices.append(mqtt_client)
 
         self.speed_sensor = speed_sensor
         self.devices.append(speed_sensor)
