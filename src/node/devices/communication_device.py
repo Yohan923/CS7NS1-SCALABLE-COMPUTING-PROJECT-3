@@ -16,8 +16,8 @@ AODV_SPEED_PORT=33400
 class CommunicationDevice(threading.Thread):
 
     # Constructor
-    def __init__(self):
-        threading.Thread.__init__(self,nid,neighbors=[])
+    def __init__(self,nid,neighbors=[]):
+        threading.Thread.__init__()
         self.node_id = str(nid)
         self.seq_no = 0
         self.rreq_id = 0
