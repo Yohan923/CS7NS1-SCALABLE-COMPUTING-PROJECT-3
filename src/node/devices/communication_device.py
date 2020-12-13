@@ -68,11 +68,14 @@ class CommunicationDevice(threading.Thread):
                                   (destination_ip, destination_port))
         except:
             pass    
-    
+ 
+
+
     # Send the hello message to all the neighbors
     def aodv_send_hello_message(self):
         message={'neighbors':list(self.neighbors.keys())}
         message=json.dumps(message)
+        print(message)###########
         message_bytes = bytes(message, 'utf-8')
         self.aodv_sock.sendto(message_bytes, 0, 
                                   ('localhost', AODV_PORT))
@@ -617,6 +620,7 @@ class CommunicationDevice(threading.Thread):
             self.aodv_restart_route_timer(self.routing_table[dest], True)
             
         # Start a timer to start sending hello messages periodically
+        self.hello_timer.cancel()
         self.hello_timer = Timer(AODV_HELLO_INTERVAL, self.aodv_send_hello_message, ())
         self.hello_timer.start()
         
@@ -749,15 +753,15 @@ class CommunicationDevice(threading.Thread):
         self.aodv_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         logging.debug("node " + self.node_id + " started on port " + str(self.aodv_port) + " with pid " + str(os.getpid()))
-        
-        # Set the node status
         self.status = "Active"
 
-        # Setup the socket list we expect to read via select()
+        self.hello_timer = Timer(AODV_HELLO_INTERVAL, self.aodv_send_hello_message, ())
+        self.hello_timer.start()
+
+
         inputs = [self.listener_sock, self.tester_sock, self.aodv_sock]
         outputs = []
-        
-        # Run the main loop
+
         while inputs:
             readable, _, _ = select.select(inputs, outputs, inputs)
             for r in readable:
