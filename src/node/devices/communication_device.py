@@ -620,7 +620,7 @@ class CommunicationDevice(threading.Thread):
             self.aodv_restart_route_timer(self.routing_table[dest], True)
             
         # Start a timer to start sending hello messages periodically
-        self.hello_timer.cancel()
+        
         self.hello_timer = Timer(AODV_HELLO_INTERVAL, self.aodv_send_hello_message, ())
         self.hello_timer.start()
         
@@ -755,8 +755,8 @@ class CommunicationDevice(threading.Thread):
         logging.debug("node " + self.node_id + " started on port " + str(self.aodv_port) + " with pid " + str(os.getpid()))
         self.status = "Active"
 
-        self.hello_timer = Timer(AODV_HELLO_INTERVAL, self.aodv_send_hello_message, ())
-        self.hello_timer.start()
+        # self.hello_timer = Timer(AODV_HELLO_INTERVAL, self.aodv_send_hello_message, ())
+        # self.hello_timer.start()
 
 
         inputs = [self.listener_sock, self.tester_sock, self.aodv_sock]
