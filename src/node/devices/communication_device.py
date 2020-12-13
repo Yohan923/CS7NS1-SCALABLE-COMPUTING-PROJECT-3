@@ -8,20 +8,20 @@ AODV_HELLO_TIMEOUT          =   30
 AODV_PATH_DISCOVERY_TIME    =   30
 AODV_ACTIVE_ROUTE_TIMEOUT   =   300
 
+AODV_PORT = 33880
+AODV_THREAD_PORT = 33980
+AODV_THREAD_SPEED_PORT=33500
+AODV_SPEED_PORT=33400
+
 class aodv(threading.Thread):
 
     # Constructor
     def __init__(self):
         threading.Thread.__init__(self)
         self.node_id = ""
-        self.num_nodes = 0
         self.seq_no = 0
         self.rreq_id = 0
-        self.listener_port = 0
-        self.listener_thread_port = 0
         self.aodv_port = 0
-        self.tester_port = 0
-        self.tester_thread_port = 0
         self.listener_sock = 0
         self.aodv_sock = 0
         self.tester_sock = 0
@@ -39,15 +39,7 @@ class aodv(threading.Thread):
     def set_node_id(self, nid):
         self.node_id = nid
     
-    def set_node_count(self, count):
-        self.num_nodes = count
-    
 
-    def get_listener_thread_port(self, node):
-        return 33100
-
-    def get_listener_port(self, node):
-        return 33200
 
     def get_aodv_port(self, node):
         return 33300
@@ -68,11 +60,8 @@ class aodv(threading.Thread):
         return ip       
 
 
-    def get_tester_port(self, node):
-        return 33500
 
-    def get_tester_thread_port(self, node):
-        return 33400
+
 
     # Create / Restart the lifetime timer for the given route
     def aodv_restart_route_timer(self, route, create):
@@ -601,7 +590,7 @@ class aodv(threading.Thread):
             message_type = "COMMAND_STOP"
             message = message_type + ":" + ""
             message_bytes = bytes(message, 'utf-8')
-            port = self.get_tester_thread_port(self.node_id)
+            port = AODV_SPEED_PORT
             self.tester_sock.sendto(message_bytes, 0,('localhost', int(port)))
         print("Sent ["+message+"] to vehicle thread")
 
@@ -758,27 +747,16 @@ class aodv(threading.Thread):
                             level=logging.DEBUG, 
                             format=FORMAT)
         
-        # Get the listener port
-        self.listener_port = self.get_listener_port(self.node_id)
-        self.listener_thread_port = self.get_listener_thread_port(self.node_id)
-        
-        # Get the AODV port
         self.aodv_port = self.get_aodv_port(self.node_id)
         
-        # Get the tester port
-        self.tester_port = self.get_tester_port(self.node_id)
-        self.tester_thread_port = self.get_tester_thread_port(self.node_id)
+        self.tester_thread_port = AODV_SPEED_PORT
 
-        # 
-        # Create sockets to communicate with the listener thread, tester
-        # process and other nodes in the network
-        #
         self.listener_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.listener_sock.bind(('localhost', self.listener_port))
+        self.listener_sock.bind(('localhost', AODV_THREAD_PORT))
         self.listener_sock.setblocking(0)
         self.listener_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.tester_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.tester_sock.bind(('localhost', self.tester_port))
+        self.tester_sock.bind(('localhost', AODV_THREAD_SPEED_PORT))
         self.tester_sock.setblocking(0)
         self.tester_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.aodv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -832,8 +810,7 @@ class aodv(threading.Thread):
                     # Send the status back to the listener thread
                     message = bytes(self.status, 'utf-8')
                     self.listener_sock.sendto(message, 0, 
-                                              ('localhost', 
-                                               self.listener_thread_port))
+                                              ('localhost', AODV_PORT))
                     
                 elif r is self.tester_sock:
                     command, _ = self.tester_sock.recvfrom(1000)
@@ -842,14 +819,6 @@ class aodv(threading.Thread):
                     sensor_type = command[0]
                     sensor_data = command[1]
                     sensor_data = json.loads(command[1])
-
-
-                    # if sensor_type == "LOCATION":
-
-                    # else:
-                    #     self.aodv_default()
-
-
 
 
                 elif r is self.aodv_sock:
