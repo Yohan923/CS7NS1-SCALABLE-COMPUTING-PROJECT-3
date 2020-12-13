@@ -16,4 +16,5 @@ if __name__ == "__main__":
     mqtt_client.start()
 
     while True:
+        pass
         # then draw stuff

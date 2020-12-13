@@ -1,11 +1,12 @@
 from node.devices.mqtt_client import MQTTClient
+import config
 import time
 
 
 class ServerMQTTClient(MQTTClient):
 
     def __init__(self, connection):
-        super().__init__(self, connection)
+        super().__init__(connection)
     
 
     def run(self):
@@ -17,5 +18,5 @@ class ServerMQTTClient(MQTTClient):
         self.subscribe('vehicles', callback=test_callback)
 
         while True:
-            self.publish('vehicles', 'sfse')
+            print(f'the current my_vehicles is {str(config.my_vehicles)}')
             time.sleep(1)
