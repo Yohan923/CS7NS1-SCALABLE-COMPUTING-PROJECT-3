@@ -121,11 +121,11 @@ class Vehicle():
                         message = message.decode('utf-8')  
                         print(message)         
                     elif r is self.wiper_sock:
-                        message, _ = self.aodv_sock.recvfrom(2000)
+                        message, _ = self.wiper_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         print(message)  
                     elif r is self.light_sock:
-                        message, _ = self.aodv_sock.recvfrom(2000)
+                        message, _ = self.light_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         print(message)  
 
