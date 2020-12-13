@@ -17,8 +17,8 @@ class CommunicationDevice(threading.Thread):
 
     # Constructor
     def __init__(self):
-        threading.Thread.__init__(self)
-        self.node_id = ""
+        threading.Thread.__init__(self,nid,neighbors=[])
+        self.node_id = str(nid)
         self.seq_no = 0
         self.rreq_id = 0
         self.aodv_port = 0
@@ -36,21 +36,9 @@ class CommunicationDevice(threading.Thread):
         self.hello_timer = 0
         self.location_sensor_data=""
     
-    def set_node_id(self, nid):
-        self.node_id = nid
-    
-
 
     def get_aodv_port(self, node):
         return 33300
-        # port = {'n1':  33310,
-        #         'n2':  33320,
-        #         'n3':  33330,
-        #         'n4':  33340,
-        #         'n5':  33350}['n'+str(node)]
-                
-        
-
 
     def get_aodv_ip(self, node):
         ip = {'n1':  '10.35.70.38',
@@ -59,11 +47,6 @@ class CommunicationDevice(threading.Thread):
                 
         return ip       
 
-
-
-
-
-    # Create / Restart the lifetime timer for the given route
     def aodv_restart_route_timer(self, route, create):
         if (create == False):
             timer = route['Lifetime']

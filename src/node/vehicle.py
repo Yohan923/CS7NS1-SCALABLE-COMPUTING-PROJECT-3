@@ -43,7 +43,7 @@ class Vehicle():
         self.devices = []
 
 
-        communication_device.set_node_id('1')
+        
         self.communication_device = communication_device
         self.devices.append(communication_device)
         self.aodv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -126,7 +126,6 @@ class Vehicle():
                     elif r is self.headway_sock:
                         message, _ = self.headway_sock.recvfrom(1000)
                         message = message.decode('utf-8')
-                        print(message)
                         message = json.loads(message)
                         print(message)
                         keys = ["headway"]
@@ -141,7 +140,6 @@ class Vehicle():
                     elif r is self.wiper_sock:
                         message, _ = self.wiper_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
-                        print(message)  
                         message = json.loads(message)
                         print(message)
                         keys = ["wiper_speed"]
@@ -150,7 +148,6 @@ class Vehicle():
                     elif r is self.light_sock:
                         message, _ = self.light_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
-                        print(message)  
                         message = json.loads(message)
                         print(message)
                         keys = ["light"]

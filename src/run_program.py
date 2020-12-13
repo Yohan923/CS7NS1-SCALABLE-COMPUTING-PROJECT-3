@@ -9,10 +9,16 @@ from node.devices.communication_device import CommunicationDevice
 from node.devices.wiper_controller import WiperController, WIPER_SPEED
 from node.devices.light_controller import LightController, LIGHT_INTENSITY
 from node.vehicle import Vehicle
+import argparse
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("nid", help="enter node id",type=int)
+    parser.add_argument("--neighbors", help="enter neighbors", nargs='+')
+    args = parser.parse_args()
+
     vehicle = Vehicle(
-        communication_device=CommunicationDevice(),
+        communication_device=CommunicationDevice(args.nid,args.neighbors),
         # mqtt_client=MQTTClient(MQTTConnection.get_mqtt_connection_over_websocket()),
         speed_sensor=SpeedSensor(), 
         wiper_controller=WiperController(WIPER_SPEED.SLOW), 
