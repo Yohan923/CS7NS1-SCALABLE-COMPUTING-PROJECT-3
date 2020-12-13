@@ -47,7 +47,7 @@ class MQTTClient(Thread):
             print('topic is not specified for publish')
             return
 
-        print(f'Publishing message to topic = {topic}: {message}')
+        #print(f'Publishing message to topic = {topic}: {message}')
         self._connection.publish(
             topic=topic,
             payload=message,
@@ -58,7 +58,8 @@ class MQTTClient(Thread):
         self.connect()
 
         def test_callback(topic, payload, **kwargs):
-            print("Received message from topic '{}': {}".format(topic, payload))
+            print("Received message from topic '{}': {}".format(topic))
+            #print("Received message from topic '{}': {}".format(topic, payload))
 
         self.subscribe('vehicles', callback=test_callback)
 
