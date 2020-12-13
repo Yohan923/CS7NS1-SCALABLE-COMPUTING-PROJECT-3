@@ -17,7 +17,7 @@ class CommunicationDevice(threading.Thread):
 
     # Constructor
     def __init__(self,nid,neighbors=[]):
-        threading.Thread.__init__()
+        threading.Thread.__init__(self)
         self.node_id = str(nid)
         self.seq_no = 0
         self.rreq_id = 0
