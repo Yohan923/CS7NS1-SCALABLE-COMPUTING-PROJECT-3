@@ -58,11 +58,11 @@ class MQTTClient(Thread):
         self.connect()
 
         def test_callback(topic, payload, **kwargs):
-            print("Received message from topic '{}': {}".format(topic))
-            #print("Received message from topic '{}': {}".format(topic, payload))
+            #print("Received message from topic '{}': {}".format(topic))
+            print("Received message from topic '{}': {}".format(topic, payload))
 
         self.subscribe('vehicles', callback=test_callback)
 
         while True:
             self.publish('vehicles', config.my_vehicle.aggregate_full_vehicle_states())
-            time.sleep(1)
+            time.sleep(4)
