@@ -4,7 +4,7 @@ import json
 
 # Defines
 AODV_HELLO_INTERVAL         =   5
-AODV_HELLO_TIMEOUT          =   30
+AODV_HELLO_TIMEOUT          =   600
 AODV_PATH_DISCOVERY_TIME    =   30
 AODV_ACTIVE_ROUTE_TIMEOUT   =   300
 
