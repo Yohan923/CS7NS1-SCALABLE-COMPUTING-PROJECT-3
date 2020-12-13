@@ -35,7 +35,7 @@ class CommunicationDevice(threading.Thread):
         self.status = "Active"
         self.hello_timer = 0
         self.location_sensor_data=""
-    
+        self.aodv_add_neighbor(neighbors)
 
     def get_aodv_port(self, node):
         return 33300
@@ -580,13 +580,7 @@ class CommunicationDevice(threading.Thread):
 
     
     # Take the neighbor set for the current node from the user
-    def aodv_add_neighbor(self, from_tester):
-        if (from_tester == False):
-            neighbors_raw = input("Enter the neighbors for the current node, separated by a space: ")
-            neighbors = str.split(neighbors_raw)
-        else:
-            neighbors = str.split(self.command[2], ' ')
-
+    def aodv_add_neighbor(self,neighbors):
         for n in neighbors:
             timer = Timer(AODV_HELLO_TIMEOUT, 
                           self.aodv_process_neighbor_timeout, [n])
@@ -772,7 +766,7 @@ class CommunicationDevice(threading.Thread):
                     if command_type == "NODE_ACTIVATE":
                         self.aodv_simulate_link_up(False)
                     elif command_type == "ADD_NEIGHBOR":
-                        self.aodv_add_neighbor(False)
+                        pass
                     elif command_type == "NODE_DEACTIVATE":
                         self.aodv_simulate_link_down(False)
                     elif command_type == "DELETE_MESSAGES":
