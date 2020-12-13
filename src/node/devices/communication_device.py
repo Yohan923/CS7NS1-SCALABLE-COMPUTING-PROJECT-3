@@ -137,24 +137,24 @@ class CommunicationDevice(threading.Thread):
         try:
             if (sender in self.neighbors.keys()):
                 neighbor = self.neighbors[sender]
-                timer = neighbor['Timer-Callback']
-                timer.cancel()
-                timer = Timer(AODV_HELLO_TIMEOUT, 
-                              self.aodv_process_neighbor_timeout, [sender])
-                self.neighbors[sender] = {'Neighbor': sender, 
-                                          'Timer-Callback': timer}
-                timer.start()
+                # timer = neighbor['Timer-Callback']
+                # timer.cancel()
+                # timer = Timer(AODV_HELLO_TIMEOUT, 
+                #               self.aodv_process_neighbor_timeout, [sender])
+                # self.neighbors[sender] = {'Neighbor': sender, 
+                #                           'Timer-Callback': timer}
+                # timer.start()
             
                 # Restart the lifetime timer
                 route = self.routing_table[sender]
                 self.aodv_restart_route_timer(route, False)
 
             else:
-                timer = Timer(AODV_HELLO_TIMEOUT, 
-                              self.aodv_process_neighbor_timeout, [sender])
-                self.neighbors[sender] = {'Neighbor': sender, 
-                                          'Timer-Callback': timer}
-                timer.start()
+                # timer = Timer(AODV_HELLO_TIMEOUT, 
+                #               self.aodv_process_neighbor_timeout, [sender])
+                # self.neighbors[sender] = {'Neighbor': sender, 
+                #                           'Timer-Callback': timer}
+                # timer.start()
             
                 # Update the routing table as well
                 if (sender in self.routing_table.keys()):
@@ -568,7 +568,7 @@ class CommunicationDevice(threading.Thread):
             timer = Timer(AODV_HELLO_TIMEOUT, 
                           self.aodv_process_neighbor_timeout, [n])
             self.neighbors[n] = {'Neighbor': n, 'Timer-Callback': timer}
-            timer.start()
+            # timer.start()
 
         print("Neighbors added successfully: ", self.neighbors.keys())
         
