@@ -1,4 +1,6 @@
 from awscrt import mqtt
+import config
+import json
 import sys
 
 
@@ -31,5 +33,11 @@ def on_resubscribe_complete(resubscribe_future):
 
 
 # Callback on server when data for vehicles are obtained
+
+# {"id":id,"speed_x": 0.0, "acceleration_x": 0.0, "Xlocation": 0.0,
+#        "speed_y": 0.0, "acceleration_y": 0.0, "Ylocation": 0.0,
+#        "headway": 0,"wiper_speed": 0,"light": 0,'neighbors':[]}
 def on_full_vehicles_states_received(topic, payload, **kwargs):
-    pass
+    payload = json.loads(payload)
+    vehicle_id = payload['id']
+    config.my_vehicles.update({vehicle_id: payload})
