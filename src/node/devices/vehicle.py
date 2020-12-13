@@ -135,7 +135,7 @@ communication_device = communication_device.aodv()
 #listener = listener.listener()
 #mqtt_client=mqtt_client.MQTTClient()
 speed_sensor=speed_sensor.SpeedSensor()
-wiper_controller=wiper_controller.WiperController()
+wiper_controller=wiper_controller.WiperController(1)
 light_controller=light_controller.LightController()
 headway_sensor=headway_sensor.HeadwaySensor()
 
