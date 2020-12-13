@@ -93,6 +93,7 @@ class SpeedSensor(threading.Thread):
                 command = re.split(':', command)
                 command_type = command[0]
                 self.command = command
+                print(command_type)
 
                 if command_type == "CHANGE_LANE":
                     self.lane = (self.lane+1)%2
@@ -104,7 +105,7 @@ class SpeedSensor(threading.Thread):
 
             
 
-            time.sleep(3)
+            time.sleep(1)
 
 
 

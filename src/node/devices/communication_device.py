@@ -109,11 +109,12 @@ class CommunicationDevice(threading.Thread):
         message[3]=message[3].replace('\'','\"')
         sender_location = json.loads(message[3])
 
+        print("Received data from node "+sender+": "+message[3])
         x1=float(sender_location['location']);x2=float(self.location_sensor_data['location']);
         lane1=int(sender_location['lane'])
         lane2=int(self.location_sensor_data['lane'])
         v1=float(sender_location['speed']);v2=float(sender_location['speed']);
-        if x1>x2 && v1<v2 &&(v2-v1)*3 >=x2-x1:
+        if x1>x2 and v1<v2 and (v2-v1)*5 >=x2-x1:
             if lane1==lane2:
                 # change lane
                 message_type="CHANGE_LANE";
