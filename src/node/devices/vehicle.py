@@ -25,8 +25,6 @@ class Vehicle():
 
     def __init__(
         self, 
-        x, 
-        y,
         communication_device,
         #listener,
         #mqtt_client,
@@ -37,8 +35,9 @@ class Vehicle():
         photo_sensor=None, 
         rainfall_sensor=None
     ):
-        self.x = x
-        self.y = y
+        self.all_sensors={"speed_x": 0.0, "acceleration_x": 0.0, "Xlocation": 0.0,
+        "speed_y": 0.0, "acceleration_y": 0.0, "Ylocation": 0.0,
+        "headway": 0,"wiper_speed": 0,"light": 0}
         
         self.devices = []
 
@@ -91,6 +90,13 @@ class Vehicle():
             self.rainfall_sensor = rainfall_sensor
             self.devices.append(self.rainfall_sensor)
 
+    def update(self,message,keys):
+        for k in keys:
+            all_sensors[k]=message[k]
+
+
+
+
 
     def drive(self):
 
@@ -106,31 +112,49 @@ class Vehicle():
                 readable, _, _ = select.select(inputs, outputs, inputs)
                 for r in readable:
                     if r is self.speed_sock:
-                        command, _ = self.speed_sock.recvfrom(100)
-                        command = command.decode('utf-8')
-                        print(command)
+                        message, _ = self.speed_sock.recvfrom(2000)
+                        message = message.decode('utf-8')
+                        message = json.loads(message)
+                        print(message)
+                        keys = ["speed_x", "acceleration_x","Xlocation","speed_y", "acceleration_y","Ylocation"]
+                        self.update(message,keys)
+
                         
                     elif r is self.headway_sock:
-                        command, _ = self.headway_sock.recvfrom(1000)
-                        command = command.decode('utf-8')
-                        print(command)
+                        message, _ = self.headway_sock.recvfrom(1000)
+                        message = message.decode('utf-8')
+                        print(message)
+                        message = json.loads(message)
+                        print(message)
+                        keys = ["headway"]
+                        self.update(message,keys)
 
                     elif r is self.aodv_sock:
                         # We got a message from the network
                         message, _ = self.aodv_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
-                        print(message)         
+                        print(message)     
+
                     elif r is self.wiper_sock:
                         message, _ = self.wiper_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         print(message)  
+                        message = json.loads(message)
+                        print(message)
+                        keys = ["wiper_speed"]
+                        self.update(message,keys)
+
                     elif r is self.light_sock:
                         message, _ = self.light_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         print(message)  
+                        message = json.loads(message)
+                        print(message)
+                        keys = ["light"]
+                        self.update(message,keys)
 
-x=0 
-y=0
+
+
 communication_device = communication_device.aodv()
 #listener = listener.listener()
 #mqtt_client=mqtt_client.MQTTClient()

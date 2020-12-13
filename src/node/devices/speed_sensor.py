@@ -108,8 +108,6 @@ class SpeedSensor(threading.Thread):
             myPacket = self.update(accelleration_change)
             with open('speed.txt', 'a') as f:
                 f.write(myPacket+"\n")
-            sensor_type="LOCATION"
-            myPacket=sensor_type+":"+myPacket
             myPacket_bytes = bytes(myPacket, 'utf-8')
             self.send(myPacket_bytes)
 
