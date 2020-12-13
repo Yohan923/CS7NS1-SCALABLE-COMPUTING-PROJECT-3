@@ -44,7 +44,8 @@ class CommunicationDevice(threading.Thread):
         ip = {'n1':  '10.35.70.38',
                 'n2':  '10.35.70.6',
                 'n3':  '10.35.70.26',
-                'n4': '10.35.70.16'}['n'+str(node)]
+                'n4': '10.35.70.16',
+                'n5': '10.35.70.13'}['n'+str(node)]
                 
         return ip       
 
@@ -109,8 +110,8 @@ class CommunicationDevice(threading.Thread):
         sender_location = json.loads(message[3])
 
         # TODO change this
-        x1=sender_location['Xlocation'];y1=sender_location['Ylocation']
-        x2=self.location_sensor_data['Xlocation'];y2=self.location_sensor_data['Ylocation']
+        x1=sender_location['location'];y1=sender_location['lane']
+        x2=self.location_sensor_data['location'];y2=self.location_sensor_data['lane']
         if (x1-x2)**2+(y1-y2)**2>1000:
             if (sender in self.routing_table.keys()):
                 route = self.routing_table[sender]
@@ -802,7 +803,7 @@ class CommunicationDevice(threading.Thread):
                 elif r is self.tester_sock:
                     command, _ = self.tester_sock.recvfrom(1000)
                     command = command.decode('utf-8')
-                    sensor_data = json.loads(command)
+                    location_sensor_data = json.loads(command)
 
 
                 elif r is self.aodv_sock:
