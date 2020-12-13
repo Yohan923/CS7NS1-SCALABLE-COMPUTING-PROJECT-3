@@ -16,7 +16,7 @@ if __name__ == "__main__":
         # mqtt_client=MQTTClient(MQTTConnection.get_mqtt_connection_over_websocket()),
         speed_sensor=SpeedSensor(), 
         wiper_controller=WiperController(WIPER_SPEED.SLOW), 
-        light_controller=LightController(LIGHT_INTENSITY),
+        light_controller=LightController(LIGHT_INTENSITY.NORMAL),
         headway_sensor=HeadwaySensor(23)
         )
 

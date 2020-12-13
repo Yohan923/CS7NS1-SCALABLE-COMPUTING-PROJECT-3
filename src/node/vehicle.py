@@ -93,7 +93,7 @@ class Vehicle():
 
     def update(self,message,keys):
         for k in keys:
-            all_sensors[k]=message[k]
+            self.all_sensors[k]=message[k]
 
     def aggregate_full_vehicle_states():
 
