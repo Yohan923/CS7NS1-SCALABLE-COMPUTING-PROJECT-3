@@ -75,7 +75,6 @@ class CommunicationDevice(threading.Thread):
     def aodv_send_hello_message(self):
         message={'neighbors':list(self.neighbors.keys())}
         message=json.dumps(message)
-        print(message)###########
         message_bytes = bytes(message, 'utf-8')
         self.aodv_sock.sendto(message_bytes, 0, 
                                   ('localhost', AODV_PORT))
