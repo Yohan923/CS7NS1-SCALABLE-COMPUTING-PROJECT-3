@@ -44,8 +44,9 @@ class SpeedSensor(threading.Thread):
 
     def update(self):
         if self.STATUS == "ACTIVE":
-            self.LOC += self.SPEED * 0.1
-            self.SPEED += self.ACCELERATION * 0.1
+            self.LOC += (self.SPEED * 1)%400
+            if self.SPEED < 10:
+                self.SPEED += self.ACCELERATION * 1
 
             # Some checks to make sure car isn't reversing, or is stationary for too long, etc..
             if self.SPEED < 0:
@@ -93,8 +94,8 @@ class SpeedSensor(threading.Thread):
                 command_type = command[0]
                 self.command = command
 
-                if command_type == "COMMAND_STOP":
-                    self.STATUS = "STOPPING"
+                if command_type == "CHANGE_LANE":
+                    self.lane = (self.lane+1)%2
                 else:
                     self.command_default()
 
