@@ -171,10 +171,9 @@ class SpeedSensor(threading.Thread):
         self.sock.setblocking(0)
 
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.update_timer = Timer(UPDATE_INTERVAL, self.update, ())
-        self.draw_timer = Timer(DRAW_INTERVAL,  self.visualizer.run,(self.draw_timer))        
+        self.update_timer = Timer(UPDATE_INTERVAL, self.update, ())   
         self.update_timer.start()
-        self.draw_timer.start()
+        self.visualizer.run()
 
         while (True):
             # receive
@@ -214,6 +213,7 @@ class Visualizer:
         self.road_map = road_map
         self.clear=clear
         self.table = table
+        self.draw_timer=0
         # Thread(target=self.run).start()
        
     def clear_canvas(self): 
@@ -226,7 +226,7 @@ class Visualizer:
         else: 
             _ = os.system('clear') 
   
-    def run(self,draw_timer):
+    def run(self):
         if(self.clear):
             self.clear_canvas()
         
@@ -235,12 +235,9 @@ class Visualizer:
                 
         if(self.table):
             self.GenerateTable()
-        try:
-            draw_timer.cancel()
-            draw_timer = Timer(DRAW_INTERVAL,  self.visualizer.run,(draw_timer))  
-            draw_timer.start() 
-        except:
-            pass
+            
+        self.draw_timer = Timer(DRAW_INTERVAL,  self.visualizer.run,())   
+        self.draw_timer.start()  
                 
     def update_car_list(self,sender,car):
         # print((sender));print(type(sender))
