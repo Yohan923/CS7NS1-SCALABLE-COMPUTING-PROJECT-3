@@ -395,7 +395,7 @@ class Visualizer:
             self.GenerateTable()
         try:
             draw_timer.cancel()
-            draw_timer = Timer(DRAW_INTERVAL, self.run(draw_timer), draw_timer)
+            draw_timer = Timer(DRAW_INTERVAL, self.run(draw_timer), ())
             draw_timer.start() 
             print("TODO 2")
         except:
