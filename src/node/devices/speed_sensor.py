@@ -49,7 +49,7 @@ class SpeedSensor(threading.Thread):
 
         # print("Initializing track\n")
         self.neighbours={}
-        self.visualizer=Visualizer(self.neighbours)
+        self.visualizer=Visualizer(self.neighbours,False,True)
         self.visualizer.update_car_list(nid,self.constrct_dict())
 
         # self.track = Track()
@@ -181,7 +181,7 @@ class SpeedSensor(threading.Thread):
             except:
                 pass  
 
-            self.visualizer.run(False)
+            self.visualizer.run(True)
             time.sleep(TIME_INTERVAL)
 
 
@@ -369,7 +369,7 @@ class Visualizer:
     def run(self,is_running):
         print(self.cars)  
         while(is_running):
-            self.clear()
+            # self.clear()
                 
             if(self.road_map):
                 self.GenerateMap()
@@ -414,6 +414,8 @@ class Visualizer:
         sys.stdout.write("-"*len(columns_str)+"\n")
         
         for car_id in self.cars.keys():
+            print(car_id)
+            print(self.cars[car_id])
             loc = self.cars[car_id]['location']
             loc = "{} ({})".format(loc%100, ["Left", "Top", "Right", "Bottom", "Bottom"][loc//100])
             record = [ self.cars[car_id]['location'],
