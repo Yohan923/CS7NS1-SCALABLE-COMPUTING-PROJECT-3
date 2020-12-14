@@ -46,7 +46,7 @@ class SpeedSensor(threading.Thread):
         self.is_running = True
 
         # print("Initializing track\n")
-        # self.nieghbours={}
+        self.neighbours={}
         # self.track = Track()
         # self.myself = Car( Stats( (self.LOC,self.LANE), self.SPEED, self.ACCELERATION ), track=self.track)
         # self.track.Add(self.myself)
