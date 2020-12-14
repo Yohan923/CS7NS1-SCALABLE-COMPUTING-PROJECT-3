@@ -119,12 +119,12 @@ class CommunicationDevice(threading.Thread):
         message[3]=message[3].replace('\'','\"')
         command_type = "RECEIVE"
         msg = command_type+":"+sender+":"+message[3]
-        print("Received data from node "+sender+": "+message[3])
+        # print("Received data from node "+sender+": "+message[3])
 
         message_bytes = bytes(msg, 'utf-8')
         self.aodv_sock.sendto(message_bytes, 0, 
                     ('localhost', SPEED_THREAD_PORT))
-            ########################
+
            
 
         try:
