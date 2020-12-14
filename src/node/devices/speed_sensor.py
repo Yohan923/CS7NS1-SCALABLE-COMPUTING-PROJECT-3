@@ -378,7 +378,7 @@ class Visualizer:
                 
     def update_car_list(self,sender,car):
         self.cars[sender] = car
-        self.track[car['location'],car['lane']] = sender    
+        self.track[int(car['location']),int(car['lane'])] = sender    
 
 
     def GenerateMap(self, sep=20):
