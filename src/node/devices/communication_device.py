@@ -3,7 +3,7 @@ from threading import Timer
 import json
 
 # Defines
-AODV_HELLO_INTERVAL         =   2
+AODV_HELLO_INTERVAL         =   4
 AODV_HELLO_TIMEOUT          =   600
 AODV_PATH_DISCOVERY_TIME    =   30
 AODV_ACTIVE_ROUTE_TIMEOUT   =   300
@@ -120,11 +120,11 @@ class CommunicationDevice(threading.Thread):
         sender_location = json.loads(message[3])
 
         print("Received data from node "+sender+": "+message[3])
-        x1=float(sender_location['location']);x2=float(self.location_sensor_data['location']);
+        x1=float(sender_location['location']);
+        x2=float(self.location_sensor_data['location']);
         lane1=int(sender_location['lane'])
         lane2=int(self.location_sensor_data['lane'])
         v1=float(sender_location['speed']);v2=float(sender_location['speed']);
-        print("x1="+str(x1)+" x2="+str(x2)+" x1-x2="+str(x1-x2)+" (v2-v1)*5="+str((v2-v1)*5))
         if x1>x2 and v1<v2 and (v2-v1)*5 >=x1-x2:
             if lane1==lane2:
                 # change lane
