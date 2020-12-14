@@ -367,6 +367,7 @@ class Visualizer:
             _ = os.system('clear') 
   
     def run(self,is_running):
+        print(self.cars)  
         while(is_running):
             self.clear()
                 
@@ -378,7 +379,7 @@ class Visualizer:
                 
     def update_car_list(self,sender,car):
         self.cars[sender] = car    
-        print(self.cars)          
+
         
     def GenerateMap(self):
         
