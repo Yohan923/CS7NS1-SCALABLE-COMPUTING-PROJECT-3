@@ -352,7 +352,7 @@ class Visualizer:
     
     def __init__(self,cars,table=True, road_map=True):
         self.cars=cars
-        self.track=np.zeros((length, 2))
+        self.track=np.zeros((TOTAL_LENGHT, 2))
         self.road_map = road_map
         self.table = table
         # Thread(target=self.run).start()
