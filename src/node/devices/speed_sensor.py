@@ -411,12 +411,12 @@ class Visualizer:
         sys.stdout.write("-"*len(columns_str)+"\n")
         
         for car_id in self.cars.keys():
-            loc = cars[car_id]['location']
+            loc = self.cars[car_id]['location']
             loc = "{} ({})".format(loc%100, ["Left", "Top", "Right", "Bottom", "Bottom"][loc//100])
-            record = [ cars[car_id]['location'],
-                      ["RIGHT", "LEFT"][cars[car_id]['lane']],
-                      cars[car_id]['speed'],
-                      cars[car_id]['acceleration'],
+            record = [ self.cars[car_id]['location'],
+                      ["RIGHT", "LEFT"][self.cars[car_id]['lane']],
+                      self.cars[car_id]['speed'],
+                      self.cars[car_id]['acceleration'],
                       car_id,
                       1,
                       0
