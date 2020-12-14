@@ -21,7 +21,7 @@ LIGHT_THREAD_PORT=33984
 AODV_NETWORK_PORT = 33300 
 AODV_SPEED_PORT=33500
 
-TIME_INTERVAL=2
+TIME_INTERVAL=1
 MAX_ACCELERATION = 2
 MIN_ACCELERATION = -2 
 MAX_SPEED = 10
@@ -380,7 +380,7 @@ class Visualizer:
         if sender in self.cars.keys():
             prev_loc = self.cars[sender]['location']
             prev_lane = self.cars[sender]['lane']
-            self.track[int(prev_loc),int(prev_lane)] = sender
+            self.track[int(prev_loc),int(prev_lane)] = 0
             self.cars[sender] = car
             self.track[int(car['location']),int(car['lane'])] = sender
         else:
