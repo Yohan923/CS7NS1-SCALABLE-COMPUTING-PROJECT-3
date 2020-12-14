@@ -91,7 +91,7 @@ class SpeedSensor(threading.Thread):
         keys = ["speed", "location","acceleration","lane","direction"]
         values = [self.SPEED, self.LOC,self.ACCELERATION, self.LANE,self.DIRECTION]
 
-        self.visualizer.update_car_list(nid,self.constrct_dict())
+        self.visualizer.update_car_list(self.nid,self.constrct_dict())
 
         myPacket = self.construct_packet(keys, values)
         return myPacket
