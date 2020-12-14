@@ -377,8 +377,15 @@ class Visualizer:
             self.GenerateTable()
                 
     def update_car_list(self,sender,car):
-        self.cars[sender] = car
-        self.track[int(car['location']),int(car['lane'])] = sender    
+        if sender in self.cars.keys:
+            prev_loc = cars[sender]['location']
+            prev_lane = cars[sender]['lane']
+            self.track[int(prev_loc),int(prev_lane)] = sender
+            self.cars[sender] = car
+            self.track[int(car['location']),int(car['lane'])] = sender
+        else:
+            self.cars[sender] = car
+            self.track[int(car['location']),int(car['lane'])] = sender    
 
 
     def GenerateMap(self, sep=20):
