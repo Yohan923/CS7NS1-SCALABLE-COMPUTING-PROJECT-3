@@ -413,7 +413,7 @@ class Visualizer:
         for car_id in self.cars.keys():
             loc = cars[car_id]['location']
             loc = "{} ({})".format(loc%100, ["Left", "Top", "Right", "Bottom", "Bottom"][loc//100])
-            record = [cars[car_id][['location'],
+            record = [ cars[car_id]['location'],
                       ["RIGHT", "LEFT"][cars[car_id]['lane']],
                       cars[car_id]['speed'],
                       cars[car_id]['acceleration'],
