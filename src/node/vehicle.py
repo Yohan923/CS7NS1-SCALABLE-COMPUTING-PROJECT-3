@@ -43,12 +43,7 @@ class Vehicle():
         "headway": 0,"wiper_speed": 0,"light": 0,'neighbors':[]}
         
         self.devices = []
-
-        self.track = Track()
-        self.myself = Car( Stats( (10,0), 0, 0 ), track=self.track)
-
-
-
+        
         self.communication_device = communication_device
         self.devices.append(communication_device)
         self.aodv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
