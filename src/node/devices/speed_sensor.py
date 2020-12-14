@@ -20,7 +20,7 @@ LIGHT_THREAD_PORT=33984
 AODV_NETWORK_PORT = 33300 
 AODV_SPEED_PORT=33500
 
-TIME_INTERVAL=0.1
+TIME_INTERVAL=1
 MAX_ACCELERATION = 2
 MIN_ACCELERATION = -2 
 MAX_SPEED = 10
@@ -71,9 +71,9 @@ class SpeedSensor(threading.Thread):
         self.ControlSpeedAndAcceleration()
         if self.STATUS == "ACTIVE":
             prev_loc = self.LOC
-            self.LOC = int( prev_loc + (self.SPEED*step) )%400 
+            self.LOC = int( prev_loc + (self.SPEED*TIME_INTERVAL) )%400 
 
-            self.SPEED = self.SPEED + (self.ACCELERATION*step)
+            self.SPEED = self.SPEED + (self.ACCELERATION*TIME_INTERVAL)
             self.SPEED = max (0, self.SPEED)
 
         self.myself.update((self.LOC,self.LANE), self.SPEED, self.ACCELERATION )
