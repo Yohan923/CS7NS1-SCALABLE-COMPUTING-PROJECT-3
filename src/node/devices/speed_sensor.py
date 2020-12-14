@@ -378,7 +378,7 @@ class Visualizer:
                 
     def update_car_list(self,sender,car):
         self.cars[sender] = car    
-        print(cars)          
+        print(self.cars)          
         
     def GenerateMap(self):
         
