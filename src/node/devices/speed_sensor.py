@@ -136,6 +136,7 @@ class SpeedSensor(threading.Thread):
 
     def onReceive(self,sender,msg):
         data = json.loads(msg)
+        sender=str(sender)
         # print(sender); print(type(sender))
 
         if (sender in self.neighbours.keys()):
@@ -395,6 +396,7 @@ class Visualizer:
         #     print("new car come in ")
         #     self.cars[sender] = car
         #     self.track[int(car['location']),int(car['lane'])] = sender   
+        sender=str(sender)
         self.cars[sender] = car
         self.track=np.zeros((TOTAL_LENGHT, 2))
         for car_id in self.cars:
