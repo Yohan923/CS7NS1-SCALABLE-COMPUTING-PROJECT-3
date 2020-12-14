@@ -49,7 +49,7 @@ class SpeedSensor(threading.Thread):
 
         # print("Initializing track\n")
         self.neighbours={}
-        self.visualizer=Visualizer(self.neighbours,clear=False,table=False, road_map=False)
+        self.visualizer=Visualizer(self.neighbours,clear=True,table=True, road_map=True)
         self.visualizer.update_car_list(nid,self.constrct_dict())
 
         # self.track = Track()
