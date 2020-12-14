@@ -21,7 +21,7 @@ LIGHT_THREAD_PORT=33984
 AODV_NETWORK_PORT = 33300 
 AODV_SPEED_PORT=33500
 
-TIME_INTERVAL=1
+TIME_INTERVAL=2
 MAX_ACCELERATION = 2
 MIN_ACCELERATION = -2 
 MAX_SPEED = 10
@@ -367,7 +367,8 @@ class Visualizer:
             _ = os.system('clear') 
   
     def run(self,is_running):
-        print(self.cars)  
+        print("run visualizer")
+        print(self.cars)
         while(is_running):
             # self.clear()
                 
@@ -378,6 +379,8 @@ class Visualizer:
                 self.GenerateTable()
                 
     def update_car_list(self,sender,car):
+        print("update_car_list")
+        print(self.cars)
         self.cars[sender] = car    
 
         
@@ -405,7 +408,8 @@ class Visualizer:
         
         
     def GenerateTable(self):
-    
+        print("generate table")
+        print(self.cars)   
         columns = ['LOCATION', 'LANE', 'SPEED (m/s)', 'ACC (m/s^2)', 'NODE_ID', 'WIPER SPEED', 'LIGHT']
         columns_str = "|  " + "  |  ".join(columns) + "  |"
         columns = columns_str.split("|")[1:-1]
@@ -436,9 +440,9 @@ class Visualizer:
                 field_str = field_str + ( " " *(len(col)-len(field_str)) ) +"|"
                 message = message + field_str
                 
-            sys.stdout.write(message+"\n")
+        #     sys.stdout.write(message+"\n")
         
-        sys.stdout.write("-"*len(columns_str)+"\n")
+        # sys.stdout.write("-"*len(columns_str)+"\n")
             
 
 
