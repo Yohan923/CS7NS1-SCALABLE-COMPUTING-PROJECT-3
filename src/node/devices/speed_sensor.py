@@ -76,8 +76,6 @@ class SpeedSensor(threading.Thread):
             self.SPEED = self.SPEED + (self.ACCELERATION*TIME_INTERVAL)
             self.SPEED = max (0, self.SPEED)
 
-        self.myself.update((self.LOC,self.LANE), self.SPEED, self.ACCELERATION )
-
         keys = ["speed", "location","acceleration","lane","direction"]
         values = [self.SPEED, self.LOC,self.ACCELERATION, self.LANE,self.DIRECTION]
 
