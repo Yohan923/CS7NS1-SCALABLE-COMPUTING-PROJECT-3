@@ -58,8 +58,8 @@ class SpeedSensor(threading.Thread):
         # self.myself = Car( Stats( (self.LOC,self.LANE), self.SPEED, self.ACCELERATION ), track=self.track)
         # self.track.Add(self.myself)
         
-        self.update_timer=0
-        self.draw_timer=0
+        self.update_timer = Timer(UPDATE_INTERVAL, self.update(), ())
+        self.draw_timer = Timer(DRAW_INTERVAL,  self.visualizer.run(draw_timer), ())
         
     def send(self, message):
         self.sock.sendto(message, 0, ('localhost', AODV_SPEED_PORT))
@@ -173,11 +173,7 @@ class SpeedSensor(threading.Thread):
         
        
  
-        # start the timer
-        self.update_timer = Timer(UPDATE_INTERVAL, self.update(), ())
         self.update_timer.start()
-        # start the timer
-        self.draw_timer = Timer(DRAW_INTERVAL,  self.visualizer.run(draw_timer), ())
         self.draw_timer.start()
 
         while (True):
