@@ -366,17 +366,17 @@ class Visualizer:
         else: 
             _ = os.system('clear') 
   
-    def run(self,is_running):
+    def run(self):
         print("run visualizer")
         print(self.cars)
-        while(is_running):
-            # self.clear()
+        
+        self.clear()
+        
+        if(self.road_map):
+            self.GenerateMap()
                 
-            if(self.road_map):
-                self.GenerateMap()
-                
-            if(self.table):
-                self.GenerateTable()
+        if(self.table):
+            self.GenerateTable()
                 
     def update_car_list(self,sender,car):
         print("update_car_list")
