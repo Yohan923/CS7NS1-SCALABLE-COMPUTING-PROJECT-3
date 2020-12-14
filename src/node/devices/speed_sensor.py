@@ -49,7 +49,7 @@ class SpeedSensor(threading.Thread):
 
         # print("Initializing track\n")
         self.neighbours={}
-        self.visualizer=Visualizer(self.neighbours,clear=False,table=False, road_map=False)
+        self.visualizer=Visualizer(self.neighbours,clear=True,table=True, road_map=True)
         self.visualizer.update_car_list(nid,self.constrct_dict())
 
         # self.track = Track()
@@ -146,7 +146,7 @@ class SpeedSensor(threading.Thread):
             self.neighbours[sender]['acceleration']=data['acceleration'];
         else:
             self.neighbours[sender] = data
-        print(self.neighbours)
+
         self.visualizer.update_car_list(sender,neighbours[sender])
 
     # Thread start routine
@@ -540,7 +540,6 @@ class Visualizer:
         
         
     def GenerateTable(self):
-        print(self.cars)
         columns = ['NODE_ID','LOCATION', 'LANE', 'SPEED (m/s)', 'ACC (m/s^2)',  'WIPER SPEED', 'LIGHT']
         columns_str = "|  " + "  |  ".join(columns) + "  |"
         columns = columns_str.split("|")[1:-1]
