@@ -49,7 +49,7 @@ class SpeedSensor(threading.Thread):
 
         # print("Initializing track\n")
         self.neighbours={}
-        self.visualizer=Visualizer(self.neighbours,clear=True,table=True, road_map=True)
+        self.visualizer=Visualizer(self.neighbours,clear=False,table=False, road_map=False)
         self.visualizer.update_car_list(nid,self.constrct_dict())
 
         # self.track = Track()
@@ -379,6 +379,9 @@ class Visualizer:
             self.GenerateTable()
                 
     def update_car_list(self,sender,car):
+        print("In update car list")
+        print(sender)
+        print(cars)
         if sender in self.cars.keys():
             prev_loc = self.cars[sender]['location']
             prev_lane = self.cars[sender]['lane']
@@ -388,7 +391,7 @@ class Visualizer:
         else:
             self.cars[sender] = car
             self.track[int(car['location']),int(car['lane'])] = sender    
-
+        print(track[track!=0])
 
     def GenerateMap(self, sep=20):
         
