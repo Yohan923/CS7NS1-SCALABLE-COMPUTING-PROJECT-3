@@ -109,7 +109,7 @@ class SpeedSensor(threading.Thread):
 
     def ControlSpeedAndAcceleration(self):
         # nei = self.track.GetNieghbbours(self.myself)
-        if(self.neighbours！={}):
+        if(self.neighbours!={}):
             closest_car = self.neighbours[self.findNearest]
             self.LANE = 1-closest_car['lane']
             if(self.LOC < closest_car['location'])
