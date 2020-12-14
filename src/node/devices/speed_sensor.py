@@ -112,7 +112,7 @@ class SpeedSensor(threading.Thread):
         if(self.neighbours!={}):
             closest_car = self.neighbours[self.findNearest]
             self.LANE = 1-closest_car['lane']
-            if(self.LOC < closest_car['location'])
+            if(self.LOC < closest_car['location']):
                 self.stats.acceleration = MAX_ACCELERATION
             else:
                 self.ACCELERATION = MIN_ACCELERATION
