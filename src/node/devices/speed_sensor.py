@@ -393,10 +393,13 @@ class Visualizer:
                 
         if(self.table):
             self.GenerateTable()
-        
-        draw_timer.cancel()
-        draw_timer = Timer(DRAW_INTERVAL, self.run(), ())
-        draw_timer.start() 
+        try:
+            draw_timer.cancel()
+            draw_timer = Timer(DRAW_INTERVAL, self.run(), ())
+            draw_timer.start() 
+            print("TODO 2")
+        except:
+            pass
                 
     def update_car_list(self,sender,car):
         # print((sender));print(type(sender))
