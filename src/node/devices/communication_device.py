@@ -121,7 +121,7 @@ class CommunicationDevice(threading.Thread):
         msg = command_type+":"+sender+":"+message[3]
         print("Received data from node "+sender+": "+message[3])
 
-        message_bytes = bytes(message, 'utf-8')
+        message_bytes = bytes(msg, 'utf-8')
         self.aodv_sock.sendto(message_bytes, 0, 
                     ('localhost', SPEED_THREAD_PORT))
             ########################
