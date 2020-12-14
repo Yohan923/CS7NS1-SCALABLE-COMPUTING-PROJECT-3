@@ -136,7 +136,7 @@ class SpeedSensor(threading.Thread):
 
     def onReceive(self,sender,msg):
         data = json.loads(msg)
-        print("ONREVEIVE"+str(sender))
+        print("ONARRIVE "+str(sender))
 
         if (sender in self.neighbours.keys()):
             self.neighbours[sender]['location']=data['location'];
@@ -383,16 +383,22 @@ class Visualizer:
     def update_car_list(self,sender,car):
         print("In VISUALIZER update car list")
         print(self.cars)
-        if sender in self.cars.keys():
-            prev_loc = self.cars[sender]['location']
-            prev_lane = self.cars[sender]['lane']
-            self.track[int(prev_loc),int(prev_lane)] = 0
-            self.cars[sender] = car
-            self.track[int(car['location']),int(car['lane'])] = sender
-        else:
-            print("new car come in ")
-            self.cars[sender] = car
-            self.track[int(car['location']),int(car['lane'])] = sender    
+        if(sender==3):
+            print("3 is sending msg")
+        # if sender in self.cars.keys():
+        #     prev_loc = self.cars[sender]['location']
+        #     prev_lane = self.cars[sender]['lane']
+        #     self.track[int(prev_loc),int(prev_lane)] = 0
+        #     self.cars[sender] = car
+        #     self.track[int(car['location']),int(car['lane'])] = sender
+        # else:
+        #     print("new car come in ")
+        #     self.cars[sender] = car
+        #     self.track[int(car['location']),int(car['lane'])] = sender   
+        self.cars[sender] = car
+        self.track=0
+        for car_id in self.cars:
+            self.track[ int(self.cars[car_id]['location']), int(self.cars[car_id]['lane'])]=int(car_id)
         print(self.track[self.track!=0])
 
     def GenerateMap(self, sep=20):
