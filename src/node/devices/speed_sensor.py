@@ -396,7 +396,7 @@ class Visualizer:
         #     self.cars[sender] = car
         #     self.track[int(car['location']),int(car['lane'])] = sender   
         self.cars[sender] = car
-        self.track=0
+        self.track=np.zeros((TOTAL_LENGHT, 2))
         for car_id in self.cars:
             self.track[ int(self.cars[car_id]['location']), int(self.cars[car_id]['lane'])]=int(car_id)
         print(self.track[self.track!=0])
