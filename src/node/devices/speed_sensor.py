@@ -49,7 +49,7 @@ class SpeedSensor(threading.Thread):
 
         # print("Initializing track\n")
         self.neighbours={}
-        self.visualizer=Visualizer(self.neighbours)
+        self.visualizer=Visualizer(self.neighbours,False,False)#TODO
         self.visualizer.update_car_list(nid,self.constrct_dict())
 
         # self.track = Track()
@@ -94,6 +94,8 @@ class SpeedSensor(threading.Thread):
         self.visualizer.update_car_list(self.nid,self.constrct_dict())
 
         myPacket = self.construct_packet(keys, values)
+
+        print(myPacket)#TODO
         return myPacket
 
 
@@ -376,6 +378,8 @@ class Visualizer:
                 self.GenerateTable()
                 
     def update_car_list(self,sender,car):
+        print(sender)
+        print(car)
         self.cars[sender] = car              
         
     def GenerateMap(self):
