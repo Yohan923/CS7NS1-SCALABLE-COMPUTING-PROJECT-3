@@ -352,6 +352,7 @@ class Visualizer:
     
     def __init__(self,cars,table=True, road_map=True):
         self.cars=cars
+        self.track=np.zeros((length, 2))
         self.road_map = road_map
         self.table = table
         # Thread(target=self.run).start()
@@ -376,10 +377,124 @@ class Visualizer:
             self.GenerateTable()
                 
     def update_car_list(self,sender,car):
-        self.cars[sender] = car    
+        self.cars[sender] = car
+        self.track[car['location'],car['lane']] = sender    
+
+
+   def GenerateMap(self, sep=20):
+        
+        print()
+        print("Car Lenght: 1 meter")
+        print("Each character represents 10 meters/car lenghts. Therefore there might an overlap if cars are close to each other.")
+        
+        sep = " " * sep
+        print()
+        
+        seg = self.track[:100][:,0]
+        list_00 = [" " for _ in range(10)]
+        values = np.argwhere(seg!=0).ravel()
+        keys = seg[values]
+        for i in range(len(keys)):
+            if(int(keys[i])!=0):
+                list_00[9 - int(values[i]/10.)] = int(keys[i])
+         
+        seg = self.track[:100][:,1]
+        list_01 = [" " for _ in range(10)]
+        values = np.argwhere(seg!=0).ravel()
+        keys = seg[values]
+        for i in range(len(keys)):
+            if(int(keys[i])!=0):
+                list_01[9 - int(values[i]/10.)] = int(keys[i])
+              
+        
+        
+        
+        seg = self.track[100:200][:,0]
+        list_10 = [" " for _ in range(20)]
+        values = np.argwhere(seg!=0).ravel()
+        keys = seg[values]
+        for i in range(len(keys)):
+            if(int(keys[i])!=0):
+                list_10[int(values[i]/10.)*2] = str(int(keys[i]))
+         
+        seg = self.track[100:200][:,1]
+        list_11 = [" " for _ in range(20)]
+        values = np.argwhere(seg!=0).ravel()
+        keys = seg[values]
+        for i in range(len(keys)):
+            if(int(keys[i])!=0):
+                list_11[int(values[i]/10.)*2] = str(int(keys[i]))
+        
+        
+        
+              
+        
+        seg = self.track[200:300][:,0]
+        list_20 = [" " for _ in range(10)]
+        values = np.argwhere(seg!=0).ravel()
+        keys = seg[values]
+        for i in range(len(keys)):
+            if(int(keys[i])!=0):
+                list_20[int(values[i]/10.)] = int(keys[i])
+         
+        seg = self.track[200:300][:,1]
+        list_21 = [" " for _ in range(10)]
+        values = np.argwhere(seg!=0).ravel()
+        keys = seg[values]
+        for i in range(len(keys)):
+            if(int(keys[i])!=0):
+                list_21[int(values[i]/10.)] = int(keys[i])
+                
+                
+                
+        seg = self.track[300:400][:,0]
+        list_30 = [" " for _ in range(20)]
+        values = np.argwhere(seg!=0).ravel()
+        keys = seg[values]
+        for i in range(len(keys)):
+            if(int(keys[i])!=0):
+                list_30[(9 - int(values[i]/10.))*2] = str(int(keys[i]))
+         
+        seg = self.track[300:400][:,1]
+        list_31 = [" " for _ in range(20)]
+        values = np.argwhere(seg!=0).ravel()
+        keys = seg[values]
+        for i in range(len(keys)):
+            if(int(keys[i])!=0):
+                list_31[(9 - int(values[i]/10.))*2] = str(int(keys[i]))
+
 
         
-    def GenerateMap(self):
+                
+        
+        print(sep + "-"*34)
+        
+        print(sep + "|      " + "".join(list_11) + "      |")
+        print(sep + "|      " + "".join(list_10) + "      |")
+        
+        print(sep + "|      " + "-"*20 + "      |")
+        
+        for i in range(10):
+            line = "|"
+            cell_1_1 = list_01[i]
+            cell_1_2 = list_00[i]
+            cell_3_1 = list_20[i]
+            cell_3_2 = list_21[i]
+            line = "| {} {} |".format(cell_1_1, cell_1_2) + " "*(20) +"| {} {} |".format(cell_3_1, cell_3_2)
+            print(sep + line)
+        
+        print(sep + "|      " + "-"*20 + "      |")
+        print(sep + "|      " + "".join(list_30) + "      |")
+        print(sep + "|      " + "".join(list_31) + "      |")
+        print(sep + "-"*34)
+        
+        
+
+
+
+
+        
+    def GenerateEmptyMap(self):
         
         
         print("-"*24)
