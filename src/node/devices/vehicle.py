@@ -41,7 +41,6 @@ class Vehicle():
         
         self.devices = []
 
-
         communication_device.set_node_id('1')
         self.communication_device = communication_device
         self.devices.append(communication_device)
