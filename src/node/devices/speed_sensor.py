@@ -169,7 +169,7 @@ class SpeedSensor(threading.Thread):
                 command, _ = self.sock.recvfrom(1000)
                 command = command.decode('utf-8')
                 print(command)
-                command = re.split(':', command)
+                command = command.split(':', 2)
                 command_type = command[0]
                 self.command = command
                 print(command[0]);print(command[1]);print(command[2])
