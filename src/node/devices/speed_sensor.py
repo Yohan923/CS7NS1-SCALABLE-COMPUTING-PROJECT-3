@@ -96,7 +96,6 @@ class SpeedSensor(threading.Thread):
 
         try:
             myPacket = self.construct_packet(keys, values)
-            print(myPacket)
             myPacket_bytes = bytes(myPacket, 'utf-8')
             self.send(myPacket_bytes)   
 
@@ -104,7 +103,6 @@ class SpeedSensor(threading.Thread):
             self.update_timer.cancel()
             self.update_timer = Timer(UPDATE_INTERVAL, self.update, ())
             self.update_timer.start() 
-            print("TODO")
         except:
             pass
 
@@ -174,9 +172,9 @@ class SpeedSensor(threading.Thread):
 
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.update_timer = Timer(UPDATE_INTERVAL, self.update, ())
-        # self.draw_timer = Timer(DRAW_INTERVAL,  self.visualizer.run(self.draw_timer), ())        
+        self.draw_timer = Timer(DRAW_INTERVAL,  self.visualizer.run,(self.draw_timer))        
         self.update_timer.start()
-        # self.draw_timer.start()
+        self.draw_timer.start()
 
         while (True):
             # receive
@@ -239,9 +237,8 @@ class Visualizer:
             self.GenerateTable()
         try:
             draw_timer.cancel()
-            draw_timer = Timer(DRAW_INTERVAL, self.run(draw_timer), ())
+            draw_timer = Timer(DRAW_INTERVAL,  self.visualizer.run,(draw_timer))  
             draw_timer.start() 
-            print("TODO 2")
         except:
             pass
                 
