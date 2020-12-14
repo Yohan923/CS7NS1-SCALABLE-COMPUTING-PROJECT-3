@@ -415,7 +415,7 @@ class Visualizer:
             loc = "{} ({})".format(loc%100, ["Left", "Top", "Right", "Bottom", "Bottom"][loc//100])
             record = [cars[car_id][['location'],
                       ["RIGHT", "LEFT"][cars[car_id]['lane']],
-                      str(cars[car_id]['speed']),
+                      cars[car_id]['speed'],
                       cars[car_id]['acceleration'],
                       23,
                       1,
