@@ -419,7 +419,7 @@ class Visualizer:
                       cars[car_id]['acceleration'],
                       23,
                       1,
-                      0,
+                      0
                       ]
             
             record = [str(x) for x in record]
