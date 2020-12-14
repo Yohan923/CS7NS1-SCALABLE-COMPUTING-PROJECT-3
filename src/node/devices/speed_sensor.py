@@ -546,9 +546,9 @@ class Visualizer:
         sys.stdout.write("-"*len(columns_str)+"\n")
         
         for car_id in self.cars.keys():
-            loc = self.cars[car_id]['location']
+            loc = int(self.cars[car_id]['location'])
             loc = "{} ({})".format(loc%100, ["Left", "Top", "Right", "Bottom", "Bottom"][loc//100])
-            record = [ car_id,
+            record = [ int(car_id),
                         self.cars[car_id]['location'],
                       ["RIGHT", "LEFT"][self.cars[car_id]['lane']],
                       self.cars[car_id]['speed'],
