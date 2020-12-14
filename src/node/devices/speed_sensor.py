@@ -94,8 +94,7 @@ class SpeedSensor(threading.Thread):
         self.visualizer.update_car_list(self.nid,self.constrct_dict())
 
         myPacket = self.construct_packet(keys, values)
-
-        print(myPacket)#TODO
+        print(self.neighbours)
         return myPacket
 
 
@@ -121,7 +120,9 @@ class SpeedSensor(threading.Thread):
     def ControlSpeedAndAcceleration(self):
         # nei = self.track.GetNieghbbours(self.myself)
         if(self.neighbours!={}):
+            print("neighbours non empty")
             closest_car = self.neighbours[self.findNearest()]
+            print("closest car is "+str(closest_car))
             self.LANE = 1-closest_car['lane']
             if(self.LOC < closest_car['location']):
                 self.stats.acceleration = MAX_ACCELERATION
@@ -181,7 +182,7 @@ class SpeedSensor(threading.Thread):
             except:
                 pass  
 
-            self.visualizer.run(False)#TODO
+            self.visualizer.run(False)
             time.sleep(TIME_INTERVAL)
 
 
@@ -367,8 +368,6 @@ class Visualizer:
             _ = os.system('clear') 
   
     def run(self,is_running):
-        print("RUNNNNNNN")#TODO
-        print(self.cars)
         while(is_running):
             self.clear()
                 
