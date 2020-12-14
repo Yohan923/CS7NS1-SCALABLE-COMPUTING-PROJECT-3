@@ -49,7 +49,7 @@ class SpeedSensor(threading.Thread):
 
         # print("Initializing track\n")
         self.neighbours={}
-        self.visualizer=Visualizer(self.neighbours,False,False)#TODO
+        self.visualizer=Visualizer(self.neighbours,False,False)
         self.visualizer.update_car_list(nid,self.constrct_dict())
 
         # self.track = Track()
@@ -181,7 +181,7 @@ class SpeedSensor(threading.Thread):
             except:
                 pass  
 
-            self.visualizer.run(True)
+            self.visualizer.run(False)#TODO
             time.sleep(TIME_INTERVAL)
 
 
@@ -367,7 +367,8 @@ class Visualizer:
             _ = os.system('clear') 
   
     def run(self,is_running):
-        
+        print("RUNNNNNNN")#TODO
+        print(self.cars)
         while(is_running):
             self.clear()
                 
