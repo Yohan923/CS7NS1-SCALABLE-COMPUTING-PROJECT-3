@@ -381,7 +381,7 @@ class Visualizer:
         self.track[car['location'],car['lane']] = sender    
 
 
-   def GenerateMap(self, sep=20):
+    def GenerateMap(self, sep=20):
         
         print()
         print("Car Lenght: 1 meter")
