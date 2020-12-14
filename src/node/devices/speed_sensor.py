@@ -49,7 +49,7 @@ class SpeedSensor(threading.Thread):
 
         # print("Initializing track\n")
         self.neighbours={}
-        self.visualizer=Visualizer(self.neighbours,table=True, road_map=True)
+        self.visualizer=Visualizer(self.neighbours,clear=False,table=True, road_map=False)
         self.visualizer.update_car_list(nid,self.constrct_dict())
 
         # self.track = Track()
@@ -168,10 +168,11 @@ class SpeedSensor(threading.Thread):
             try:
                 command, _ = self.sock.recvfrom(1000)
                 command = command.decode('utf-8')
+                print(command)
                 command = re.split(':', command)
                 command_type = command[0]
                 self.command = command
-                print(command_type)
+                print(command[0]);print(command[1]);print(command[2])
 
                 if command_type == "RECEIVE":
                     self.onReceive(command[1],command[2])
@@ -350,10 +351,11 @@ class Car:
 
 class Visualizer:
     
-    def __init__(self,cars,table=True, road_map=True):
+    def __init__(self,cars,clear=True,table=True, road_map=True):
         self.cars=cars
         self.track=np.zeros((TOTAL_LENGHT, 2))
         self.road_map = road_map
+        self.clear=clear
         self.table = table
         # Thread(target=self.run).start()
        
@@ -368,7 +370,8 @@ class Visualizer:
             _ = os.system('clear') 
   
     def run(self):
-        self.clear()
+        if(self.clear)
+            self.clear()
         
         if(self.road_map):
             self.GenerateMap()
