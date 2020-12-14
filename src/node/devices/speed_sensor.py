@@ -119,7 +119,7 @@ class SpeedSensor(threading.Thread):
 
     def ControlSpeedAndAcceleration(self):
         # nei = self.track.GetNieghbbours(self.myself)
-        if(len(self.neighbours.keys)>1):
+        if(len(self.neighbours.keys())>1):
             print("neighbours non empty")
             closest_car = self.neighbours[self.findNearest()]
             self.LANE = 1-closest_car['lane']
