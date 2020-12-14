@@ -1,151 +1,11 @@
-import threading
+import numpy as np
+from threading import Thread
 import time
-import sys, socket, time
-import logging,re,random
 
-import json
-delta_t=0.1#0.1s
-VEHICLE_PORT=33100
-AODV_PORT = 33880
-AODV_THREAD_PORT = 33980
-SPEED_PORT=33881
-SPEED_THREAD_PORT = 33981
-HEADWAY_PORT=33882
-HEADWAY_THREAD_PORT=33982
-WIPER_PORT=33883
-WIPER_THREAD_PORT=33983
-LIGHT_PORT=33884
-LIGHT_THREAD_PORT=33984
-AODV_NETWORK_PORT = 33300 
-AODV_SPEED_PORT=33500
-
-TIME_INTERVAL=0.1
 MAX_ACCELERATION = 2
 MIN_ACCELERATION = -2 
 MAX_SPEED = 10
 TOTAL_LENGHT = 400
-
-
-class SpeedSensor(threading.Thread):
-    
-    def __init__(self,loc,lane,speed,acc):
-        threading.Thread.__init__(self)
-        self.sock = SPEED_THREAD_PORT
-        self.port = 0
-        self.aodv_tester_port = 33500
-
-
-        self.SPEED = speed
-        self.ACCELERATION = acc
-        self.LOC = loc
-        self.LANE = lane
-        self.DIRECTION = int(loc/100)
-        self.STATUS = "ACTIVE"
-        self.is_running = True
-
-        print("Initializing track\n")
-        self.track = Track()
-        self.myself = Car( Stats( (self.LOC,self.LANE), self.SPEED, self.ACCELERATION ), track=self.track)
-        self.track.Add(self.myself)
-        
-        
-    def send(self, message):
-        self.sock.sendto(message, 0, ('localhost', AODV_SPEED_PORT))
-        self.sock.sendto(message, 0, ('localhost', SPEED_PORT))
-
-    def broadcast_packet(self):
-        return
-
-    def construct_packet(self,keys, values):
-        packet = {}
-        for i in range(len(keys)):
-            packet[keys[i]] = values[i]
-        return json.dumps(packet)
-
-
-
-    def update(self):
-        self.ControlSpeedAndAcceleration()
-        if self.STATUS == "ACTIVE":
-            prev_loc = self.LOC
-            self.LOC = int( prev_loc + (self.SPEED*step) )%400 
-
-            self.SPEED = self.SPEED + (self.ACCELERATION*step)
-            self.SPEED = max (0, self.SPEED)
-
-        keys = ["speed", "location","acceleration","lane","direction"]
-        values = [self.SPEED, self.LOC,self.ACCELERATION, self.LANE,self.DIRECTION]
-
-        myPacket = self.construct_packet(keys, values)
-        return myPacket
-
-
-    # Default action handler
-    def command_default(self):
-        pass
-
-    def Stop(self):
-        self.is_running = False
-
-    def SwitchLanes(self):
-        self.LANE = (self.LANE+1)%2
-
-
-    def ControlSpeedAndAcceleration(self):
-
-        if(len(self.self.track.GetNieghbbours(self.myself)) > 0):
-            closest_car = self.nieghbours[0]
-            self.LANE = 1-closest_car.stats.location[1]
-            if(self.LOC < closest_car.stats.location[0]):
-                #print("Acceleration")
-                self.stats.acceleration = MAX_ACCELERATION
-            else:
-                #print("Decceleration")
-                self.ACCELERATION = MIN_ACCELERATION
-        
-        elif(self.SPEED < (MAX_SPEED)):
-            self.ACCELERATION = MAX_ACCELERATION
-        
-        elif(self.SPEED > (MAX_SPEED)):
-            self.ACCELERATION = MIN_ACCELERATION
-
-
-    # Thread start routine
-    def run(self):
-        print("speed and location sensor start")      
-        
-        
-        # Setup socket to communicate with the AODV protocol handler thread
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.sock.bind(('localhost', self.port))
-        self.sock.setblocking(0)
-        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-        
-        while (True):
-            # send
-            myPacket = self.update()
-            myPacket_bytes = bytes(myPacket, 'utf-8')
-            self.send(myPacket_bytes)
-
-            # receive
-            try:
-                command, _ = self.sock.recvfrom(100)
-                command = command.decode('utf-8')
-                command = re.split(':', command)
-                command_type = command[0]
-                self.command = command
-                print(command_type)
-
-                if command_type == "CHANGE_LANE":
-                    self.lane = (self.lane+1)%2
-                else:
-                    self.command_default()
-
-            except:
-                pass  
-            time.sleep(TIME_INTERVAL)
-
 
 class Stats:
     
@@ -169,6 +29,7 @@ class Track:
         self.cars = {}
         self.i_cars = 1
         self.is_running = True
+        Thread(target=self.UpdateLocations).start()
         
     def __str__(self):
         spots_occupied = np.argwhere(self.track!=0)[:, 0].ravel()
@@ -225,9 +86,12 @@ class Track:
                 print(self)
             time.sleep(0.1)
             
+    
+            
+
 class Car:
     
-    def __init__(self, stats, track, passive=True):
+    def __init__(self, stats, track, passive=False):
         self.stats = stats
         self.nieghbours = []
         self.track = track
@@ -279,7 +143,6 @@ class Car:
     
     def ControlSpeedAndAcceleration(self):
         #print([str(x) for x in self.nieghbours])
-        
 
         if(len(self.nieghbours) > 0):
             closest_car = self.nieghbours[0]
@@ -296,5 +159,56 @@ class Car:
         
         elif(self.stats.speed > (MAX_SPEED)):
             self.stats.acceleration = MIN_ACCELERATION
-               
             
+            
+
+# START OF THE PROGRAM
+track = Track()
+myself = Car( Stats( (10,0), 0, 0 ), track=track)
+#car2 = Car( Stats( (5,0), 0, 0 ), track=track, passive=True)
+#car3 = Car( Stats( (0,0), 0, 0 ), track=track, passive=True)
+
+# VARIABLES TO TRASMIT
+myself.stats.location
+myself.stats.speed
+myself.stats.acceleration
+
+
+# NEW CAR JOINED
+car2 = Car( Stats( (1,0), 0, 0 ), track=track, passive=True)
+
+# CARUPDATE RECIEVED
+car2.Update((300, 1), 10, 0)
+
+# CAR CONNECTION LOST
+car2.Stop()
+
+
+time.sleep(30)
+track.Stop()
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
