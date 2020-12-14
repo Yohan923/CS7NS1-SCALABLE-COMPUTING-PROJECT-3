@@ -106,7 +106,6 @@ class CommunicationDevice(threading.Thread):
         
             # Restart the timer
             self.hello_timer.cancel()
-            print("1")
             self.hello_timer = Timer(AODV_HELLO_INTERVAL, self.aodv_send_hello_message, ())
             self.hello_timer.start()
             
@@ -125,7 +124,8 @@ class CommunicationDevice(threading.Thread):
         lane1=int(sender_location['lane'])
         lane2=int(self.location_sensor_data['lane'])
         v1=float(sender_location['speed']);v2=float(sender_location['speed']);
-        if x1>x2 and v1<v2 and (v2-v1)*5 >=x2-x1:
+        print("x1="+str(x1)+" x2="+str(x2)+" x1-x2="+str(x1-x2)+" (v2-v1)*5="+str((v2-v1)*5))
+        if x1>x2 and v1<v2 and (v2-v1)*5 >=x1-x2:
             if lane1==lane2:
                 # change lane
                 message_type="CHANGE_LANE";
