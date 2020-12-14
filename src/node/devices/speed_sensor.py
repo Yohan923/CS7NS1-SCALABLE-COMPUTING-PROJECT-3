@@ -136,13 +136,16 @@ class SpeedSensor(threading.Thread):
 
     def onReceive(self,sender,msg):
         data = json.loads(msg)
+        print(data)
         
         if (sender in self.neighbours.keys()):
+            print("update existing car info")
             self.neighbours[sender]['location']=data['location'];
             self.neighbours[sender]['lane'] = data['lane']; 
             self.neighbours[sender]['speed']=data['speed']; 
             self.neighbours[sender]['acceleration']=data['acceleration'];
         else:
+            print("add new car info")
             self.neighbours[sender] = data
 
         self.visualizer.update_car_list(sender,neighbours[sender])
@@ -168,7 +171,6 @@ class SpeedSensor(threading.Thread):
             try:
                 command, _ = self.sock.recvfrom(1000)
                 command = command.decode('utf-8')
-                print("receive "+ command)
                 command = command.split(':', 2)
                 command_type = command[0]
                 self.command = command
