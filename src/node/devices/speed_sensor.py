@@ -34,8 +34,8 @@ class SpeedSensor(threading.Thread):
     
     def __init__(self,nid,loc,lane,speed,acc):
         threading.Thread.__init__(self)
-        self.sock = SPEED_THREAD_PORT
-        self.port = 0
+        self.sock = 0
+        self.port = SPEED_THREAD_PORT
         self.aodv_tester_port = 33500
 
         self.nid=nid
