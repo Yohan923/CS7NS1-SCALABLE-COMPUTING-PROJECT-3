@@ -38,7 +38,7 @@ class SpeedSensor(threading.Thread):
         self.port = SPEED_THREAD_PORT
         self.aodv_tester_port = 33500
 
-        self.nid=nid
+        self.nid=str(nid)
         self.SPEED = speed
         self.ACCELERATION = acc
         self.LOC = loc
@@ -136,7 +136,7 @@ class SpeedSensor(threading.Thread):
 
     def onReceive(self,sender,msg):
         data = json.loads(msg)
-        print(sender); print(type(sender))
+        # print(sender); print(type(sender))
 
         if (sender in self.neighbours.keys()):
             self.neighbours[sender]['location']=data['location'];
@@ -380,7 +380,7 @@ class Visualizer:
             self.GenerateTable()
                 
     def update_car_list(self,sender,car):
-        print((sender));print(type(sender))
+        # print((sender));print(type(sender))
         # print("In VISUALIZER update car list")
         # print(self.cars)
         # if(sender==3):
