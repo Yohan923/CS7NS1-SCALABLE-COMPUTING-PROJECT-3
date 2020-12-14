@@ -85,13 +85,14 @@ class CommunicationDevice(threading.Thread):
 
     # Send the hello message to all the neighbors
     def aodv_send_hello_message(self):
-        message={'neighbors':list(self.neighbors.keys())}
-        message=json.dumps(message)
-        message_bytes = bytes(message, 'utf-8')
-        self.aodv_sock.sendto(message_bytes, 0, 
-                                  ('localhost', AODV_PORT))
-
         try:
+
+            message={'neighbors':list(self.neighbors.keys())}
+            message=json.dumps(message)
+            message_bytes = bytes(message, 'utf-8')
+            self.aodv_sock.sendto(message_bytes, 0, 
+                                      ('localhost', AODV_PORT))
+
             # Send message to each neighbor
             for n in self.neighbors.keys():
                 message_type = "HELLO_MESSAGE"
