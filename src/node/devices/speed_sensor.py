@@ -393,7 +393,7 @@ class Visualizer:
             print("new car come in ")
             self.cars[sender] = car
             self.track[int(car['location']),int(car['lane'])] = sender    
-        print(track[track!=0])
+        print(self.track[self.track!=0])
 
     def GenerateMap(self, sep=20):
         
