@@ -235,8 +235,8 @@ class Visualizer:
                 
         if(self.table):
             self.GenerateTable()
-            
-        self.draw_timer = Timer(DRAW_INTERVAL,  self.visualizer.run,())   
+
+        self.draw_timer = Timer(DRAW_INTERVAL,  self.run,())   
         self.draw_timer.start()  
                 
     def update_car_list(self,sender,car):
