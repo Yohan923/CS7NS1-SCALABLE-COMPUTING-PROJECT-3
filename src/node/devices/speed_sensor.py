@@ -181,7 +181,7 @@ class SpeedSensor(threading.Thread):
             except:
                 pass  
 
-            self.visualizer.run(True)
+            self.visualizer.run(False)
             time.sleep(TIME_INTERVAL)
 
 
@@ -377,7 +377,8 @@ class Visualizer:
                 self.GenerateTable()
                 
     def update_car_list(self,sender,car):
-        self.cars[sender] = car              
+        self.cars[sender] = car    
+        print(cars)          
         
     def GenerateMap(self):
         
