@@ -27,6 +27,7 @@ MAX_SPEED = 10
 TOTAL_LENGHT = 400
 
 
+
 class SpeedSensor(threading.Thread):
     
     def __init__(self,loc,lane,speed,acc):
@@ -44,11 +45,11 @@ class SpeedSensor(threading.Thread):
         self.STATUS = "ACTIVE"
         self.is_running = True
 
-        print("Initializing track\n")
-        self.nieghbours={}
-        self.track = Track()
-        self.myself = Car( Stats( (self.LOC,self.LANE), self.SPEED, self.ACCELERATION ), track=self.track)
-        self.track.Add(self.myself)
+        # print("Initializing track\n")
+        # self.nieghbours={}
+        # self.track = Track()
+        # self.myself = Car( Stats( (self.LOC,self.LANE), self.SPEED, self.ACCELERATION ), track=self.track)
+        # self.track.Add(self.myself)
         
         
     def send(self, message):
@@ -94,17 +95,26 @@ class SpeedSensor(threading.Thread):
     def SwitchLanes(self):
         self.LANE = (self.LANE+1)%2
 
+    def findNearest(self):
+        min=500
+        nearestNode=""
+        for sender in self.neighbours.keys():
+            distance = abs(self.neighbours[sender]['location']-self.LOC)
+            if distance<min:
+                nearestNode=sender
+        return nearestNode
+
+
+
 
     def ControlSpeedAndAcceleration(self):
-        nei = self.track.GetNieghbbours(self.myself)
-        if(len(nei) > 0):
-            closest_car = nei[0]
-            self.LANE = 1-closest_car.stats.location[1]
-            if(self.LOC < closest_car.stats.location[0]):
-                #print("Acceleration")
+        # nei = self.track.GetNieghbbours(self.myself)
+        if(self.neighbours！={}):
+            closest_car = self.neighbours[self.findNearest]
+            self.LANE = 1-closest_car['lane']
+            if(self.LOC < closest_car['location'])
                 self.stats.acceleration = MAX_ACCELERATION
             else:
-                #print("Decceleration")
                 self.ACCELERATION = MIN_ACCELERATION
         
         elif(self.SPEED < (MAX_SPEED)):
@@ -115,21 +125,18 @@ class SpeedSensor(threading.Thread):
 
     def onReceive(self,sender,msg):
         data = json.loads(msg)
-        location=data['location'];
-        lane = data['lane']; speed=data['speed']; acceleration=data['acceleration'];
-        if (sender in self.nieghbours.keys()):
-            self.nieghbours[sender].Update( (location,lane), speed, acceleration )
-        else:
-            car = Car( Stats( (location,lane), speed, acceleration ), track=self.track)
-            self.nieghbours[sender] = car
         
-
-
+        if (sender in self.neighbours.keys()):
+            self.neighbours[sender]['location']=data['location'];
+            self.neighbours[sender]['lane'] = data['lane']; 
+            self.neighbours[sender]['speed']=data['speed']; 
+            self.neighbours[sender]['acceleration']=data['acceleration'];
+        else:
+            self.nieghbours[sender] = data
 
     # Thread start routine
     def run(self):
         print("speed and location sensor start")      
-        
         
         # Setup socket to communicate with the AODV protocol handler thread
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -161,6 +168,9 @@ class SpeedSensor(threading.Thread):
             except:
                 pass  
             time.sleep(TIME_INTERVAL)
+
+
+
 
 
 class Stats:
