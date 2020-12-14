@@ -417,7 +417,7 @@ class Visualizer:
                       ["RIGHT", "LEFT"][cars[car_id]['lane']],
                       cars[car_id]['speed'],
                       cars[car_id]['acceleration'],
-                      23,
+                      car_id,
                       1,
                       0
                       ]
