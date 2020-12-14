@@ -118,7 +118,7 @@ class Vehicle():
                         message, _ = self.speed_sock.recvfrom(2000)
                         message = message.decode('utf-8')
                         message = json.loads(message)
-                        # print(message)
+                        print(message)
                         keys = ["speed", "acceleration","location",
                         "lane", "direction"]
                         self.update(message,keys)
