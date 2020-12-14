@@ -176,7 +176,7 @@ class SpeedSensor(threading.Thread):
 
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.update_timer = Timer(UPDATE_INTERVAL, self.update(), ())
-        self.draw_timer = Timer(DRAW_INTERVAL,  self.visualizer.run(draw_timer), ())        
+        self.draw_timer = Timer(DRAW_INTERVAL,  self.visualizer.run(self.draw_timer), ())        
         self.update_timer.start()
         self.draw_timer.start()
 
