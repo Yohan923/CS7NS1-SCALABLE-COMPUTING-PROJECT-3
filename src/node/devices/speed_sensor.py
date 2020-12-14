@@ -381,7 +381,8 @@ class Visualizer:
     def update_car_list(self,sender,car):
         print("In update car list")
         print(sender)
-        print(cars)
+        print(car)
+        print(self.cars)
         if sender in self.cars.keys():
             prev_loc = self.cars[sender]['location']
             prev_lane = self.cars[sender]['lane']
