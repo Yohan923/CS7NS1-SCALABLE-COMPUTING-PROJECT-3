@@ -90,15 +90,7 @@ class CommunicationDevice(threading.Thread):
         message_bytes = bytes(message, 'utf-8')
         self.aodv_sock.sendto(message_bytes, 0, 
                                   ('localhost', AODV_PORT))
-        # message_type = "HELLO_MESSAGE"
-        # sender = self.node_id
-        # message_data = "Hello message from " + self.node_id
-        # message = message_type + ":" + sender + ":" + message_data+ ":" +str(self.location_sensor_data)
-        # port = AODV_NETWORK_PORT
-                
-        # self.aodv_send(n, int(port), message)
-        # logging.debug("['" + message_type + "', '" + sender + "', " + 
-        #                       "Sending hello message to " + str(n) + "']")
+
         try:
             # Send message to each neighbor
             for n in self.neighbors.keys():

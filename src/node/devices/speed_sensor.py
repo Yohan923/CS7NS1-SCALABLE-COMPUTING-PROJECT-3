@@ -54,8 +54,7 @@ class SpeedSensor(threading.Thread):
         self.visualizer=Visualizer(self.neighbours,clear=True,table=True, road_map=True)
         self.visualizer.update_car_list(nid,self.constrct_dict())
 
-        self.update_timer = 0
-        self.draw_timer = 0     
+        self.update_timer = 0 
 
         
     def send(self, message):
@@ -148,7 +147,6 @@ class SpeedSensor(threading.Thread):
     def onReceive(self,sender,msg):
         data = json.loads(msg)
         sender=str(sender)
-        print("Receive pack")
         # print(sender); print(type(sender))
 
         if (sender in self.neighbours.keys()):
@@ -189,6 +187,7 @@ class SpeedSensor(threading.Thread):
                     self.onReceive(command[1],command[2])
                 else:
                     self.command_default()
+                time.sleep(0.01)
 
             except:
                 pass  
@@ -197,13 +196,6 @@ class SpeedSensor(threading.Thread):
 
 
 
-#####################################################
-#####################################################
-#####################################################
-#####################################################
-#####################################################
-#####################################################
-#####################################################
 
 class Visualizer:
     
@@ -239,22 +231,7 @@ class Visualizer:
         self.draw_timer = Timer(DRAW_INTERVAL,  self.run,())   
         self.draw_timer.start()  
                 
-    def update_car_list(self,sender,car):
-        # print((sender));print(type(sender))
-        # print("In VISUALIZER update car list")
-        # print(self.cars)
-        # if(sender==3):
-        #     print("3 is sending msg")
-        # if sender in self.cars.keys():
-        #     prev_loc = self.cars[sender]['location']
-        #     prev_lane = self.cars[sender]['lane']
-        #     self.track[int(prev_loc),int(prev_lane)] = 0
-        #     self.cars[sender] = car
-        #     self.track[int(car['location']),int(car['lane'])] = sender
-        # else:
-        #     print("new car come in ")
-        #     self.cars[sender] = car
-        #     self.track[int(car['location']),int(car['lane'])] = sender   
+    def update_car_list(self,sender,car):  
         sender=str(sender)
         self.cars[sender] = car
         self.track=np.zeros((TOTAL_LENGHT, 2))
@@ -432,16 +409,6 @@ class Visualizer:
         sys.stdout.write("-"*len(columns_str)+"\n")
             
 
-
-
-#####################################################
-#####################################################
-#####################################################
-#####################################################
-#####################################################
-#####################################################
-#####################################################
-#####################################################
 
 
            
