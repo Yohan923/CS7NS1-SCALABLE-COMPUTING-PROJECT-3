@@ -377,7 +377,7 @@ class Visualizer:
             self.GenerateTable()
                 
     def update_car_list(self,sender,car):
-        if sender in self.cars.keys:
+        if sender in self.cars.keys():
             prev_loc = cars[sender]['location']
             prev_lane = cars[sender]['lane']
             self.track[int(prev_loc),int(prev_lane)] = sender
