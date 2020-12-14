@@ -124,7 +124,7 @@ class SpeedSensor(threading.Thread):
             closest_car = self.neighbours[self.findNearest()]
             self.LANE = 1-closest_car['lane']
             if(self.LOC < closest_car['location']):
-                self.stats.acceleration = MAX_ACCELERATION
+                self.ACCELERATION= MAX_ACCELERATION
             else:
                 self.ACCELERATION = MIN_ACCELERATION
         
@@ -168,11 +168,10 @@ class SpeedSensor(threading.Thread):
             try:
                 command, _ = self.sock.recvfrom(1000)
                 command = command.decode('utf-8')
-                print(command)
                 command = command.split(':', 2)
                 command_type = command[0]
                 self.command = command
-                print(command[0]);print(command[1]);print(command[2])
+                # print(command[0]);print(command[1]);print(command[2])
 
                 if command_type == "RECEIVE":
                     self.onReceive(command[1],command[2])
@@ -528,7 +527,7 @@ class Visualizer:
         
         
     def GenerateTable(self):
-        columns = ['LOCATION', 'LANE', 'SPEED (m/s)', 'ACC (m/s^2)', 'NODE_ID', 'WIPER SPEED', 'LIGHT']
+        columns = ['NODE_ID','LOCATION', 'LANE', 'SPEED (m/s)', 'ACC (m/s^2)',  'WIPER SPEED', 'LIGHT']
         columns_str = "|  " + "  |  ".join(columns) + "  |"
         columns = columns_str.split("|")[1:-1]
         sys.stdout.write("-"*len(columns_str)+"\n")
@@ -538,11 +537,11 @@ class Visualizer:
         for car_id in self.cars.keys():
             loc = self.cars[car_id]['location']
             loc = "{} ({})".format(loc%100, ["Left", "Top", "Right", "Bottom", "Bottom"][loc//100])
-            record = [ self.cars[car_id]['location'],
+            record = [ car_id,
+                        self.cars[car_id]['location'],
                       ["RIGHT", "LEFT"][self.cars[car_id]['lane']],
                       self.cars[car_id]['speed'],
                       self.cars[car_id]['acceleration'],
-                      car_id,
                       1,
                       0
                       ]
