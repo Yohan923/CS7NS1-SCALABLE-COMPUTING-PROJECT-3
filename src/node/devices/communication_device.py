@@ -92,7 +92,10 @@ class CommunicationDevice(threading.Thread):
             message_bytes = bytes(message, 'utf-8')
             self.aodv_sock.sendto(message_bytes, 0, 
                                       ('localhost', AODV_PORT))
-
+        except:
+            pass
+            
+        try:
             # Send message to each neighbor
             for n in self.neighbors.keys():
                 message_type = "HELLO_MESSAGE"
