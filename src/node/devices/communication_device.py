@@ -45,7 +45,7 @@ class CommunicationDevice(threading.Thread):
         self.status = "Active"
         self.hello_timer = 0
         self.location_sensor_data=""
-        self.aodv_add_neighbor(neighbors)
+        self.aodv_add_neighbor(neighbors,)
 
     def get_aodv_port(self, node):
         return AODV_NETWORK_PORT
@@ -117,21 +117,12 @@ class CommunicationDevice(threading.Thread):
         logging.debug(message)
         sender = message[1]
         message[3]=message[3].replace('\'','\"')
-        sender_location = json.loads(message[3])
-
+        command_type = "RECEIVE"
+        msg = command_type+":"+sender+":"+message[3]
         print("Received data from node "+sender+": "+message[3])
-        x1=float(sender_location['location']);
-        x2=float(self.location_sensor_data['location']);
-        lane1=int(sender_location['lane'])
-        lane2=int(self.location_sensor_data['lane'])
-        v1=float(sender_location['speed']);v2=float(sender_location['speed']);
-        if x1>x2 and v1<v2 and (v2-v1)*5 >=x1-x2:
-            if lane1==lane2:
-                # change lane
-                message_type="CHANGE_LANE";
-                message=message_type+":"+" "
-                message_bytes = bytes(message, 'utf-8')
-                self.aodv_sock.sendto(message_bytes, 0, 
+
+        message_bytes = bytes(message, 'utf-8')
+        self.aodv_sock.sendto(message_bytes, 0, 
                     ('localhost', SPEED_THREAD_PORT))
             ########################
            

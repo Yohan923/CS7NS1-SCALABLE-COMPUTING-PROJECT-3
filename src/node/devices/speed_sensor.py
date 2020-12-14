@@ -44,6 +44,7 @@ class SpeedSensor(threading.Thread):
         self.is_running = True
 
         print("Initializing track\n")
+        self.nieghbours={}
         self.track = Track()
         self.myself = Car( Stats( (self.LOC,self.LANE), self.SPEED, self.ACCELERATION ), track=self.track)
         self.track.Add(self.myself)
@@ -73,6 +74,8 @@ class SpeedSensor(threading.Thread):
             self.SPEED = self.SPEED + (self.ACCELERATION*step)
             self.SPEED = max (0, self.SPEED)
 
+        self.myself.update((self.LOC,self.LANE), self.SPEED, self.ACCELERATION )
+
         keys = ["speed", "location","acceleration","lane","direction"]
         values = [self.SPEED, self.LOC,self.ACCELERATION, self.LANE,self.DIRECTION]
 
@@ -92,9 +95,9 @@ class SpeedSensor(threading.Thread):
 
 
     def ControlSpeedAndAcceleration(self):
-
-        if(len(self.self.track.GetNieghbbours(self.myself)) > 0):
-            closest_car = self.nieghbours[0]
+        nei = self.track.GetNieghbbours(self.myself)
+        if(len(nei) > 0):
+            closest_car = nei[0]
             self.LANE = 1-closest_car.stats.location[1]
             if(self.LOC < closest_car.stats.location[0]):
                 #print("Acceleration")
@@ -108,6 +111,18 @@ class SpeedSensor(threading.Thread):
         
         elif(self.SPEED > (MAX_SPEED)):
             self.ACCELERATION = MIN_ACCELERATION
+
+    def onReceive(self,sender,msg):
+        data = json.loads(msg)
+        location=data['location'];
+        lane = data['lane']; speed=data['speed']; acceleration=data['acceleration'];
+        if (sender in self.nieghbours.keys()):
+            self.nieghbours[sender].Update( (location,lane), speed, acceleration )
+        else:
+            car = Car( Stats( (location,lane), speed, acceleration ), track=self.track)
+            self.nieghbours[sender] = car
+        
+
 
 
     # Thread start routine
@@ -130,15 +145,15 @@ class SpeedSensor(threading.Thread):
 
             # receive
             try:
-                command, _ = self.sock.recvfrom(100)
+                command, _ = self.sock.recvfrom(1000)
                 command = command.decode('utf-8')
                 command = re.split(':', command)
                 command_type = command[0]
                 self.command = command
                 print(command_type)
 
-                if command_type == "CHANGE_LANE":
-                    self.lane = (self.lane+1)%2
+                if command_type == "RECEIVE":
+                    self.onReceive(command[1],command[2])
                 else:
                     self.command_default()
 
