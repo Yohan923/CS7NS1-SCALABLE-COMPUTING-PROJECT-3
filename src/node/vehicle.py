@@ -2,7 +2,10 @@ from node.devices import SpeedSensor, HeadwaySensor, WiperController, LightContr
 from node.devices import CommunicationDevice
 from threading import Thread
 import socket,select,json,time
-
+from threading import Thread
+import time
+import sys
+import os
 
 
 
@@ -118,7 +121,7 @@ class Vehicle():
                         message, _ = self.speed_sock.recvfrom(2000)
                         message = message.decode('utf-8')
                         message = json.loads(message)
-                        print(message)
+                        # print(message)
                         keys = ["speed", "acceleration","location",
                         "lane", "direction"]
                         self.update(message,keys)
@@ -128,7 +131,7 @@ class Vehicle():
                         message, _ = self.headway_sock.recvfrom(1000)
                         message = message.decode('utf-8')
                         message = json.loads(message)
-                        print(message)
+                        # print(message)
                         keys = ["headway"]
                         self.update(message,keys)
 
@@ -137,7 +140,7 @@ class Vehicle():
                         message, _ = self.aodv_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         message = json.loads(message)
-                        print(message)
+                        # print(message)
                         keys = ["neighbors"]
                         self.update(message,keys)
 
@@ -145,7 +148,7 @@ class Vehicle():
                         message, _ = self.wiper_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         message = json.loads(message)
-                        print(message)
+                        # print(message)
                         keys = ["wiper_speed"]
                         self.update(message,keys)
 
@@ -153,6 +156,7 @@ class Vehicle():
                         message, _ = self.light_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         message = json.loads(message)
-                        print(message)
+                        # print(message)
                         keys = ["light"]
                         self.update(message,keys)
+

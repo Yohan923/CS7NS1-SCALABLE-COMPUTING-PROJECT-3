@@ -3,8 +3,9 @@ import time
 import numpy as np
 import sys, socket, time
 import logging,re,random
-
+import config
 import json
+
 delta_t=0.1#0.1s
 VEHICLE_PORT=33100
 AODV_PORT = 33880
@@ -28,15 +29,16 @@ TOTAL_LENGHT = 400
 
 
 
+
 class SpeedSensor(threading.Thread):
     
-    def __init__(self,loc,lane,speed,acc):
+    def __init__(self,nid,loc,lane,speed,acc):
         threading.Thread.__init__(self)
         self.sock = SPEED_THREAD_PORT
         self.port = 0
         self.aodv_tester_port = 33500
 
-
+        self.nid=nid
         self.SPEED = speed
         self.ACCELERATION = acc
         self.LOC = loc
@@ -47,6 +49,9 @@ class SpeedSensor(threading.Thread):
 
         # print("Initializing track\n")
         self.neighbours={}
+        self.visualizer=Visualizer(neighbours)
+        self.visualizer.update_car_list(nid,self.constrct_dict())
+
         # self.track = Track()
         # self.myself = Car( Stats( (self.LOC,self.LANE), self.SPEED, self.ACCELERATION ), track=self.track)
         # self.track.Add(self.myself)
@@ -65,6 +70,13 @@ class SpeedSensor(threading.Thread):
             packet[keys[i]] = values[i]
         return json.dumps(packet)
 
+    def constrct_dict(self):
+        keys = ["speed", "location","acceleration","lane","direction"]
+        values = [self.SPEED, self.LOC,self.ACCELERATION, self.LANE,self.DIRECTION]
+        packet = {}
+        for i in range(len(keys)):
+            packet[keys[i]] = values[i]
+        return packet
 
 
     def update(self):
@@ -78,6 +90,8 @@ class SpeedSensor(threading.Thread):
 
         keys = ["speed", "location","acceleration","lane","direction"]
         values = [self.SPEED, self.LOC,self.ACCELERATION, self.LANE,self.DIRECTION]
+
+        self.visualizer.update_car_list(nid,self.constrct_dict())
 
         myPacket = self.construct_packet(keys, values)
         return myPacket
@@ -101,9 +115,6 @@ class SpeedSensor(threading.Thread):
             if distance<min:
                 nearestNode=sender
         return nearestNode
-
-
-
 
     def ControlSpeedAndAcceleration(self):
         # nei = self.track.GetNieghbbours(self.myself)
@@ -130,7 +141,9 @@ class SpeedSensor(threading.Thread):
             self.neighbours[sender]['speed']=data['speed']; 
             self.neighbours[sender]['acceleration']=data['acceleration'];
         else:
-            self.nieghbours[sender] = data
+            self.neighbours[sender] = data
+
+        self.visualizer.update_car_list(sender,neighbours[sender])
 
     # Thread start routine
     def run(self):
@@ -165,7 +178,10 @@ class SpeedSensor(threading.Thread):
 
             except:
                 pass  
+
+            self.visualizer.run(True)
             time.sleep(TIME_INTERVAL)
+
 
 
 
@@ -253,7 +269,7 @@ class Car:
     
     def __init__(self, stats, track, passive=True):
         self.stats = stats
-        self.nieghbours = []
+        self.neighbours = []
         self.track = track
         self.track.Add(self)
         self.is_running = True
@@ -290,7 +306,7 @@ class Car:
     def Monitor(self):
         while(self.is_running):
             
-            self.nieghbours = self.track.GetNieghbbours(self)
+            self.neighbours = self.track.GetNieghbbours(self)
             self.ControlSpeedAndAcceleration()
             
             #print(self.stats)
@@ -302,11 +318,11 @@ class Car:
             
     
     def ControlSpeedAndAcceleration(self):
-        #print([str(x) for x in self.nieghbours])
+        #print([str(x) for x in self.neighbours])
         
 
-        if(len(self.nieghbours) > 0):
-            closest_car = self.nieghbours[0]
+        if(len(self.neighbours) > 0):
+            closest_car = self.neighbours[0]
             self.stats.location = (self.stats.location[0], (1-closest_car.stats.location[1]) )
             if(self.stats.location[0] < closest_car.stats.location[0]):
                 #print("Acceleration")
@@ -321,4 +337,115 @@ class Car:
         elif(self.stats.speed > (MAX_SPEED)):
             self.stats.acceleration = MIN_ACCELERATION
                
+
+#####################################################
+#####################################################
+#####################################################
+#####################################################
+#####################################################
+#####################################################
+#####################################################
+
+class Visualizer:
+    
+    def __init__(self,cars,table=True, road_map=True):
+        self.cars=cars
+        self.road_map = road_map
+        self.table = table
+        # Thread(target=self.run).start()
+       
+    def clear(self): 
+  
+        # for windows 
+        if os.name == 'nt': 
+            _ = os.system('cls') 
+      
+        # for mac and linux(here, os.name is 'posix') 
+        else: 
+            _ = os.system('clear') 
+  
+    def run(self,is_running):
+        
+        while(is_running):
+            self.clear()
+                
+            if(self.road_map):
+                self.GenerateMap()
+                
+            if(self.table):
+                self.GenerateTable()
+                
+    def update_car_list(self,sender,car):
+        self.cars[sender] = car              
+        
+    def GenerateMap(self):
+        
+        
+        print("-"*24)
+        print("|      " + " "*10 + "      |")
+        print("|      " + " "*10 + "      |")
+        print("|      " + "-"*10 + "      |")
+        
+        for i in range(10):
+            line = "|"
+            cell_1_1 = " "
+            cell_1_2 = " "
+            cell_3_1 = " "
+            cell_3_2 = " "
+            line = "| {} {} |".format(cell_1_1, cell_1_2) + " "*(10) +"| {} {} |".format(cell_3_1, cell_3_2)
+            print(line)
+        
+        print("|      " + "-"*10 + "      |")
+        print("|      " + " "*10 + "      |")
+        print("|      " + " "*10 + "      |")
+        print("-"*24)
+        
+        
+    def GenerateTable(self):
+    
+        columns = ['LOCATION', 'LANE', 'SPEED (m/s)', 'ACC (m/s^2)', 'NODE_ID', 'WIPER SPEED', 'LIGHT']
+        columns_str = "|  " + "  |  ".join(columns) + "  |"
+        columns = columns_str.split("|")[1:-1]
+        sys.stdout.write("-"*len(columns_str)+"\n")
+        sys.stdout.write(columns_str+"\n")
+        sys.stdout.write("-"*len(columns_str)+"\n")
+        
+        for car_id in self.cars.keys():
+            loc = cars[car_id]['location']
+            loc = "{} ({})".format(loc%100, ["Left", "Top", "Right", "Bottom", "Bottom"][loc//100])
+            record = [cars[car_id][['location'],
+                      ["RIGHT", "LEFT"][cars[car_id]['lane']],
+                      str(cars[car_id]['speed']),
+                      cars[car_id]['acceleration'],
+                      23,
+                      1,
+                      0,
+                      ]
             
+            record = [str(x) for x in record]
+            message = "|"
+            for i in range(len(record)):
+                field = record[i]
+                col = columns[i]
+                field_str = " "*int( (len(col)-len(field))/2 ) + field 
+                field_str = field_str + ( " " *(len(col)-len(field_str)) ) +"|"
+                message = message + field_str
+                
+            sys.stdout.write(message+"\n")
+        
+        sys.stdout.write("-"*len(columns_str)+"\n")
+            
+
+
+
+#####################################################
+#####################################################
+#####################################################
+#####################################################
+#####################################################
+#####################################################
+#####################################################
+#####################################################
+
+
+           
