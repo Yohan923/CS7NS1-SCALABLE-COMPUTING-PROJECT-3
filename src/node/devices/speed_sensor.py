@@ -49,7 +49,7 @@ class SpeedSensor(threading.Thread):
 
         # print("Initializing track\n")
         self.neighbours={}
-        self.visualizer=Visualizer(self.neighbours,table=True, road_map=False)
+        self.visualizer=Visualizer(self.neighbours,table=True, road_map=True)
         self.visualizer.update_car_list(nid,self.constrct_dict())
 
         # self.track = Track()
@@ -367,9 +367,6 @@ class Visualizer:
             _ = os.system('clear') 
   
     def run(self):
-        print("run visualizer")
-        print(self.cars)
-        
         self.clear()
         
         if(self.road_map):
@@ -379,8 +376,6 @@ class Visualizer:
             self.GenerateTable()
                 
     def update_car_list(self,sender,car):
-        print("update_car_list")
-        print(self.cars)
         self.cars[sender] = car    
 
         
@@ -408,8 +403,6 @@ class Visualizer:
         
         
     def GenerateTable(self):
-        print("generate table")
-        print(self.cars)   
         columns = ['LOCATION', 'LANE', 'SPEED (m/s)', 'ACC (m/s^2)', 'NODE_ID', 'WIPER SPEED', 'LIGHT']
         columns_str = "|  " + "  |  ".join(columns) + "  |"
         columns = columns_str.split("|")[1:-1]
@@ -418,8 +411,6 @@ class Visualizer:
         sys.stdout.write("-"*len(columns_str)+"\n")
         
         for car_id in self.cars.keys():
-            print(car_id)
-            print(self.cars[car_id])
             loc = self.cars[car_id]['location']
             loc = "{} ({})".format(loc%100, ["Left", "Top", "Right", "Bottom", "Bottom"][loc//100])
             record = [ self.cars[car_id]['location'],
@@ -440,9 +431,9 @@ class Visualizer:
                 field_str = field_str + ( " " *(len(col)-len(field_str)) ) +"|"
                 message = message + field_str
                 
-        #     sys.stdout.write(message+"\n")
+            sys.stdout.write(message+"\n")
         
-        # sys.stdout.write("-"*len(columns_str)+"\n")
+        sys.stdout.write("-"*len(columns_str)+"\n")
             
 
 
