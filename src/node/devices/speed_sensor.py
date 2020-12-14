@@ -136,16 +136,15 @@ class SpeedSensor(threading.Thread):
 
     def onReceive(self,sender,msg):
         data = json.loads(msg)
-        print(data)
-        
+        print("ONREVEIVE"+str(sender))
+
         if (sender in self.neighbours.keys()):
-            print("update existing car info")
             self.neighbours[sender]['location']=data['location'];
             self.neighbours[sender]['lane'] = data['lane']; 
             self.neighbours[sender]['speed']=data['speed']; 
             self.neighbours[sender]['acceleration']=data['acceleration'];
         else:
-            print("add new car info")
+            print("add new car "+str(sender))
             self.neighbours[sender] = data
 
         self.visualizer.update_car_list(sender,neighbours[sender])
@@ -382,9 +381,7 @@ class Visualizer:
             self.GenerateTable()
                 
     def update_car_list(self,sender,car):
-        print("In update car list")
-        print(sender)
-        print(car)
+        print("In VISUALIZER update car list")
         print(self.cars)
         if sender in self.cars.keys():
             prev_loc = self.cars[sender]['location']
