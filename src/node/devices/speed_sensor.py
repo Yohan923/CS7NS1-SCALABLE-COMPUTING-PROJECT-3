@@ -390,6 +390,7 @@ class Visualizer:
             self.cars[sender] = car
             self.track[int(car['location']),int(car['lane'])] = sender
         else:
+            print("new car come in ")
             self.cars[sender] = car
             self.track[int(car['location']),int(car['lane'])] = sender    
         print(track[track!=0])
