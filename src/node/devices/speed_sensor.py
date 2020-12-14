@@ -2,6 +2,7 @@ import threading
 import time,sys,os
 import numpy as np
 import sys, socket, time
+from threading import Timer
 import logging,re,random
 import config
 import json
@@ -26,7 +27,8 @@ MAX_ACCELERATION = 2
 MIN_ACCELERATION = -2 
 MAX_SPEED = 10
 TOTAL_LENGHT = 400
-
+UPDATE_INTERVAL=1
+DRAW_INTERVAL=0.1
 
 
 
@@ -56,6 +58,8 @@ class SpeedSensor(threading.Thread):
         # self.myself = Car( Stats( (self.LOC,self.LANE), self.SPEED, self.ACCELERATION ), track=self.track)
         # self.track.Add(self.myself)
         
+        self.update_timer=0
+        self.draw_timer=0
         
     def send(self, message):
         self.sock.sendto(message, 0, ('localhost', AODV_SPEED_PORT))
@@ -93,9 +97,16 @@ class SpeedSensor(threading.Thread):
 
         self.visualizer.update_car_list(self.nid,self.constrct_dict())
 
+
         myPacket = self.construct_packet(keys, values)
-        # print(self.neighbours)
-        return myPacket
+        myPacket_bytes = bytes(myPacket, 'utf-8')
+        self.send(myPacket_bytes)   
+
+        # Restart the timer
+        self.update_timer.cancel()
+        self.update_timer = Timer(UPDATE_INTERVAL, self.update(), ())
+        self.update_timer.start() 
+        return 
 
 
     # Default action handler
@@ -137,6 +148,7 @@ class SpeedSensor(threading.Thread):
     def onReceive(self,sender,msg):
         data = json.loads(msg)
         sender=str(sender)
+        print("Receive pack")
         # print(sender); print(type(sender))
 
         if (sender in self.neighbours.keys()):
@@ -158,14 +170,17 @@ class SpeedSensor(threading.Thread):
         self.sock.bind(('localhost', self.port))
         self.sock.setblocking(0)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
         
-        while (True):
-            # send
-            myPacket = self.update()
-            myPacket_bytes = bytes(myPacket, 'utf-8')
-            self.send(myPacket_bytes)
+       
+ 
+        # start the timer
+        self.update_timer = Timer(UPDATE_INTERVAL, self.update(), ())
+        self.update_timer.start()
+        # start the timer
+        self.draw_timer = Timer(DRAW_INTERVAL,  self.visualizer.run(draw_timer), ())
+        self.draw_timer.start()
 
+        while (True):
             # receive
             try:
                 command, _ = self.sock.recvfrom(1000)
@@ -183,8 +198,7 @@ class SpeedSensor(threading.Thread):
             except:
                 pass  
 
-            self.visualizer.run()
-            time.sleep(TIME_INTERVAL)
+
 
 
 
@@ -370,7 +384,7 @@ class Visualizer:
         else: 
             _ = os.system('clear') 
   
-    def run(self):
+    def run(self,draw_timer):
         if(self.clear):
             self.clear_canvas()
         
@@ -379,6 +393,10 @@ class Visualizer:
                 
         if(self.table):
             self.GenerateTable()
+        
+        draw_timer.cancel()
+        draw_timer = Timer(DRAW_INTERVAL, self.run(), ())
+        draw_timer.start() 
                 
     def update_car_list(self,sender,car):
         # print((sender));print(type(sender))

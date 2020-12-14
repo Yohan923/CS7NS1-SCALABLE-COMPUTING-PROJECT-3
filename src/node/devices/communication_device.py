@@ -3,7 +3,7 @@ from threading import Timer
 import json
 
 # Defines
-AODV_HELLO_INTERVAL         =   1
+AODV_HELLO_INTERVAL         =   0.2
 AODV_HELLO_TIMEOUT          =   600
 AODV_PATH_DISCOVERY_TIME    =   30
 AODV_ACTIVE_ROUTE_TIMEOUT   =   300
