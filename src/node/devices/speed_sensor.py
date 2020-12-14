@@ -358,7 +358,7 @@ class Visualizer:
         self.table = table
         # Thread(target=self.run).start()
        
-    def clear(self): 
+    def clear_canvas(self): 
   
         # for windows 
         if os.name == 'nt': 
@@ -370,7 +370,7 @@ class Visualizer:
   
     def run(self):
         if(self.clear):
-            self.clear()
+            self.clear_canvas()
         
         if(self.road_map):
             self.GenerateMap()
