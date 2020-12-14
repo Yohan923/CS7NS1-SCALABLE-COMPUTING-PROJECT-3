@@ -181,7 +181,7 @@ class SpeedSensor(threading.Thread):
             except:
                 pass  
 
-            self.visualizer.run(True)
+            self.visualizer.run(table=True, road_map=False)
             time.sleep(TIME_INTERVAL)
 
 
