@@ -370,7 +370,7 @@ class Visualizer:
             _ = os.system('clear') 
   
     def run(self):
-        if(self.clear)
+        if(self.clear):
             self.clear()
         
         if(self.road_map):
