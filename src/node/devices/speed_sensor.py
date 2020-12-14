@@ -97,15 +97,19 @@ class SpeedSensor(threading.Thread):
 
         self.visualizer.update_car_list(self.nid,self.constrct_dict())
 
+        try:
+            myPacket = self.construct_packet(keys, values)
+            myPacket_bytes = bytes(myPacket, 'utf-8')
+            self.send(myPacket_bytes)   
 
-        myPacket = self.construct_packet(keys, values)
-        myPacket_bytes = bytes(myPacket, 'utf-8')
-        self.send(myPacket_bytes)   
+            # Restart the timer
+            self.update_timer.cancel()
+            self.update_timer = Timer(UPDATE_INTERVAL, self.update(), ())
+            self.update_timer.start() 
+            print("TODO")
+        except:
+            pass
 
-        # Restart the timer
-        self.update_timer.cancel()
-        self.update_timer = Timer(UPDATE_INTERVAL, self.update(), ())
-        self.update_timer.start() 
         return 
 
 
