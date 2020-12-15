@@ -55,7 +55,7 @@ class SpeedSensor(threading.Thread):
             self.STATUS = VehicleStatus.INACTIVE
 
         self.neighbours={}
-        temp=True
+        temp=False
         self.visualizer=Visualizer(self.neighbours,clear= temp,table= temp, road_map=temp)
         self.visualizer.update_car_list(nid,self.constrct_dict())
 
