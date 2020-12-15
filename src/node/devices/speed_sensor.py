@@ -133,8 +133,13 @@ class SpeedSensor(threading.Thread):
         return nearestNode
 
     def ControlSpeedAndAcceleration(self):
-        # nei = self.track.GetNieghbbours(self.myself)
-        if(len(self.neighbours.keys())>1):
+        if(self.SPEED < 3 ):
+            self.ACCELERATION = MAX_ACCELERATION
+
+        elif(self.SPEED > 20):
+            self.ACCELERATION = MIN_ACCELERATION
+
+        elif(len(self.neighbours.keys())>1):
             # print("neighbours non empty")
             nearest=self.findNearest()
             if nearest!="": 
