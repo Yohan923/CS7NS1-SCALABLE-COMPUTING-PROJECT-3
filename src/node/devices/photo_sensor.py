@@ -28,8 +28,8 @@ class PhotoSensor(Thread):
 
     def send(self, message):
         self.sock.sendto(message, 0, ('localhost', PHOTO_PORT))
-        self.photo_sock.sendto(message, 0, ('localhost', LIGHT_THREAD_PORT))
-        self.photo_sock.sendto(message, 0, ('localhost', AODV_SPEED_PORT))
+        self.sock.sendto(message, 0, ('localhost', LIGHT_THREAD_PORT))
+        self.sock.sendto(message, 0, ('localhost', AODV_SPEED_PORT))
 
     def construct_packet(self,keys, values):
         packet = {}
@@ -66,4 +66,4 @@ class PhotoSensor(Thread):
             except:
                 pass  
 
-            time.sleep(5)
+            time.sleep(1)
