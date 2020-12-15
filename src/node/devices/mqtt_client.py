@@ -4,6 +4,8 @@ import consts.iot_core as conf
 import config
 from threading import Thread
 import time
+import datetime
+import json
 
 
 class MQTTClient(Thread):
@@ -58,5 +60,10 @@ class MQTTClient(Thread):
         self.connect()
 
         while True:
-            self.publish('vehicles', config.my_vehicle.aggregate_full_vehicle_states())
-            time.sleep(3)
+            payload = config.my_vehicle.all_sensors
+            payload['id'] = str(payload['id'])
+            now = datetime.datetime.utcnow().isoformat(timespec='seconds')
+            payload.update({'datetime': now})
+
+            self.publish('vehicles', json.dumps(payload))
+            time.sleep(1)
