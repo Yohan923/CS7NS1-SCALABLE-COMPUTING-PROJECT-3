@@ -91,6 +91,7 @@ class CommunicationDevice(threading.Thread):
 
 
     def broadcast_rainfall_sensor_data(self):
+        
         try:
             for n in self.neighbors.keys():
                 message_type = "BROADCAST_MESSAGE_RAINFALL"
@@ -117,11 +118,11 @@ class CommunicationDevice(threading.Thread):
         try:
             for n in self.neighbors.keys():
                 if n !=sender and n!= self.node_id:
-                message_type = "BROADCAST_MESSAGE_RAINFALL"
-                sender = self.node_id
-                message = message_type + ":" + sender + ":" + str(self.rainfall_sensor_data)
-                port = AODV_NETWORK_PORT
-                self.aodv_send(n, int(port), message)
+                    message_type = "BROADCAST_MESSAGE_RAINFALL"
+                    sender = self.node_id
+                    message = message_type + ":" + sender + ":" + str(self.rainfall_sensor_data)
+                    port = AODV_NETWORK_PORT
+                    self.aodv_send(n, int(port), message)
 
         except:
             pass     
