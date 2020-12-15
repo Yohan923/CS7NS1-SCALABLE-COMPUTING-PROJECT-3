@@ -152,7 +152,7 @@ class Vehicle():
                         # We got a message from the network
                         message, _ = self.aodv_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
-                        print("received aodv->main"+message)
+                        # print("received aodv->main"+message)
                         message = json.loads(message)
                         
                         if "neighbors" in message.keys():
