@@ -91,6 +91,7 @@ class Vehicle():
         self.headway_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         if photo_sensor:
+            print(photo_sensor)
             print("dddddd")
             self.photo_sensor = photo_sensor
             self.devices.append(self.photo_sensor)
