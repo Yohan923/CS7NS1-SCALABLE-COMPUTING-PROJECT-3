@@ -8,7 +8,7 @@ LIGHT_THREAD_PORT=33984
 class LIGHT_INTENSITY():
     OFF = 0
     DIM = 1
-    NORMAL = 0
+    NORMAL = 2
 
 class LightController(Thread):
 
@@ -27,10 +27,10 @@ class LightController(Thread):
     def set_speed_by_photo_intensity(self, photo_intensity):
         if photo_intensity >= PhotoIntensity.BRIGHT:
             self.set_state(LIGHT_INTENSITY.OFF)
-        elif photo_intensity <= PhotoIntensity.DIM:
-            self.set_state(LIGHT_INTENSITY.DIM)
-        else:
+        elif photo_intensity <= PhotoIntensity.DARK:
             self.set_state(LIGHT_INTENSITY.NORMAL)
+        else:
+            self.set_state(LIGHT_INTENSITY.DIM)
 
     def send(self, message):
         self.sock.sendto(message, 0, ('localhost', LIGHT_PORT))
