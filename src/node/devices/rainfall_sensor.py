@@ -1,9 +1,23 @@
 from threading import Thread
 import time,socket,json
+
+VEHICLE_PORT=33100
+AODV_PORT = 33880
+AODV_THREAD_PORT = 33980
+SPEED_PORT=33881
+SPEED_THREAD_PORT = 33981
+HEADWAY_PORT=33882
+HEADWAY_THREAD_PORT=33982
+WIPER_PORT=33883
+WIPER_THREAD_PORT=33983
+LIGHT_PORT=33884
+LIGHT_THREAD_PORT=33984
 PHOTO_PORT = 33885
 PHOTO_THREAD_PORT = 33985
 RAINFALL_PORT = 33886
 RAINFALL_THREAD_PORT = 33986 
+AODV_NETWORK_PORT = 33300 
+AODV_SPEED_PORT=33500
 
 # rainfall measured by the critical angle between the glass and infrared, the critical angle for total internal refraction is around 42°
 # when glass is dry, 60° when wet, assume 70° for very wet
@@ -29,7 +43,8 @@ class RainfallSensor(Thread):
 
     def send(self, message):
         self.sock.sendto(message, 0, ('localhost', RAINFALL_PORT))
-        self.photo_sock.sendto(message, 0, ('localhost', WIPER_THREAD_PORT))
+        self.sock.sendto(message, 0, ('localhost', WIPER_THREAD_PORT))
+        self.sock.sendto(message, 0, ('localhost', AODV_SPEED_PORT))
 
     def construct_packet(self,keys, values):
         packet = {}
