@@ -119,11 +119,11 @@ class SpeedSensor(threading.Thread):
         self.LANE = (self.LANE+1)%2
 
     def findNearest(self):
-        min=500
+        minDis=500
         nearestNode=""
         for sender in self.neighbours.keys():
-            distance = abs(self.neighbours[sender]['location']-self.LOC)
-            if distance<min:
+            distance = self.neighbours[sender]['location']-self.LOC
+            if distance >0 && distance<minDis and distance >100:
                 nearestNode=sender
         return nearestNode
 
@@ -131,12 +131,14 @@ class SpeedSensor(threading.Thread):
         # nei = self.track.GetNieghbbours(self.myself)
         if(len(self.neighbours.keys())>1):
             # print("neighbours non empty")
-            closest_car = self.neighbours[self.findNearest()]
-            self.LANE = 1-closest_car['lane']
-            if(self.LOC < closest_car['location']):
-                self.ACCELERATION= MAX_ACCELERATION
-            else:
-                self.ACCELERATION = MIN_ACCELERATION
+            nearest=self.findNearest()
+            if nearest!="": 
+                closest_car = self.neighbours[nearest]
+                self.LANE = 1-closest_car['lane']
+                if(self.LOC < closest_car['location']):
+                    self.ACCELERATION= MAX_ACCELERATION
+                else:
+                    self.ACCELERATION = MIN_ACCELERATION
         
         elif(self.SPEED < (MAX_SPEED)):
             self.ACCELERATION = MAX_ACCELERATION
@@ -149,6 +151,12 @@ class SpeedSensor(threading.Thread):
         sender=str(sender)
         # print(sender); print(msg)
 
+
+        if self.outOfTransmissionRange(data):
+            self.neighbours.pop(sender)
+            self.visualizer.deleteCar(sender)
+            return
+
         if (sender in self.neighbours.keys()):
             self.neighbours[sender]['location']=data['location'];
             self.neighbours[sender]['lane'] = data['lane']; 
@@ -158,6 +166,13 @@ class SpeedSensor(threading.Thread):
             self.neighbours[sender] = data
 
         self.visualizer.update_car_list(sender,neighbours[sender])
+    
+    def outOfTransmissionRange(self,data):
+        senderLoc = data['location']//100
+        myLoc = self.LOC//100
+        if abs(senderLoc - myLoc) % 2 ==0:
+            return True
+        return False
 
     # Thread start routine
     def run(self):
@@ -206,15 +221,12 @@ class Visualizer:
         self.clear=clear
         self.table = table
         self.draw_timer=0
-        # Thread(target=self.run).start()
        
     def clear_canvas(self): 
   
-        # for windows 
         if os.name == 'nt': 
             _ = os.system('cls') 
       
-        # for mac and linux(here, os.name is 'posix') 
         else: 
             _ = os.system('clear') 
   
@@ -238,6 +250,16 @@ class Visualizer:
         for car_id in self.cars:
             self.track[ int(self.cars[car_id]['location']), int(self.cars[car_id]['lane'])]=int(car_id)
         # print(self.track[self.track!=0])
+
+    def deleteCar(self,sender):
+        self.cars.pop(sender)
+    # def update_car_list(self,sender,new_neighbors): 
+    #     self.cars = new_neighbors
+    #     self.track=np.zeros((TOTAL_LENGHT, 2))
+    #     for car_id in self.cars:
+    #         self.track[ int(self.cars[car_id]['location']), int(self.cars[car_id]['lane'])]=int(car_id)
+    #     # print(self.track[self.track!=0])
+
 
     def GenerateMap(self, sep=20):
         
@@ -326,10 +348,8 @@ class Visualizer:
                 
         
         print(sep + "-"*34)
-        
         print(sep + "|      " + "".join(list_11) + "      |")
         print(sep + "|      " + "".join(list_10) + "      |")
-        
         print(sep + "|      " + "-"*20 + "      |")
         
         for i in range(10):
@@ -418,7 +438,7 @@ class Visualizer:
         
         sys.stdout.write("-"*len(columns_str)+"\n")
         print("Controller Information: "+
-            "WIPER SPEED - "+ ["STOP", "SLOW","FAST"][0]+
+            "WIPER SPEED - "+ ["STOP", "SLOW","FAST"][0]+" "+
             "CAR LIGHT - "+ ["RIGHT", "LEFT"][0])
 
         print("Neighbour nodes:")
