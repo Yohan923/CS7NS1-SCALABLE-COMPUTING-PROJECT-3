@@ -55,7 +55,7 @@ class SpeedSensor(threading.Thread):
             self.STATUS = VehicleStatus.INACTIVE
 
         self.neighbours={}
-        self.visualizer=Visualizer(self.neighbours,clear=True,table=True, road_map=True)
+        self.visualizer=Visualizer(self.neighbours,clear=False,table=False, road_map=False)
         self.visualizer.update_car_list(nid,self.constrct_dict())
 
         self.update_timer = 0 
@@ -454,7 +454,7 @@ class Visualizer:
         sys.stdout.write("-"*len(columns_str)+"\n")
         print("Controller Information: "+
             "WIPER SPEED : "+ ["STOP", "SLOW","FAST"][full_vehicle_states['wiper_speed']]+
-            "\tCAR LIGHT : "+ ["RIGHT", "LEFT"][full_vehicle_states['light']])
+            "\tCAR LIGHT : "+ ["OFF", "DIM","NORMAL"][full_vehicle_states['light']])
 
 
 
