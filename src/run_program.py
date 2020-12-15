@@ -5,6 +5,8 @@ from iot_core.connections import MQTTConnection
 from node.devices.mqtt_client import MQTTClient
 from node.devices.headway_sensor import HeadwaySensor
 from node.devices.speed_sensor import SpeedSensor
+from node.devices.photo_sensor import PhotoSensor
+from node.devices.rainfall_sensor import RainfallSensor
 from node.devices.communication_device import CommunicationDevice
 from node.devices.wiper_controller import WiperController, WIPER_SPEED
 from node.devices.light_controller import LightController, LIGHT_INTENSITY
