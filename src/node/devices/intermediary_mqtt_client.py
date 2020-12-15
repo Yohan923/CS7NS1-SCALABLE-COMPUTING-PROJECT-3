@@ -16,3 +16,8 @@ class IntermediateMQTTClient(MQTTClient):
         subscribe_result = subscribe_future.result()
         print("Subscribed with {}".format(str(subscribe_result['qos'])))
         return packet_id
+    
+    def run(self):
+        self.connect()
+
+        self.subscribe("group9", callback=on_message_received)
