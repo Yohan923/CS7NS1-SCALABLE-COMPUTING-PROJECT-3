@@ -29,6 +29,7 @@ class RainfallSensor(Thread):
 
     def send(self, message):
         self.sock.sendto(message, 0, ('localhost', RAINFALL_PORT))
+        self.photo_sock.sendto(message, 0, ('localhost', WIPER_THREAD_PORT))
 
     def construct_packet(self,keys, values):
         packet = {}
