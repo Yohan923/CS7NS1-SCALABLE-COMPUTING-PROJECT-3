@@ -71,9 +71,10 @@ class WiperController(Thread):
             try:
                 command, _ = self.sock.recvfrom(100)
                 command = command.decode('utf-8')
+                if 'humidity' in message.keys():
+                    set_speed_by_rainfall(self, message['humidity'])
 
-                # for debug purpose
-                print("wiper thread receive command: "+command)
+
 
             except:
                 pass  
