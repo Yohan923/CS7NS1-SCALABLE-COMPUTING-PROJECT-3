@@ -400,6 +400,8 @@ class Visualizer:
         
         
     def GenerateTable(self):
+        
+        full_vehicle_states=config.my_vehicle.get_full_vehicle_states()
         #columns = ['NODE_ID','LOCATION', 'LANE', 'SPEED (m/s)', 'ACC (m/s^2)',  'WIPER SPEED', 'LIGHT']
         columns = ['NODE_ID','X', 'Y','LANE', 'SPEED ', 'ACC ',  'HUMIDITY', 'LIGHT INTENSITY']
         columns_str = "|  " + "  |  ".join(columns) + "  |"
@@ -430,6 +432,15 @@ class Visualizer:
                       ]
             
             record = [str(x) for x in record]
+            if 'humidity' in full_vehicle_states.keys():
+                record[6]=str(full_vehicle_states['humidity'])
+            else:
+                record[6]='/'
+            if 'light_intensity' in full_vehicle_states.keys():
+                record[7]=str(full_vehicle_states['light_intensity'])
+            else:
+                record[7]='/'
+
             message = "|"
             for i in range(len(record)):
                 field = record[i]
@@ -442,8 +453,8 @@ class Visualizer:
         
         sys.stdout.write("-"*len(columns_str)+"\n")
         print("Controller Information: "+
-            "WIPER SPEED : "+ ["STOP", "SLOW","FAST"][0]+""+
-            "\nCAR LIGHT : "+ ["RIGHT", "LEFT"][0])
+            "WIPER SPEED : "+ ["STOP", "SLOW","FAST"][full_vehicle_states['wiper_speed']]+
+            "\tCAR LIGHT : "+ ["RIGHT", "LEFT"][full_vehicle_states['light']])
 
 
 
