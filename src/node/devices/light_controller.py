@@ -19,7 +19,6 @@ class LightController(Thread):
     
     def set_state(self, headlight_state):
         self._headlight_state = headlight_state
-
     
     def get_state(self):
         return self._headlight_state
@@ -47,7 +46,9 @@ class LightController(Thread):
         values = [self.get_state()]
         myPacket = self.construct_packet(keys, values)
         return myPacket
-    
+ 
+
+
     def run(self):
         print("light controller start")  
 
@@ -66,11 +67,11 @@ class LightController(Thread):
 
             # receive
             try:
-                command, _ = self.sock.recvfrom(100)
-                command = command.decode('utf-8')
-
-                # for debug purpose
-                print("light controller thread receive command: "+command)
+                message, _ = self.sock.recvfrom(100)
+                message = message.decode('utf-8')
+                message=json.loads(message)
+                if 'light_intensity' in message.keys():
+                    set_speed_by_photo_intensity(self, message['light_intensity'])
 
             except:
                 pass  
