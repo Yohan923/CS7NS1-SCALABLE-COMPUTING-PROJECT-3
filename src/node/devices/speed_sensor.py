@@ -30,11 +30,14 @@ TOTAL_LENGHT = 400
 UPDATE_INTERVAL=1
 DRAW_INTERVAL=0.1
 
-
+class VehicleStatus():
+    ACTIVE = 1
+    INACTIVE = 0
+    DARK = 20
 
 class SpeedSensor(threading.Thread):
     
-    def __init__(self,nid,loc,lane,speed,acc):
+    def __init__(self,nid,loc,lane,speed,acc,status=1):
         threading.Thread.__init__(self)
         self.sock = 0
         self.port = SPEED_THREAD_PORT
@@ -46,10 +49,11 @@ class SpeedSensor(threading.Thread):
         self.LOC = loc
         self.LANE = lane
         self.DIRECTION = int(loc/100)
-        self.STATUS = "ACTIVE"
-        self.is_running = True
+        if status==1:
+            self.STATUS = VehicleStatus.ACTIVE
+        elif: status ==0:
+            self.STATUS = VehicleStatus.INACTIVE
 
-        # print("Initializing track\n")
         self.neighbours={}
         self.visualizer=Visualizer(self.neighbours,clear=True,table=True, road_map=True)
         self.visualizer.update_car_list(nid,self.constrct_dict())
@@ -80,13 +84,16 @@ class SpeedSensor(threading.Thread):
 
 
     def update(self):
-        self.ControlSpeedAndAcceleration()
-        if self.STATUS == "ACTIVE":
+        
+        if self.STATUS == VehicleStatus.ACTIVE:
+            self.ControlSpeedAndAcceleration()
             prev_loc = self.LOC
             self.LOC = int( prev_loc + (self.SPEED*TIME_INTERVAL) )%400 
-
             self.SPEED = self.SPEED + (self.ACCELERATION*TIME_INTERVAL)
             self.SPEED = max (0, self.SPEED)
+        elif: self.STATUS == VehicleStatus.INACTIVE:
+            self.SPEED =0;self.ACCELERATION=0;
+
 
         keys = ["speed", "location","acceleration","lane","direction"]
         values = [self.SPEED, self.LOC,self.ACCELERATION, self.LANE,self.DIRECTION]
@@ -111,9 +118,6 @@ class SpeedSensor(threading.Thread):
     # Default action handler
     def command_default(self):
         pass
-
-    def Stop(self):
-        self.is_running = False
 
     def SwitchLanes(self):
         self.LANE = (self.LANE+1)%2
@@ -438,10 +442,10 @@ class Visualizer:
         
         sys.stdout.write("-"*len(columns_str)+"\n")
         print("Controller Information: "+
-            "WIPER SPEED - "+ ["STOP", "SLOW","FAST"][0]+" "+
-            "CAR LIGHT - "+ ["RIGHT", "LEFT"][0])
+            "WIPER SPEED : "+ ["STOP", "SLOW","FAST"][0]+""+
+            "\nCAR LIGHT : "+ ["RIGHT", "LEFT"][0])
 
-        print("Neighbour nodes:")
+
 
 
 
