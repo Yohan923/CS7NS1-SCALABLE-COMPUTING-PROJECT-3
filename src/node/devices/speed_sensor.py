@@ -273,12 +273,14 @@ class Visualizer:
 
     def GenerateMap(self, sep=20):
         
-        print()
-        print("Car Lenght: 1 meter")
-        print("Each character represents 10 meters/car lenghts. Therefore there might an overlap if cars are close to each other.")
+        visualBuilder = ""
+        visualBuilder += "\n"
+        visualBuilder += ("Car Lenght: 1 meter \n")
+        visualBuilder += ("Each character represents 10 meters/car lenghts. Therefore there might an overlap if cars are close to each other. \n")
         
         sep = " " * sep
-        print()
+        visualBuilder += "\n"
+        
         
         seg = self.track[:100][:,0]
         list_00 = [" " for _ in range(10)]
@@ -357,10 +359,10 @@ class Visualizer:
         
                 
         
-        print(sep + "-"*34)
-        print(sep + "|      " + "".join(list_11) + "      |")
-        print(sep + "|      " + "".join(list_10) + "      |")
-        print(sep + "|      " + "-"*20 + "      |")
+        visualBuilder += (sep + "-"*34 + "\n")
+        visualBuilder += (sep + "|      " + "".join(list_11) + "      |" + "\n")
+        visualBuilder += (sep + "|      " + "".join(list_10) + "      |" + "\n")
+        visualBuilder += (sep + "|      " + "-"*20 + "      |" + "\n")
         
         for i in range(10):
             line = "|"
@@ -369,12 +371,13 @@ class Visualizer:
             cell_3_1 = list_20[i]
             cell_3_2 = list_21[i]
             line = "| {} {} |".format(cell_1_1, cell_1_2) + " "*(20) +"| {} {} |".format(cell_3_1, cell_3_2)
-            print(sep + line)
+            visualBuilder += (sep + line) + "\n"
         
-        print(sep + "|      " + "-"*20 + "      |")
-        print(sep + "|      " + "".join(list_30) + "      |")
-        print(sep + "|      " + "".join(list_31) + "      |")
-        print(sep + "-"*34)
+        visualBuilder += (sep + "|      " + "-"*20 + "      |" + "\n")
+        visualBuilder += (sep + "|      " + "".join(list_30) + "      |" + "\n")
+        visualBuilder += (sep + "|      " + "".join(list_31) + "      |" + "\n")
+        visualBuilder += (sep + "-"*34) + "\n"
+        print(visualBuilder)
         
         
 
@@ -384,11 +387,11 @@ class Visualizer:
         
     def GenerateEmptyMap(self):
         
-        
-        print("-"*24)
-        print("|      " + " "*10 + "      |")
-        print("|      " + " "*10 + "      |")
-        print("|      " + "-"*10 + "      |")
+        visualBuilder = ""
+        visualBuilder += ("-"*24) + "\n"
+        visualBuilder += ("|      " + " "*10 + "      |" + "\n")
+        visualBuilder += ("|      " + " "*10 + "      |" + "\n")
+        visualBuilder += ("|      " + "-"*10 + "      |" + "\n")
         
         for i in range(10):
             line = "|"
@@ -397,12 +400,13 @@ class Visualizer:
             cell_3_1 = " "
             cell_3_2 = " "
             line = "| {} {} |".format(cell_1_1, cell_1_2) + " "*(10) +"| {} {} |".format(cell_3_1, cell_3_2)
-            print(line)
+            visualBuilder += (line) + "\n"
         
-        print("|      " + "-"*10 + "      |")
-        print("|      " + " "*10 + "      |")
-        print("|      " + " "*10 + "      |")
-        print("-"*24)
+        visualBuilder += ("|      " + "-"*10 + "      |" + "\n")
+        visualBuilder += ("|      " + " "*10 + "      |" + "\n")
+        visualBuilder += ("|      " + " "*10 + "      |" + "\n")
+        visualBuilder += ("-"*24) + "\n"
+        print(visualBuilder)
         
         
     def GenerateTable(self):
@@ -449,7 +453,9 @@ class Visualizer:
             sys.stdout.write(message+"\n")
         
         sys.stdout.write("-"*len(columns_str)+"\n")
-        print()
+        
+        visualBuilder = ""
+        visualBuilder += "\n"
         if 'humidity' in full_vehicle_states.keys():
             humidity=str(full_vehicle_states['humidity'])
         else:
@@ -458,10 +464,11 @@ class Visualizer:
             light_intensity=str(full_vehicle_states['light_intensity'])
         else:
             light_intensity='/'
-        print("HUMIDITY: "+humidity+"\tLIGHT INTENSITY: "+light_intensity)
-        print("Controller Information: \n"+
+        visualBuilder += ("HUMIDITY: "+humidity+"\tLIGHT INTENSITY: "+light_intensity + "\n")
+        visualBuilder += ("Controller Information: \n"+
             "WIPER SPEED : "+ ["STOP", "SLOW","FAST"][full_vehicle_states['wiper_speed']]+
-            "\tCAR LIGHT : "+ ["OFF", "DIM","NORMAL"][full_vehicle_states['light']])
+            "\tCAR LIGHT : "+ ["OFF", "DIM","NORMAL"][full_vehicle_states['light']] + "\n")
+        print(visualBuilder)
 
 
 
