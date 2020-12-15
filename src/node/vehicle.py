@@ -161,17 +161,19 @@ class Vehicle():
                         # We got a message from the network
                         command, _ = self.aodv_sock.recvfrom(2000)
                         command = command.decode('utf-8')  
-                        # print("received aodv->main"+message)
+                        
                         message = json.loads(command)
                         
                         if "neighbors" in message.keys():
                             keys = ["neighbors"]
                             self.update(message,keys)
                         elif "humidity" in message.keys():
+                            print("received aodv->main "+message)
                             keys = ["humidity"]
                             self.update(message,keys)
                             #self.aodv_sock.sendto(message, 0, ('localhost', RAINFALL_THREAD_PORT))
                         elif "light_intensity" in message.keys():
+                            print("received aodv->main "+message)
                             keys = ["light_intensity"]
                             self.update(message,keys)
                             #self.aodv_sock.sendto(message, 0, ('localhost', LIGHT_THREAD_PORT))
