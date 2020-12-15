@@ -270,8 +270,8 @@ class Visualizer:
         
         visualBuilder = ""
         visualBuilder += "\n"
-        visualBuilder += ("Car Lenght: 1 meter")
-        visualBuilder += ("Each character represents 10 meters/car lenghts. Therefore there might an overlap if cars are close to each other.")
+        visualBuilder += ("Car Lenght: 1 meter \n")
+        visualBuilder += ("Each character represents 10 meters/car lenghts. Therefore there might an overlap if cars are close to each other. \n")
         
         sep = " " * sep
         visualBuilder += "\n"
@@ -354,10 +354,10 @@ class Visualizer:
         
                 
         
-        visualBuilder += (sep + "-"*34)
-        visualBuilder += (sep + "|      " + "".join(list_11) + "      |")
-        visualBuilder += (sep + "|      " + "".join(list_10) + "      |")
-        visualBuilder += (sep + "|      " + "-"*20 + "      |")
+        visualBuilder += (sep + "-"*34 + "\n")
+        visualBuilder += (sep + "|      " + "".join(list_11) + "      |" + "\n")
+        visualBuilder += (sep + "|      " + "".join(list_10) + "      |" + "\n")
+        visualBuilder += (sep + "|      " + "-"*20 + "      |" + "\n")
         
         for i in range(10):
             line = "|"
@@ -366,12 +366,13 @@ class Visualizer:
             cell_3_1 = list_20[i]
             cell_3_2 = list_21[i]
             line = "| {} {} |".format(cell_1_1, cell_1_2) + " "*(20) +"| {} {} |".format(cell_3_1, cell_3_2)
-            visualBuilder += (sep + line)
+            visualBuilder += (sep + line) + "\n"
         
-        visualBuilder += (sep + "|      " + "-"*20 + "      |")
-        visualBuilder += (sep + "|      " + "".join(list_30) + "      |")
-        visualBuilder += (sep + "|      " + "".join(list_31) + "      |")
-        visualBuilder += (sep + "-"*34)
+        visualBuilder += (sep + "|      " + "-"*20 + "      |" + "\n")
+        visualBuilder += (sep + "|      " + "".join(list_30) + "      |" + "\n")
+        visualBuilder += (sep + "|      " + "".join(list_31) + "      |" + "\n")
+        visualBuilder += (sep + "-"*34) + "\n"
+        print(visualBuilder)
         
         
 
@@ -382,10 +383,10 @@ class Visualizer:
     def GenerateEmptyMap(self):
         
         visualBuilder = ""
-        visualBuilder += ("-"*24)
-        visualBuilder += ("|      " + " "*10 + "      |")
-        visualBuilder += ("|      " + " "*10 + "      |")
-        visualBuilder += ("|      " + "-"*10 + "      |")
+        visualBuilder += ("-"*24) + "\n"
+        visualBuilder += ("|      " + " "*10 + "      |" + "\n")
+        visualBuilder += ("|      " + " "*10 + "      |" + "\n")
+        visualBuilder += ("|      " + "-"*10 + "      |" + "\n")
         
         for i in range(10):
             line = "|"
@@ -394,12 +395,12 @@ class Visualizer:
             cell_3_1 = " "
             cell_3_2 = " "
             line = "| {} {} |".format(cell_1_1, cell_1_2) + " "*(10) +"| {} {} |".format(cell_3_1, cell_3_2)
-            visualBuilder += (line)
+            visualBuilder += (line) + "\n"
         
-        visualBuilder += ("|      " + "-"*10 + "      |")
-        visualBuilder += ("|      " + " "*10 + "      |")
-        visualBuilder += ("|      " + " "*10 + "      |")
-        visualBuilder += ("-"*24)
+        visualBuilder += ("|      " + "-"*10 + "      |" + "\n")
+        visualBuilder += ("|      " + " "*10 + "      |" + "\n")
+        visualBuilder += ("|      " + " "*10 + "      |" + "\n")
+        visualBuilder += ("-"*24) + "\n"
         print(visualBuilder)
         
         
