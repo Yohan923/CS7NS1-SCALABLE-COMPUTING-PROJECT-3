@@ -26,4 +26,4 @@ class IntermediarySocketListener(Thread):
             readable, _, _ = select.select(inputs, outputs, inputs)
             for r in readable:
                 if r is listener_sock:
-                    pass
+                    # TODO: send update from group 9 to mqtt
