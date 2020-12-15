@@ -17,6 +17,7 @@ if __name__ == "__main__":
     parser.add_argument("--neighbors", help="enter neighbors", nargs='+')
     parser.add_argument("--location", help="enter initial x location",type=float,default=0)
     parser.add_argument("--lane", help="enter current lane id",type=int,default=0)
+    parser.add_argument("--status", help="enter vehicle status, active=1, inactive=0",type=int,default=1)
     parser.add_argument("--speed", help="enter initial speed ",type=float,default=0)
     parser.add_argument("--acceleration", help="enter initial acceleration",type=float,default=3)
 
@@ -27,7 +28,7 @@ if __name__ == "__main__":
         id=args.nid,
         communication_device=CommunicationDevice(args.nid,args.neighbors),
         mqtt_client=MQTTClient(MQTTConnection.get_mqtt_connection_over_websocket()),
-        speed_sensor=SpeedSensor(args.nid,args.location,args.lane,args.speed,args.acceleration), 
+        speed_sensor=SpeedSensor(args.nid,args.location,args.lane,args.speed,args.acceleration,status=args.status), 
         wiper_controller=WiperController(WIPER_SPEED.SLOW), 
         light_controller=LightController(LIGHT_INTENSITY.NORMAL),
         headway_sensor=HeadwaySensor(23)
