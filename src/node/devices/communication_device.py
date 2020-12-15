@@ -45,6 +45,8 @@ class CommunicationDevice(threading.Thread):
         self.status = "Active"
         self.hello_timer = 0
         self.location_sensor_data=""
+        self.photo_sensor_data=""
+        self.rainfall_sensor_data=""
         self.aodv_add_neighbor(neighbors,)
 
     def get_aodv_port(self, node):
@@ -72,6 +74,82 @@ class CommunicationDevice(threading.Thread):
         except:
             pass    
  
+    def broadcast_photo_sensor_data(self):
+        try:
+            for n in self.neighbors.keys():
+                message_type = "BROADCAST_MESSAGE_PHOTO"
+                sender = self.node_id
+                message = message_type + ":" + sender + ":" + str(self.photo_sensor_data)
+                port = AODV_NETWORK_PORT
+                self.aodv_send(n, int(port), message)
+                logging.debug("['" + message_type + "', '" + sender + "', " + 
+                              "Sending photo_sensor_data message to " + str(n) + "']")
+
+        except:
+            pass   
+
+
+
+    def broadcast_rainfall_sensor_data(self):
+        try:
+            for n in self.neighbors.keys():
+                message_type = "BROADCAST_MESSAGE_RAINFALL"
+                sender = self.node_id
+                message = message_type + ":" + sender + ":" + str(self.rainfall_sensor_data)
+                port = AODV_NETWORK_PORT
+                self.aodv_send(n, int(port), message)
+                logging.debug("['" + message_type + "', '" + sender + "', " + 
+                              "Sending rainfall_sensor_data message to " + str(n) + "']")
+
+        except:
+            pass        
+
+    def aodv_process_broadcast_rainfall(self,message):
+        sender = message[1]
+        try:
+            message=json.dumps(message[2])
+            message_bytes = bytes(message, 'utf-8')
+            self.aodv_sock.sendto(message_bytes, 0, 
+                                      ('localhost', AODV_PORT))
+        except:
+            pass
+
+        try:
+            for n in self.neighbors.keys():
+                if n !=sender and n!= self.node_id:
+                message_type = "BROADCAST_MESSAGE_RAINFALL"
+                sender = self.node_id
+                message = message_type + ":" + sender + ":" + str(self.rainfall_sensor_data)
+                port = AODV_NETWORK_PORT
+                self.aodv_send(n, int(port), message)
+
+        except:
+            pass     
+
+    def aodv_process_broadcast_photo(self,message):
+        sender = message[1]
+
+        try:
+            message=json.dumps(message[2])
+            message_bytes = bytes(message, 'utf-8')
+            self.aodv_sock.sendto(message_bytes, 0, 
+                                      ('localhost', AODV_PORT))
+        except:
+            pass
+
+        try:
+            for n in self.neighbors.keys():
+                if n !=sender and n!= self.node_id:
+                    message_type = "BROADCAST_MESSAGE_PHOTO"
+                    sender = self.node_id
+                    message = message_type + ":" + sender + ":" + str(self.photo_sensor_data)
+                    port = AODV_NETWORK_PORT
+                    self.aodv_send(n, int(port), message)
+                    logging.debug("['" + message_type + "', '" + sender + "', " + 
+                                  "Sending photo_sensor_data message to " + str(n) + "']")
+
+        except:
+            pass  
 
 
     # Send the hello message to all the neighbors
@@ -721,7 +799,17 @@ class CommunicationDevice(threading.Thread):
                 elif r is self.tester_sock:
                     command, _ = self.tester_sock.recvfrom(1000)
                     command = command.decode('utf-8')
-                    self.location_sensor_data = json.loads(command)
+                    sensor_data = json.loads(command)
+                    if 'light_intensity' in sensor_data.keys():
+                        self.photo_sensor_data = sensor_data
+                        self.broadcast_photo_sensor_data();
+                    elif 'humidity' in sensor_data.keys():
+                        self.rainfall_sensor_data = sensor_data
+                        self.broadcast_photo_sensor_data();
+                    elif 'location' in sensor_data.keys():
+                        self.location_sensor_data = sensor_data
+
+
 
 
                 elif r is self.aodv_sock:
@@ -745,5 +833,10 @@ class CommunicationDevice(threading.Thread):
                     elif (message_type == "RERR_MESSAGE"):
                         message = re.split(':', message)
                         self.aodv_process_rerr_message(message)
-           
+                    elif (message_type == "BROADCAST_MESSAGE_RAINFALL"):
+                        message = re.split(':', message)
+                        self.aodv_process_broadcast_rainfall(message)                       
+                    elif (message_type == "BROADCAST_MESSAGE_PHOTO"):
+                        message = re.split(':', message)
+                        self.aodv_process_broadcast_photo(message)             
 # End of File
