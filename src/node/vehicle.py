@@ -175,7 +175,6 @@ class Vehicle():
 
                     elif r is self.photo_sock:
                         message, _ = self.photo_sock.recvfrom(2000)
-                        self.photo_sock.sendto(message, 0, ('localhost', LIGHT_PORT))
                         message = message.decode('utf-8')  
                         message = json.loads(message)
                         # print(message)

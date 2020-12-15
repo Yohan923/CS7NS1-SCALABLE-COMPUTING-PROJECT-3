@@ -60,8 +60,6 @@ class PhotoSensor(Thread):
                 command, _ = self.sock.recvfrom(100)
                 command = command.decode('utf-8')
 
-                # for debug purpose
-                print("photo thread receive command: "+command)
 
             except:
                 pass  
