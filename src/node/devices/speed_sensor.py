@@ -51,7 +51,7 @@ class SpeedSensor(threading.Thread):
         self.DIRECTION = int(loc/100)
         if status==1:
             self.STATUS = VehicleStatus.ACTIVE
-        elif: status ==0:
+        elif status ==0:
             self.STATUS = VehicleStatus.INACTIVE
 
         self.neighbours={}
