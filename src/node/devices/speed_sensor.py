@@ -55,7 +55,7 @@ class SpeedSensor(threading.Thread):
             self.STATUS = VehicleStatus.INACTIVE
 
         self.neighbours={}
-        self.visualizer=Visualizer(self.neighbours,clear=False,table=False, road_map=False)
+        self.visualizer=Visualizer(self.neighbours,clear=True,table=True, road_map=True)
         self.visualizer.update_car_list(nid,self.constrct_dict())
 
         self.update_timer = 0 
@@ -401,7 +401,6 @@ class Visualizer:
         
     def GenerateTable(self):
         full_vehicle_states=config.my_vehicle.get_full_vehicle_states()
-        print(full_vehicle_states)
 
         #columns = ['NODE_ID','LOCATION', 'LANE', 'SPEED (m/s)', 'ACC (m/s^2)',  'WIPER SPEED', 'LIGHT']
         columns = ['NODE_ID','X', 'Y','LANE', 'SPEED ', 'ACC ',  'HUMIDITY', 'LIGHT INTENSITY']
