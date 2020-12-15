@@ -178,7 +178,7 @@ class Vehicle():
                         message = message.decode('utf-8')  
                         message = json.loads(message)
                         # print(message)
-                        keys = ["light"]
+                        keys = ["light_intensity"]
                         self.update(message,keys)
 
                     elif r is self.rainfall_sock:
@@ -186,5 +186,5 @@ class Vehicle():
                         message = message.decode('utf-8')  
                         message = json.loads(message)
                         # print(message)
-                        keys = ["light"]
+                        keys = ["humidity"]
                         self.update(message,keys)                        
