@@ -62,6 +62,7 @@ class SpeedSensor(threading.Thread):
 
         
     def send(self, message):
+        message = bytes(message, 'utf-8')
         self.sock.sendto(message, 0, ('localhost', AODV_SPEED_PORT))
         self.sock.sendto(message, 0, ('localhost', SPEED_PORT))
 
@@ -102,8 +103,7 @@ class SpeedSensor(threading.Thread):
 
         try:
             myPacket = self.construct_packet(keys, values)
-            myPacket_bytes = bytes(myPacket, 'utf-8')
-            self.send(myPacket_bytes)   
+            self.send(myPacket)   
 
             # Restart the timer
             self.update_timer.cancel()

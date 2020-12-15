@@ -154,8 +154,15 @@ class Vehicle():
                         message = message.decode('utf-8')  
                         message = json.loads(message)
                         # print(message)
-                        keys = ["neighbors"]
-                        self.update(message,keys)
+                        if "neighbors" in message.keys():
+                            keys = ["neighbors"]
+                            self.update(message,keys)
+                        elif "humidity" in message.keys():
+                            keys = ["humidity"]
+                            self.update(message,keys)
+                        elif "light_intensity" in message.keys():
+                            keys = ["light_intensity"]
+                            self.update(message,keys)
 
                     elif r is self.wiper_sock:
                         message, _ = self.wiper_sock.recvfrom(2000)
