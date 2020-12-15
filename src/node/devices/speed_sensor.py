@@ -376,7 +376,8 @@ class Visualizer:
         
         
     def GenerateTable(self):
-        columns = ['NODE_ID','LOCATION', 'LANE', 'SPEED (m/s)', 'ACC (m/s^2)',  'WIPER SPEED', 'LIGHT']
+        #columns = ['NODE_ID','LOCATION', 'LANE', 'SPEED (m/s)', 'ACC (m/s^2)',  'WIPER SPEED', 'LIGHT']
+        columns = ['NODE_ID','X', 'Y','LANE', 'SPEED ', 'ACC ',  'HUMIDITY', 'LIGHT INTENSITY']
         columns_str = "|  " + "  |  ".join(columns) + "  |"
         columns = columns_str.split("|")[1:-1]
         sys.stdout.write("-"*len(columns_str)+"\n")
@@ -385,9 +386,18 @@ class Visualizer:
         
         for car_id in self.cars.keys():
             loc = int(self.cars[car_id]['location'])
-            loc = "{} ({})".format(loc%100, ["Left", "Top", "Right", "Bottom", "Bottom"][loc//100])
+            if loc//100==0:
+                locx=0;locy=loc;
+            elif loc//100 == 1:
+                locx=loc%100;locy=100;
+            elif loc//100 == 2:
+                locx=100;locy=100-loc%100;
+            else:
+                locx=100-loc%100;locy=0;
+
+            #loc = "{} ({})".format(loc%100, ["Left", "Top", "Right", "Bottom", "Bottom"][loc//100])
             record = [ int(car_id),
-                        self.cars[car_id]['location'],
+                        locx,locy,
                       ["RIGHT", "LEFT"][self.cars[car_id]['lane']],
                       self.cars[car_id]['speed'],
                       self.cars[car_id]['acceleration'],
@@ -407,7 +417,11 @@ class Visualizer:
             sys.stdout.write(message+"\n")
         
         sys.stdout.write("-"*len(columns_str)+"\n")
-            
+        print("Controller Information: "+
+            "WIPER SPEED - "+ ["STOP", "SLOW","FAST"][0]+
+            "CAR LIGHT - "+ ["RIGHT", "LEFT"][0])
+
+        print("Neighbour nodes:")
 
 
 
