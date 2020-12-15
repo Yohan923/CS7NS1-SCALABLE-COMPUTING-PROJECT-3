@@ -91,7 +91,7 @@ class SpeedSensor(threading.Thread):
             self.LOC = int( prev_loc + (self.SPEED*TIME_INTERVAL) )%400 
             self.SPEED = self.SPEED + (self.ACCELERATION*TIME_INTERVAL)
             self.SPEED = max (0, self.SPEED)
-        elif: self.STATUS == VehicleStatus.INACTIVE:
+        elif self.STATUS == VehicleStatus.INACTIVE:
             self.SPEED =0;self.ACCELERATION=0;
 
 
