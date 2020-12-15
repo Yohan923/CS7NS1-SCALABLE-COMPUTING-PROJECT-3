@@ -152,7 +152,7 @@ class SpeedSensor(threading.Thread):
         # print(sender); print(msg)
 
 
-        if self.outOfTransmissionRange(data):
+        if sender != self.nid and self.outOfTransmissionRange(data):
             self.neighbours.pop(sender)
             self.visualizer.deleteCar(sender)
             return
