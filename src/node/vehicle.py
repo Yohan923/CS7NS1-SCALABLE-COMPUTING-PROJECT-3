@@ -177,7 +177,7 @@ class Vehicle():
                         message, _ = self.photo_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         message = json.loads(message)
-                        # print(message)
+                        print(message)
                         keys = ["light_intensity"]
                         self.update(message,keys)
 
@@ -185,6 +185,6 @@ class Vehicle():
                         message, _ = self.rainfall_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         message = json.loads(message)
-                        # print(message)
+                        print(message)
                         keys = ["humidity"]
                         self.update(message,keys)                        
