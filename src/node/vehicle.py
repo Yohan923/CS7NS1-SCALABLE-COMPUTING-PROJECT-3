@@ -91,6 +91,7 @@ class Vehicle():
         self.headway_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         if photo_sensor:
+            print("dddddd")
             self.photo_sensor = photo_sensor
             self.devices.append(self.photo_sensor)
             self.photo_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -121,6 +122,7 @@ class Vehicle():
 
         for device in self.devices:
             device.start()
+
         while True:
             
             inputs = [self.speed_sock, self.headway_sock, self.aodv_sock,self.wiper_sock,self.light_sock,self.photo_sock,self.rainfall_sock]
