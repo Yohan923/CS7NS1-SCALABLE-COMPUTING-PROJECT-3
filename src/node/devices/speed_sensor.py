@@ -446,6 +446,8 @@ class Visualizer:
             sys.stdout.write(message+"\n")
         
         sys.stdout.write("-"*len(columns_str)+"\n")
+        
+        visualBuilder = ""
         visualBuilder += "\n"
         if 'humidity' in full_vehicle_states.keys():
             humidity=str(full_vehicle_states['humidity'])
