@@ -403,7 +403,7 @@ class Visualizer:
         full_vehicle_states=config.my_vehicle.get_full_vehicle_states()
 
         #columns = ['NODE_ID','LOCATION', 'LANE', 'SPEED (m/s)', 'ACC (m/s^2)',  'WIPER SPEED', 'LIGHT']
-        columns = ['NODE_ID','X', 'Y','LANE', 'SPEED ', 'ACC ',  'HUMIDITY', 'LIGHT INTENSITY']
+        columns = ['NODE_ID','X', 'Y','LANE', 'SPEED ', 'ACC ']
         columns_str = "|  " + "  |  ".join(columns) + "  |"
         columns = columns_str.split("|")[1:-1]
         sys.stdout.write("-"*len(columns_str)+"\n")
@@ -426,20 +426,11 @@ class Visualizer:
                         locx,locy,
                       ["RIGHT", "LEFT"][self.cars[car_id]['lane']],
                       self.cars[car_id]['speed'],
-                      self.cars[car_id]['acceleration'],
-                      1,
-                      0
+                      self.cars[car_id]['acceleration']
                       ]
             
             record = [str(x) for x in record]
-            if 'humidity' in full_vehicle_states.keys():
-                record[6]=str(full_vehicle_states['humidity'])
-            else:
-                record[6]='/'
-            if 'light_intensity' in full_vehicle_states.keys():
-                record[7]=str(full_vehicle_states['light_intensity'])
-            else:
-                record[7]='/'
+
 
             message = "|"
             for i in range(len(record)):
@@ -452,7 +443,17 @@ class Visualizer:
             sys.stdout.write(message+"\n")
         
         sys.stdout.write("-"*len(columns_str)+"\n")
-        print("Controller Information: "+
+        print()
+        if 'humidity' in full_vehicle_states.keys():
+            humidity=str(full_vehicle_states['humidity'])
+        else:
+            humidity='/'
+        if 'light_intensity' in full_vehicle_states.keys():
+            light_intensity=str(full_vehicle_states['light_intensity'])
+        else:
+            light_intensity='/'
+        print("HUMIDITY: "+humidity+"\tLIGHT INTENSITY: "+light_intensity)
+        print("Controller Information: \n"+
             "WIPER SPEED : "+ ["STOP", "SLOW","FAST"][full_vehicle_states['wiper_speed']]+
             "\tCAR LIGHT : "+ ["OFF", "DIM","NORMAL"][full_vehicle_states['light']])
 

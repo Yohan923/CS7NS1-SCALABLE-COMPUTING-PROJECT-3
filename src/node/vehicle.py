@@ -160,9 +160,11 @@ class Vehicle():
                         elif "humidity" in message.keys():
                             keys = ["humidity"]
                             self.update(message,keys)
+                            #self.aodv_sock.sendto(message, 0, ('localhost', RAINFALL_THREAD_PORT))
                         elif "light_intensity" in message.keys():
                             keys = ["light_intensity"]
                             self.update(message,keys)
+                            #self.aodv_sock.sendto(message, 0, ('localhost', LIGHT_THREAD_PORT))
 
                     elif r is self.wiper_sock:
                         message, _ = self.wiper_sock.recvfrom(2000)
