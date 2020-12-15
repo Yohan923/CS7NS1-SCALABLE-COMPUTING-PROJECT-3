@@ -1,5 +1,5 @@
 from threading import Thread
-import time
+import time,socket,json
 PHOTO_PORT = 33885
 PHOTO_THREAD_PORT = 33985
 RAINFALL_PORT = 33886
