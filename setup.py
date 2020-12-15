@@ -7,6 +7,7 @@ COMMANDS = [
     'pip install boto3',
     'pip install numpy'
     'pip install opensimplex',
+    'pip install numpy',
     'python setup_aws.py',
     'python setup_thing.py'
 ]
