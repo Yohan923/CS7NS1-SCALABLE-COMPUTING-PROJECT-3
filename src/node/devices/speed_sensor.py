@@ -269,13 +269,12 @@ class Visualizer:
     def GenerateMap(self, sep=20):
         
         visualBuilder = ""
-
-        visualBuilder += ()
+        visualBuilder += "\n"
         visualBuilder += ("Car Lenght: 1 meter")
         visualBuilder += ("Each character represents 10 meters/car lenghts. Therefore there might an overlap if cars are close to each other.")
         
         sep = " " * sep
-        visualBuilder += ()
+        visualBuilder += "\n"
         
         
         seg = self.track[:100][:,0]
@@ -447,7 +446,7 @@ class Visualizer:
             sys.stdout.write(message+"\n")
         
         sys.stdout.write("-"*len(columns_str)+"\n")
-        visualBuilder += ()
+        visualBuilder += "\n"
         if 'humidity' in full_vehicle_states.keys():
             humidity=str(full_vehicle_states['humidity'])
         else:
