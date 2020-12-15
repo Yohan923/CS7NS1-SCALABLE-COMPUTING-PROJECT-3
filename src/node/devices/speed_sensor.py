@@ -381,7 +381,7 @@ class Visualizer:
         
     def GenerateEmptyMap(self):
         
-        
+        visualBuilder = ""
         visualBuilder += ("-"*24)
         visualBuilder += ("|      " + " "*10 + "      |")
         visualBuilder += ("|      " + " "*10 + "      |")
@@ -400,6 +400,7 @@ class Visualizer:
         visualBuilder += ("|      " + " "*10 + "      |")
         visualBuilder += ("|      " + " "*10 + "      |")
         visualBuilder += ("-"*24)
+        print(visualBuilder)
         
         
     def GenerateTable(self):
@@ -457,10 +458,11 @@ class Visualizer:
             light_intensity=str(full_vehicle_states['light_intensity'])
         else:
             light_intensity='/'
-        visualBuilder += ("HUMIDITY: "+humidity+"\tLIGHT INTENSITY: "+light_intensity)
+        visualBuilder += ("HUMIDITY: "+humidity+"\tLIGHT INTENSITY: "+light_intensity + "\n")
         visualBuilder += ("Controller Information: \n"+
             "WIPER SPEED : "+ ["STOP", "SLOW","FAST"][full_vehicle_states['wiper_speed']]+
-            "\tCAR LIGHT : "+ ["OFF", "DIM","NORMAL"][full_vehicle_states['light']])
+            "\tCAR LIGHT : "+ ["OFF", "DIM","NORMAL"][full_vehicle_states['light']] + "\n")
+        print(visualBuilder)
 
 
 
