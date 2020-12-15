@@ -21,6 +21,10 @@ WIPER_PORT=33883
 WIPER_THREAD_PORT=33983
 LIGHT_PORT=33884
 LIGHT_THREAD_PORT=33984
+PHOTO_PORT = 33885
+PHOTO_THREAD_PORT = 33985
+RAINFALL_PORT = 33886
+RAINFALL_THREAD_PORT = 33986 
 AODV_NETWORK_PORT = 33300 
 AODV_SPEED_PORT=33500
 
@@ -89,10 +93,19 @@ class Vehicle():
         if photo_sensor:
             self.photo_sensor = photo_sensor
             self.devices.append(self.photo_sensor)
-        
+            self.photo_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.photo_sock.bind(('localhost', PHOTO_PORT))
+            self.photo_sock.setblocking(0)
+            self.photo_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)            
+   
         if rainfall_sensor:
             self.rainfall_sensor = rainfall_sensor
             self.devices.append(self.rainfall_sensor)
+            self.rainfall_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.rainfall_sock.bind(('localhost', RAINFALL_PORT))
+            self.rainfall_sock.setblocking(0)
+            self.rainfall_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  
+
 
     def update(self,message,keys):
         for k in keys:
@@ -110,7 +123,7 @@ class Vehicle():
             device.start()
         while True:
             
-            inputs = [self.speed_sock, self.headway_sock, self.aodv_sock,self.wiper_sock,self.light_sock]
+            inputs = [self.speed_sock, self.headway_sock, self.aodv_sock,self.wiper_sock,self.light_sock,self.photo_sock,self.rainfall_sock]
             outputs = []
             
             # Run the main loop
@@ -160,3 +173,18 @@ class Vehicle():
                         keys = ["light"]
                         self.update(message,keys)
 
+                    elif r is self.photo_sock:
+                        message, _ = self.photo_sock.recvfrom(2000)
+                        message = message.decode('utf-8')  
+                        message = json.loads(message)
+                        # print(message)
+                        keys = ["light"]
+                        self.update(message,keys)
+
+                    elif r is self.rainfall_sock:
+                        message, _ = self.rainfall_sock.recvfrom(2000)
+                        message = message.decode('utf-8')  
+                        message = json.loads(message)
+                        # print(message)
+                        keys = ["light"]
+                        self.update(message,keys)                        

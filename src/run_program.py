@@ -20,9 +20,20 @@ if __name__ == "__main__":
     parser.add_argument("--status", help="enter vehicle status, active=1, inactive=0",type=int,default=1)
     parser.add_argument("--speed", help="enter initial speed ",type=float,default=0)
     parser.add_argument("--acceleration", help="enter initial acceleration",type=float,default=3)
-
+    parser.add_argument("--photo_sensor", help="set light intensity. Set this to zero if no photo_sensor",default=0)
+    parser.add_argument("--rainfall_sensor", help="set humidity. Set this to zero if no rainfall_sensor",default=0)
 
     args = parser.parse_args()
+
+    if args.photo_sensor !=0:
+        photo_sensor=PhotoSensor(args.photo_sensor)
+    else:
+        photo_sensor=None, 
+    if args.rainfall_sensor !=0:
+        rainfall_sensor=RainfallSensor(args.rainfall_sensor)
+    else:
+        rainfall_sensor=None, 
+
 
     vehicle = Vehicle(
         id=args.nid,
@@ -31,7 +42,9 @@ if __name__ == "__main__":
         speed_sensor=SpeedSensor(args.nid,args.location,args.lane,args.speed,args.acceleration,status=args.status), 
         wiper_controller=WiperController(WIPER_SPEED.SLOW), 
         light_controller=LightController(LIGHT_INTENSITY.NORMAL),
-        headway_sensor=HeadwaySensor(23)
+        headway_sensor=HeadwaySensor(23),
+        photo_sensor=photo_sensor, 
+        rainfall_sensor=photo_sensor
         )
 
     init(vehicle) # import config file in other modules and use config.my_vehicle to access the vehicle
