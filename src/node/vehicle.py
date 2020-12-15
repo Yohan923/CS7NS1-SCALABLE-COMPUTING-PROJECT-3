@@ -153,7 +153,7 @@ class Vehicle():
                         message, _ = self.aodv_sock.recvfrom(2000)
                         message = message.decode('utf-8')  
                         message = json.loads(message)
-                        # print(message)
+                        print("received aodv->main"+message)
                         if "neighbors" in message.keys():
                             keys = ["neighbors"]
                             self.update(message,keys)
