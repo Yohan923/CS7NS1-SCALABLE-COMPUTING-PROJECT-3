@@ -400,8 +400,9 @@ class Visualizer:
         
         
     def GenerateTable(self):
-        
         full_vehicle_states=config.my_vehicle.get_full_vehicle_states()
+        print(full_vehicle_states)
+
         #columns = ['NODE_ID','LOCATION', 'LANE', 'SPEED (m/s)', 'ACC (m/s^2)',  'WIPER SPEED', 'LIGHT']
         columns = ['NODE_ID','X', 'Y','LANE', 'SPEED ', 'ACC ',  'HUMIDITY', 'LIGHT INTENSITY']
         columns_str = "|  " + "  |  ".join(columns) + "  |"
