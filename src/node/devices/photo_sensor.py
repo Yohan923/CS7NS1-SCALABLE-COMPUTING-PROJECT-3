@@ -82,4 +82,4 @@ class PhotoSensor(Thread):
             except:
                 pass  
 
-            time.sleep(1)
+            time.sleep(5)
