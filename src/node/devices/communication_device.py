@@ -800,7 +800,7 @@ class CommunicationDevice(threading.Thread):
                 elif r is self.tester_sock:
                     command, _ = self.tester_sock.recvfrom(1000)
                     command = command.decode('utf-8')
-                    print("test->aodv"+command)
+                    # print("test->aodv"+command)
                     sensor_data = json.loads(command)
                     if 'light_intensity' in sensor_data.keys():
 
@@ -840,7 +840,7 @@ class CommunicationDevice(threading.Thread):
                         message = re.split(':', message)
                         self.aodv_process_broadcast_rainfall(message)                       
                     elif (message_type == "BROADCAST_MESSAGE_PHOTO"):
-                        print("aodv->aodv"+message)
+                        # print("aodv->aodv"+message)
                         message = re.split(':', message)
                         self.aodv_process_broadcast_photo(message)             
 # End of File
