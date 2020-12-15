@@ -58,7 +58,7 @@ class Vehicle():
         self.aodv_sock.bind(('localhost', AODV_PORT))
         self.aodv_sock.setblocking(0)
         self.aodv_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.inputs.append(aodv_sock)
+        self.inputs.append(self.aodv_sock)
 
         if mqtt_client:
             self.mqtt_client = mqtt_client
@@ -70,7 +70,7 @@ class Vehicle():
         self.speed_sock.bind(('localhost', SPEED_PORT))
         self.speed_sock.setblocking(0)
         self.speed_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.inputs.append(speed_sock)
+        self.inputs.append(self.speed_sock)
 
         self.wiper_controller = wiper_controller
         self.devices.append(self.wiper_controller)
@@ -78,7 +78,7 @@ class Vehicle():
         self.wiper_sock.bind(('localhost', WIPER_PORT))
         self.wiper_sock.setblocking(0)
         self.wiper_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.inputs.append(wiper_sock)
+        self.inputs.append(self.wiper_sock)
 
         self.light_controller = light_controller
         self.devices.append(self.light_controller)
@@ -86,7 +86,7 @@ class Vehicle():
         self.light_sock.bind(('localhost', LIGHT_PORT))
         self.light_sock.setblocking(0)
         self.light_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.inputs.append(light_sock)
+        self.inputs.append(self.light_sock)
 
         self.headway_sensor = headway_sensor
         self.devices.append(self.headway_sensor)
@@ -94,7 +94,7 @@ class Vehicle():
         self.headway_sock.bind(('localhost', HEADWAY_PORT))
         self.headway_sock.setblocking(0)
         self.headway_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.inputs.append(headway_sock)
+        self.inputs.append(self.headway_sock)
 
         if photo_sensor:
             self.photo_sensor = photo_sensor
@@ -103,7 +103,7 @@ class Vehicle():
             self.photo_sock.bind(('localhost', PHOTO_PORT))
             self.photo_sock.setblocking(0)
             self.photo_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)            
-            self.inputs.append(photo_sock)
+            self.inputs.append(self.photo_sock)
    
         if rainfall_sensor:
             self.rainfall_sensor = rainfall_sensor
@@ -112,7 +112,7 @@ class Vehicle():
             self.rainfall_sock.bind(('localhost', RAINFALL_PORT))
             self.rainfall_sock.setblocking(0)
             self.rainfall_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  
-            self.inputs.append(rainfall_sock)
+            self.inputs.append(self.rainfall_sock)
 
 
     def update(self,message,keys):
