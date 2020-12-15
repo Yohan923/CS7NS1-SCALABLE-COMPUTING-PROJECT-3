@@ -38,7 +38,7 @@ class RainfallSensor(Thread):
 
     def update(self):
         keys = ["humidity"]
-        values = [self._distance_to_contact]
+        values = [self._rainfall]
         myPacket = self.construct_packet(keys, values)
         return myPacket
 
