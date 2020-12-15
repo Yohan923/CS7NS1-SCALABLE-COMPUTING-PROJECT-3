@@ -99,10 +99,10 @@ class Vehicle():
             self.all_sensors[k]=message[k]
 
     def aggregate_full_vehicle_states(self):
-
         return json.dumps(self.all_sensors)
 
-
+    def get_full_vehicle_states(self):
+        return self.all_sensors
 
     def drive(self):
 
