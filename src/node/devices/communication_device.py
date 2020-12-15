@@ -77,13 +77,14 @@ class CommunicationDevice(threading.Thread):
     def broadcast_photo_sensor_data(self):
         try:
             for n in self.neighbors.keys():
-                message_type = "BROADCAST_MESSAGE_PHOTO"
-                sender = self.node_id
-                message = message_type + ":" + sender + ":" + str(self.photo_sensor_data)
-                port = AODV_NETWORK_PORT
-                self.aodv_send(n, int(port), message)
-                logging.debug("['" + message_type + "', '" + sender + "', " + 
-                              "Sending photo_sensor_data message to " + str(n) + "']")
+                if n !=sender and n!= self.node_id:
+                    message_type = "BROADCAST_MESSAGE_PHOTO"
+                    sender = self.node_id
+                    message = message_type + ":" + sender + ":" + str(self.photo_sensor_data)
+                    port = AODV_NETWORK_PORT
+                    self.aodv_send(n, int(port), message)
+                    logging.debug("['" + message_type + "', '" + sender + "', " + 
+                                  "Sending photo_sensor_data message to " + str(n) + "']")
 
         except:
             pass   
@@ -94,13 +95,14 @@ class CommunicationDevice(threading.Thread):
         
         try:
             for n in self.neighbors.keys():
-                message_type = "BROADCAST_MESSAGE_RAINFALL"
-                sender = self.node_id
-                message = message_type + ":" + sender + ":" + str(self.rainfall_sensor_data)
-                port = AODV_NETWORK_PORT
-                self.aodv_send(n, int(port), message)
-                logging.debug("['" + message_type + "', '" + sender + "', " + 
-                              "Sending rainfall_sensor_data message to " + str(n) + "']")
+                if n !=sender and n!= self.node_id:
+                    message_type = "BROADCAST_MESSAGE_RAINFALL"
+                    sender = self.node_id
+                    message = message_type + ":" + sender + ":" + str(self.rainfall_sensor_data)
+                    port = AODV_NETWORK_PORT
+                    self.aodv_send(n, int(port), message)
+                    logging.debug("['" + message_type + "', '" + sender + "', " + 
+                                  "Sending rainfall_sensor_data message to " + str(n) + "']")
 
         except:
             pass        
@@ -807,6 +809,7 @@ class CommunicationDevice(threading.Thread):
                         self.photo_sensor_data = sensor_data
                         self.broadcast_photo_sensor_data();
                     elif 'humidity' in sensor_data.keys():
+                        print("test->aodv"+command)
                         self.rainfall_sensor_data = sensor_data
                         self.broadcast_rainfall_sensor_data();
                     elif 'location' in sensor_data.keys():
@@ -837,6 +840,7 @@ class CommunicationDevice(threading.Thread):
                         message = re.split(':', message)
                         self.aodv_process_rerr_message(message)
                     elif (message_type == "BROADCAST_MESSAGE_RAINFALL"):
+                        print("aodv->aodv"+message)
                         message = re.split(':', message)
                         self.aodv_process_broadcast_rainfall(message)                       
                     elif (message_type == "BROADCAST_MESSAGE_PHOTO"):
