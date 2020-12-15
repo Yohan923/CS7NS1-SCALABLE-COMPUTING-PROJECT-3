@@ -30,11 +30,11 @@ if __name__ == "__main__":
     if args.photo_sensor !=0:
         photo_sensor=PhotoSensor(args.photo_sensor)
     else:
-        photo_sensor=None, 
+        photo_sensor=0, 
     if args.rainfall_sensor !=0:
         rainfall_sensor=RainfallSensor(args.rainfall_sensor)
     else:
-        rainfall_sensor=None, 
+        rainfall_sensor=0, 
 
 
     vehicle = Vehicle(
