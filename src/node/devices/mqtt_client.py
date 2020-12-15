@@ -61,6 +61,7 @@ class MQTTClient(Thread):
 
         while True:
             payload = config.my_vehicle.all_sensors
+            payload['id'] = str(payload['id'])
             now = datetime.datetime.utcnow().isoformat(timespec='seconds')
             payload.update({'datetime': now})
 
