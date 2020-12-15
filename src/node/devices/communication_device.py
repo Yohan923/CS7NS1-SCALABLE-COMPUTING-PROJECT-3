@@ -62,16 +62,7 @@ class CommunicationDevice(threading.Thread):
     def aodv_restart_route_timer(self, route, create):
         if (create == False):
             pass
-            # timer = route['Lifetime']
-            # timer.cancel()
 
-        # timer = Timer(AODV_ACTIVE_ROUTE_TIMEOUT, 
-        #               self.aodv_process_route_timeout, [route])
-        # route['Lifetime'] = timer
-        # route['Status'] = 'Active'
-        # timer.start()
-    
-    # Send a message
     def aodv_send(self, destination, destination_port, message):
         try:
             message_bytes = bytes(message, 'utf-8')
@@ -86,7 +77,6 @@ class CommunicationDevice(threading.Thread):
     # Send the hello message to all the neighbors
     def aodv_send_hello_message(self):
         try:
-
             message={'neighbors':list(self.neighbors.keys())}
             message=json.dumps(message)
             message_bytes = bytes(message, 'utf-8')
@@ -124,7 +114,7 @@ class CommunicationDevice(threading.Thread):
         command_type = "RECEIVE"
         msg = command_type+":"+sender+":"+message[3]
         # print("Received data from node "+sender+": "+message[3])
-
+        # TODO: maybe delete this node from neighbors if it is too far away
         message_bytes = bytes(msg, 'utf-8')
         self.aodv_sock.sendto(message_bytes, 0, 
                     ('localhost', SPEED_THREAD_PORT))
@@ -134,26 +124,10 @@ class CommunicationDevice(threading.Thread):
         try:
             if (sender in self.neighbors.keys()):
                 neighbor = self.neighbors[sender]
-                # timer = neighbor['Timer-Callback']
-                # timer.cancel()
-                # timer = Timer(AODV_HELLO_TIMEOUT, 
-                #               self.aodv_process_neighbor_timeout, [sender])
-                # self.neighbors[sender] = {'Neighbor': sender, 
-                #                           'Timer-Callback': timer}
-                # timer.start()
-            
-                # Restart the lifetime timer
                 route = self.routing_table[sender]
                 self.aodv_restart_route_timer(route, False)
 
             else:
-                # timer = Timer(AODV_HELLO_TIMEOUT, 
-                #               self.aodv_process_neighbor_timeout, [sender])
-                # self.neighbors[sender] = {'Neighbor': sender, 
-                #                           'Timer-Callback': timer}
-                # timer.start()
-            
-                # Update the routing table as well
                 if (sender in self.routing_table.keys()):
                     route = self.routing_table[sender]
                     self.aodv_restart_route_timer(route, False)
@@ -281,7 +255,6 @@ class CommunicationDevice(threading.Thread):
                 self.aodv_send_rrep(orig, sender, self.node_id, dest, route_dest_seq_no, int(route['Hop-Count']))
                 return
         else:
-            # Rebroadcast the RREQ
             self.aodv_forward_rreq(message)
 
     # Process an incoming RREP message
@@ -448,10 +421,7 @@ class CommunicationDevice(threading.Thread):
         self.aodv_send(rrep_nh, int(port), message)
         logging.debug("['" + message_type + "', 'Sending RREP for " + rrep_int_node + " to " + rrep_dest + " via " + rrep_nh + "']")
 
-    # 
-    # Forward an RREP message (Called when RREP is received by an
-    # intermediate node)
-    #
+
     def aodv_forward_rrep(self, message, next_hop, next_hop_port):
         msg = message[0] + ":" + self.node_id + ":" + message[2] + ":" + message[3] + ":" + message[4] + ":" + message[5]
         self.aodv_send(next_hop, next_hop_port, msg)
@@ -486,21 +456,6 @@ class CommunicationDevice(threading.Thread):
     def aodv_process_neighbor_timeout(self, neighbor):
         pass
         
-        # # Update the routing table. Mark the route as inactive.
-        # route = self.routing_table[neighbor]
-        # route['Status'] = 'Inactive'
-
-        # # Log a message
-        # logging.debug("aodv_process_neighbor_timeout: " + neighbor + " went down")
-
-        # # Send an RERR to all the neighbors
-        # self.aodv_send_rerr(neighbor, int(route['Seq-No']))
-
-        # # Try to repair the route
-        # dest_seq_no = int(route['Seq-No']) + 1
-        # self.aodv_send_rreq(neighbor, dest_seq_no)
-        
-    # Handle Path Discovery timeouts
     def aodv_process_path_discovery_timeout(self, node, rreq_id):
         
         # Remove the buffered RREQ_ID for the given node
@@ -517,10 +472,6 @@ class CommunicationDevice(threading.Thread):
         key = route['Destination']
         self.routing_table.pop(key)
 
-        # 
-        # If the destination is a neighbor, remove it from the neighbor table
-        # as well
-        #
         if (key in self.neighbors):
             self.neighbors.pop(key)
 
@@ -539,10 +490,6 @@ class CommunicationDevice(threading.Thread):
         # Restart all the lifetime timers in the routing table
         for r in self.routing_table.keys():
             route = self.routing_table[r]
-            # timer = Timer(AODV_ACTIVE_ROUTE_TIMEOUT, 
-            #               self.aodv_process_route_timeout, [route])
-            # route['Lifetime'] = timer
-            # timer.start()
 
         self.status = "Active"
 
