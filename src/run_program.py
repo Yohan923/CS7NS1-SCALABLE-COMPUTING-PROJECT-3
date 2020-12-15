@@ -46,7 +46,7 @@ if __name__ == "__main__":
         light_controller=LightController(LIGHT_INTENSITY.NORMAL),
         headway_sensor=HeadwaySensor(23),
         photo_sensor=photo_sensor, 
-        rainfall_sensor=photo_sensor
+        rainfall_sensor=rainfall_sensor
         )
 
     init(vehicle) # import config file in other modules and use config.my_vehicle to access the vehicle
