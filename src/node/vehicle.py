@@ -161,9 +161,9 @@ class Vehicle():
                         # We got a message from the network
                         command, _ = self.aodv_sock.recvfrom(2000)
                         command = command.decode('utf-8')  
-                        command = re.split('\'',command)
+                        commands = re.split('\'',command)
                         message = {}
-                        message[command[1]]=int(command[3])
+                        message[commands[1]]=int(commands[3])
 
 
                         if "neighbors" in message.keys():
@@ -173,12 +173,12 @@ class Vehicle():
                             # print("aodv->main "+str(message["humidity"]))
                             keys = ["humidity"]
                             self.update(message,keys)
-                            self.aodv_sock.sendto(message, 0, ('localhost', WIPER_THREAD_PORT))
+                            self.aodv_sock.sendto(bytes(command, 'utf-8'), 0, ('localhost', WIPER_THREAD_PORT))
                         elif "light_intensity" in message.keys():
                             # print("aodv->main "+str(message["light_intensity"]))
                             keys = ["light_intensity"]
                             self.update(message,keys)
-                            self.aodv_sock.sendto(message, 0, ('localhost', LIGHT_THREAD_PORT))
+                            self.aodv_sock.sendto(bytes(command, 'utf-8'), 0, ('localhost', LIGHT_THREAD_PORT))
 
                     elif r is self.wiper_sock:
                         message, _ = self.wiper_sock.recvfrom(2000)
