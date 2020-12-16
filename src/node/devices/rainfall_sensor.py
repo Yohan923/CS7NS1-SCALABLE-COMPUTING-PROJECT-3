@@ -31,15 +31,15 @@ class RainfallSensor(Thread):
     
     def __init__(self, rainfall=42):
         Thread.__init__(self)
-        self._rainfall = rainfall
+        self._rainfall = int(rainfall)
 
 
     def set_rainfall(self, rainfall):
-        self._rainfall = rainfall
+        self._rainfall = int(rainfall)
 
 
     def get_rainfall(self):
-        return self._rainfall
+        return int(self._rainfall)
 
     def send(self, message):
         self.sock.sendto(message, 0, ('localhost', RAINFALL_PORT))
@@ -53,6 +53,9 @@ class RainfallSensor(Thread):
         return json.dumps(packet)
 
     def update(self):
+        self._rainfall+=5
+        if self._rainfall>100:
+            self._rainfall=100     
         keys = ["humidity"]
         values = [self._rainfall]
         myPacket = self.construct_packet(keys, values)

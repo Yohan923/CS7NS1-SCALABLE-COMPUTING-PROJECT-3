@@ -25,6 +25,7 @@ class LightController(Thread):
     
     
     def set_speed_by_photo_intensity(self, photo_intensity):
+        print(photo_intensity)
         if photo_intensity >= PhotoIntensity.BRIGHT:
             self.set_state(LIGHT_INTENSITY.OFF)
         elif photo_intensity <= PhotoIntensity.DARK:
@@ -71,7 +72,7 @@ class LightController(Thread):
                 message = message.decode('utf-8')
                 message=json.loads(message)
                 if 'light_intensity' in message.keys():
-                    self.set_speed_by_photo_intensity( message['light_intensity'])
+                    self.set_speed_by_photo_intensity(message['light_intensity'])
 
             except:
                 pass  

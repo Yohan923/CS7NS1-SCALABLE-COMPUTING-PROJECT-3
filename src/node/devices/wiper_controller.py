@@ -28,13 +28,14 @@ class WiperController(Thread):
     # rainfall measured by the critical angle between the glass and infrared, the critical angle for total internal refraction is around 42°
     # when glass is dry, 60° when wet, assume 70° for very wet
     def set_speed_by_rainfall(self, rainfall):
+        print(photo_intensity)
         if rainfall <= RainfallLevel.DRY:
             self.set_speed(WIPER_SPEED.STOP)
         elif rainfall <= RainfallLevel.MILD:
             self.set_speed(WIPER_SPEED.SLOW)
         else:
             self.set_speed(WIPER_SPEED.FAST)
-        # print("set wiper speed to "+["STOP","SLOW","FAST"][self.get_speed()])
+        print("set wiper speed to "+["STOP","SLOW","FAST"][self.get_speed()])
 
     def send(self, message):
         self.sock.sendto(message, 0, ('localhost', WIPER_PORT))
