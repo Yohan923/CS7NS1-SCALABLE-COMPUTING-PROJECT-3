@@ -71,7 +71,6 @@ class LightController(Thread):
                 message = message.decode('utf-8')
                 message=json.loads(message)
                 if 'light_intensity' in message.keys():
-                    print("1")
                     self.set_speed_by_photo_intensity(self, message['light_intensity'])
 
             except:
