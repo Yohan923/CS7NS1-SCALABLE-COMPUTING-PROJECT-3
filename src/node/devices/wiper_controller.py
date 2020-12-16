@@ -1,6 +1,6 @@
 from node.devices.rainfall_sensor import RainfallLevel
 from threading import Thread
-import time,socket,json
+import time,socket,json,re
 
 WIPER_PORT=33883
 WIPER_THREAD_PORT=33983
