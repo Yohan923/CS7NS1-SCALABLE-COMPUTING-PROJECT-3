@@ -176,7 +176,7 @@ class SpeedSensor(threading.Thread):
     def outOfTransmissionRange(self,data):
         senderLoc = data['location']//100
         myLoc = self.LOC//100
-        if abs(senderLoc - myLoc) % 2 ==0:
+        if abs(senderLoc - myLoc)  ==2:
             return True
         return False
 
