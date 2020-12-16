@@ -30,7 +30,7 @@ class PhotoIntensity():
 
 class PhotoSensor(Thread):
     
-    def __init__(self, photo_intensity):
+    def __init__(self, photo_intensity=100):
         Thread.__init__(self)
         self._photo_intensity = photo_intensity
 

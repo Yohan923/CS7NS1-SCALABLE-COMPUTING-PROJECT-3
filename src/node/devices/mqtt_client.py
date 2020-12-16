@@ -63,6 +63,9 @@ class MQTTClient(Thread):
         if config.my_vehicle.intermediary_socket_writer:
             self.subscribe("vehicles", callback=callbacks.on_message_received)
 
+        self.subscribe('rainfall', callback=callbacks.on_rainfall_received)
+        self.subscribe('photointensity', callback=callbacks.on_photointensity_received)
+
         while True:
             payload = config.my_vehicle.all_sensors
             payload['id'] = str(payload['id'])

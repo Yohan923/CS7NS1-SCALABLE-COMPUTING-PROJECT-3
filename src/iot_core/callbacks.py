@@ -42,6 +42,27 @@ def on_full_vehicles_states_received(topic, payload, **kwargs):
     vehicle_id = payload['id']
     config.my_vehicles.update({vehicle_id: payload})
 
+
+def on_rainfall_received(topic, payload, **kwargs):
+    payload = json.loads(payload)
+    rainfall = payload['rainfall']
+    try:
+        int(rainfall)
+        config.my_vehicle.wiper_controller.set_speed_by_rainfall(rainfall)
+    except Exception:
+        pass
+
+
+def on_photointensity_received(topic, payload, **kwargs):
+    payload = json.loads(payload)
+    photointensity = payload['photointensity']
+    try:
+        int(photointensity)
+        config.my_vehicle.light_controller.set_speed_by_photo_intensity(photointensity)
+    except Exception:
+        pass
+
+
 # Callback on mqtt when mesage received
 def on_message_received(topic, payload, **kwargs):
     print("Received message from topic '{}': {}".format(topic, payload))

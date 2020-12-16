@@ -29,7 +29,7 @@ class RainfallLevel():
 
 class RainfallSensor(Thread):
     
-    def __init__(self, rainfall):
+    def __init__(self, rainfall=42):
         Thread.__init__(self)
         self._rainfall = rainfall
 
