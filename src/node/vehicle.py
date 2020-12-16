@@ -161,9 +161,9 @@ class Vehicle():
                         # We got a message from the network
                         command, _ = self.aodv_sock.recvfrom(2000)
                         command = command.decode('utf-8')  
-                        
+                        print(command)
                         message = json.loads(command)
-                        
+                        print(message)
                         if "neighbors" in message.keys():
                             keys = ["neighbors"]
                             self.update(message,keys)
