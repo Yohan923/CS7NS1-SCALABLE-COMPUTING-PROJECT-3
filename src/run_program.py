@@ -54,7 +54,7 @@ if __name__ == "__main__":
         communication_device=CommunicationDevice(args.nid,args.neighbors),
         mqtt_client=MQTTClient(MQTTConnection.get_mqtt_connection_over_websocket()),
         speed_sensor=SpeedSensor(args.nid,args.location,args.lane,args.speed,args.acceleration,status=args.status), 
-        wiper_controller=WiperController(WIPER_SPEED.SLOW), 
+        wiper_controller=WiperController(WIPER_SPEED.STOP), 
         light_controller=LightController(LIGHT_INTENSITY.NORMAL),
         headway_sensor=HeadwaySensor(23),
         photo_sensor=photo_sensor, 
