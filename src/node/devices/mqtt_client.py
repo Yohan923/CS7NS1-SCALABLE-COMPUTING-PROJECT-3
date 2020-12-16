@@ -59,8 +59,8 @@ class MQTTClient(Thread):
 
     def run(self):
         self.connect()
-
-        if config.my_vehicle.intermediary_socket_writer:
+        
+        if getattr(config.my_vehicle, 'intermediary_socket_writer', None):
             self.subscribe("vehicles", callback=callbacks.on_message_received)
 
         self.subscribe('rainfall', callback=callbacks.on_rainfall_received)
