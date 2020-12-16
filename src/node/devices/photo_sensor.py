@@ -54,6 +54,7 @@ class PhotoSensor(Thread):
         return json.dumps(packet)
 
     def update(self):
+        self._photo_intensity-=1
         keys = ["light_intensity"]
         values = [self._photo_intensity]
         myPacket = self.construct_packet(keys, values)
