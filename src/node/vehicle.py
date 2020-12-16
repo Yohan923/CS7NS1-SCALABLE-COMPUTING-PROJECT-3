@@ -170,12 +170,12 @@ class Vehicle():
                             keys = ["neighbors"]
                             self.update(message,keys)
                         elif "humidity" in message.keys():
-                            print("received aodv->main "+message)
+                            print("aodv->main "+str(message["humidity"]))
                             keys = ["humidity"]
                             self.update(message,keys)
                             #self.aodv_sock.sendto(message, 0, ('localhost', RAINFALL_THREAD_PORT))
                         elif "light_intensity" in message.keys():
-                            print("received aodv->main "+message)
+                            print("aodv->main "+str(message["light_intensity"]))
                             keys = ["light_intensity"]
                             self.update(message,keys)
                             #self.aodv_sock.sendto(message, 0, ('localhost', LIGHT_THREAD_PORT))
