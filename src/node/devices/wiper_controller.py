@@ -73,6 +73,7 @@ class WiperController(Thread):
                 command, _ = self.sock.recvfrom(100)
                 command = command.decode('utf-8')
                 command = re.split('\'',command)
+                print(command[1]+command[3])
                 message = {}
                 message[command[1]]=int(command[3])   
                 print("main->controller "+message['humidity'])             
@@ -84,4 +85,4 @@ class WiperController(Thread):
             except:
                 pass  
 
-            time.sleep(2)
+            time.sleep(3)
