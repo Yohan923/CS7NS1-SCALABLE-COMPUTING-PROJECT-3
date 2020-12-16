@@ -128,7 +128,7 @@ class SpeedSensor(threading.Thread):
         nearestNode=""
         for sender in self.neighbours.keys():
             if sender !=self.nid:
-                distance = self.neighbours[sender]['location']-self.LOC
+                distance = (self.neighbours[sender]['location']-self.LOC)%400
                 if distance >0 and distance<minDis and distance >10:
                     minDis=distance
                     nearestNode=sender
