@@ -178,9 +178,9 @@ class Vehicle():
                         command = command.decode('utf-8')  
                         commands = re.split('\'',command)
                         message = {}
-                        print(commands[2])
+                        print(commands[1])
                         temp=commands[2]
-                        print(temp[1:-1])
+                        print(temp[1:-2])
                         message[commands[1]]=int(temp[1:-1])
 
                         if "neighbors" in message.keys():
