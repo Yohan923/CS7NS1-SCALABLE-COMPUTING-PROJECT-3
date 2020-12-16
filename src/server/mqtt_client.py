@@ -16,5 +16,4 @@ class ServerMQTTClient(MQTTClient):
         self.subscribe('vehicles', callback=on_full_vehicles_states_received)
 
         while True:
-            print(f'the current my_vehicles is {str(config.my_vehicles)}')
-            time.sleep(1)
+            pass
