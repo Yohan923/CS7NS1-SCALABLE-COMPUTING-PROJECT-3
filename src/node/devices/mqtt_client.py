@@ -6,6 +6,7 @@ from threading import Thread
 import time
 import datetime
 import json
+from iot_core import callbacks
 
 
 class MQTTClient(Thread):
@@ -58,6 +59,9 @@ class MQTTClient(Thread):
 
     def run(self):
         self.connect()
+
+        if config.my_vehicle.intermediary_socket_writer:
+            self.subscribe("vehicles", callback=callbacks.on_message_received)
 
         while True:
             payload = config.my_vehicle.all_sensors

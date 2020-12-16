@@ -1,4 +1,4 @@
-from node.devices import SpeedSensor, HeadwaySensor, WiperController, LightController, RainfallSensor, PhotoSensor
+from node.devices import SpeedSensor, HeadwaySensor, WiperController, LightController, RainfallSensor, PhotoSensor, IntermediarySocketListener, IntermediarySocketWriter
 from node.devices import CommunicationDevice
 from threading import Thread
 import socket,select,json,time
@@ -43,7 +43,9 @@ class Vehicle():
         headway_sensor,
         mqtt_client=None,
         photo_sensor=None, 
-        rainfall_sensor=None
+        rainfall_sensor=None,
+        intermediary_socket_listener=None,
+        intermediary_socket_writer=None
     ):
         self.all_sensors={"id":id,"speed": 0.0, "acceleration": 0.0, "location": 0.0,
         "lane":0,"direction":0,
@@ -113,6 +115,12 @@ class Vehicle():
             self.rainfall_sock.setblocking(0)
             self.rainfall_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  
             self.inputs.append(self.rainfall_sock)
+        
+        if intermediary_socket_listener:
+            self.intermediary_socket_listener = intermediary_socket_listener
+        
+        if intermediary_socket_writer:
+            self.intermediary_socket_writer = intermediary_socket_writer
 
 
     def update(self,message,keys):

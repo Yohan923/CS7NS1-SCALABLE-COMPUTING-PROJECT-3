@@ -10,6 +10,8 @@ from node.devices.rainfall_sensor import RainfallSensor
 from node.devices.communication_device import CommunicationDevice
 from node.devices.wiper_controller import WiperController, WIPER_SPEED
 from node.devices.light_controller import LightController, LIGHT_INTENSITY
+from node.devices.intermediary_socket_listener import IntermediarySocketListener
+from node.devices.intermediary_socket_writer import IntermediarySocketWriter
 from node.vehicle import Vehicle
 import argparse
 
@@ -24,6 +26,9 @@ if __name__ == "__main__":
     parser.add_argument("--acceleration", help="enter initial acceleration",type=float,default=3)
     parser.add_argument("--photo_sensor", help="set light intensity. Set this to zero if no photo_sensor",default=0)
     parser.add_argument("--rainfall_sensor", help="set humidity. Set this to zero if no rainfall_sensor",default=0)
+    parser.add_argument("--remote_host", help="remote host in remot vehicle pod")
+    parser.add_argument("--remote_listen_port", help="port on which to listen for updates from remote pod", default=35501)
+    parser.add_argument("--remote_write_port", help="port on remote pod to write updates to", default=35502)
 
     args = parser.parse_args()
 
@@ -37,6 +42,13 @@ if __name__ == "__main__":
         rainfall_sensor=0
 
 
+    if args.remote_host:
+        intermediary_socket_listener = IntermediarySocketListener(args.remote_host, args.remote_listen_port)
+        intermediary_socket_writer = IntermediarySocketWriter(args.remote_host, args.remote_write_port)
+    else:
+        intermediary_socket_listener = None
+        intermediary_socket_writer = None
+
     vehicle = Vehicle(
         id=args.nid,
         communication_device=CommunicationDevice(args.nid,args.neighbors),
@@ -46,7 +58,9 @@ if __name__ == "__main__":
         light_controller=LightController(LIGHT_INTENSITY.NORMAL),
         headway_sensor=HeadwaySensor(23),
         photo_sensor=photo_sensor, 
-        rainfall_sensor=rainfall_sensor
+        rainfall_sensor=rainfall_sensor,
+        intermediary_socket_listener=intermediary_socket_listener,
+        intermediary_socket_writer=intermediary_socket_writer
         )
 
     init(vehicle) # import config file in other modules and use config.my_vehicle to access the vehicle
