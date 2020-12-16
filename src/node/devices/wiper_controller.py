@@ -72,6 +72,7 @@ class WiperController(Thread):
             try:
                 command, _ = self.sock.recvfrom(100)
                 command = command.decode('utf-8')
+                print("main->controller "+command)
                 command = re.split('\'',command)
                 print(command[1]+command[3])
                 message = {}
