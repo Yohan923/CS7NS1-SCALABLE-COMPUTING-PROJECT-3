@@ -75,4 +75,4 @@ class LightController(Thread):
 
             except:
                 pass  
-            time.sleep(120)
+            time.sleep(2)
