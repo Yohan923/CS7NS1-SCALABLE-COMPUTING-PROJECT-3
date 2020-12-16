@@ -63,9 +63,9 @@ class Vehicle():
         self.aodv_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.inputs.append(self.aodv_sock)
 
-        if mqtt_client:
-            self.mqtt_client = mqtt_client
-            self.devices.append(mqtt_client)
+        # if mqtt_client:
+        #     self.mqtt_client = mqtt_client
+        #     self.devices.append(mqtt_client)
 
         self.speed_sensor = speed_sensor
         self.devices.append(speed_sensor)
@@ -117,11 +117,11 @@ class Vehicle():
             self.rainfall_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  
             self.inputs.append(self.rainfall_sock)
         
-        if intermediary_socket_listener:
-            self.intermediary_socket_listener = intermediary_socket_listener
+        # if intermediary_socket_listener:
+        #     self.intermediary_socket_listener = intermediary_socket_listener
         
-        if intermediary_socket_writer:
-            self.intermediary_socket_writer = intermediary_socket_writer
+        # if intermediary_socket_writer:
+        #     self.intermediary_socket_writer = intermediary_socket_writer
 
 
     def update(self,message,keys):
