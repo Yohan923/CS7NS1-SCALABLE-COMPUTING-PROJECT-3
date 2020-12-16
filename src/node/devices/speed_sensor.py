@@ -134,22 +134,22 @@ class SpeedSensor(threading.Thread):
         return nearestNode
 
     def ControlSpeedAndAcceleration(self):
-        if(len(self.neighbours.keys())>1):
-            # print("neighbours non empty")
-            nearest=self.findNearest()
-            if nearest!="": 
-                closest_car = self.neighbours[nearest]
-                self.LANE = 1-closest_car['lane']
-                if(self.LOC < closest_car['location']):
-                    self.ACCELERATION= MAX_ACCELERATION
-                else:
-                    self.ACCELERATION = MIN_ACCELERATION
-        
-            elif(self.SPEED < (MIN_SPEED)):
-                self.ACCELERATION = MAX_ACCELERATION
-            
-            elif(self.SPEED > (MAX_SPEED)):
+        # if(len(self.neighbours.keys())>1):
+        #     # print("neighbours non empty")
+        nearest=self.findNearest()
+        if nearest!="": 
+            closest_car = self.neighbours[nearest]
+            self.LANE = 1-closest_car['lane']
+            if(self.LOC < closest_car['location']):
+                self.ACCELERATION= MAX_ACCELERATION
+            else:
                 self.ACCELERATION = MIN_ACCELERATION
+        
+        elif(self.SPEED < (MIN_SPEED)):
+            self.ACCELERATION = MAX_ACCELERATION
+            
+        elif(self.SPEED > (MAX_SPEED)):
+            self.ACCELERATION = MIN_ACCELERATION
 
     def onReceive(self,sender,msg):
         data = json.loads(msg)
