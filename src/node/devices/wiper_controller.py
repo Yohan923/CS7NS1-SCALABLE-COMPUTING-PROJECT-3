@@ -34,7 +34,7 @@ class WiperController(Thread):
             self.set_speed(WIPER_SPEED.SLOW)
         else:
             self.set_speed(WIPER_SPEED.FAST)
-        print("set wiper speed to "+["STOP","SLOW","FAST"][self.get_speed()])
+        # print("set wiper speed to "+["STOP","SLOW","FAST"][self.get_speed()])
 
     def send(self, message):
         self.sock.sendto(message, 0, ('localhost', WIPER_PORT))
@@ -72,7 +72,6 @@ class WiperController(Thread):
             try:
                 command, _ = self.sock.recvfrom(100)
                 command = command.decode('utf-8')
-                print("main->controller "+command)
                 command = re.split('\'',command)
                 message = {}
                 message[command[1]]=int(command[3])               

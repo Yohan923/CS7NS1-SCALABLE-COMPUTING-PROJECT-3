@@ -806,11 +806,11 @@ class CommunicationDevice(threading.Thread):
                     
                     sensor_data = json.loads(command)
                     if 'light_intensity' in sensor_data.keys():
-                        print("test->aodv"+command)
+                        # print("test->aodv"+command)
                         self.photo_sensor_data = sensor_data
                         self.broadcast_photo_sensor_data();
                     elif 'humidity' in sensor_data.keys():
-                        print("test->aodv"+command)
+                        # print("test->aodv"+command)
                         self.rainfall_sensor_data = sensor_data
                         self.broadcast_rainfall_sensor_data();
                     elif 'location' in sensor_data.keys():
