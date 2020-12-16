@@ -77,7 +77,8 @@ class CommunicationDevice(threading.Thread):
     def broadcast_photo_sensor_data(self):
         try:
             for n in self.neighbors.keys():
-                if n !=sender and n!= self.node_id:
+                print(n+" "+str(self.photo_sensor_data))
+                if n!= self.node_id:
                     message_type = "BROADCAST_MESSAGE_PHOTO"
                     sender = self.node_id
                     message = message_type + ":" + sender + ":" + str(self.photo_sensor_data)
@@ -95,7 +96,9 @@ class CommunicationDevice(threading.Thread):
         
         try:
             for n in self.neighbors.keys():
-                if n !=sender and n!= self.node_id:
+                print(n+" "+str(self.rainfall_sensor_data))
+
+                if n!= self.node_id:
                     message_type = "BROADCAST_MESSAGE_RAINFALL"
                     sender = self.node_id
                     message = message_type + ":" + sender + ":" + str(self.rainfall_sensor_data)
