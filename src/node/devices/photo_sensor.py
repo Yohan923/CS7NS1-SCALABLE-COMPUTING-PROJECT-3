@@ -36,7 +36,7 @@ class PhotoSensor(Thread):
 
 
     def set_photo_intensity(self, photo_intensity):
-        self._photo_intensity = photo_intensity
+        self._photo_intensity = int(photo_intensity)
 
 
     def get_photo_intensity(self):
