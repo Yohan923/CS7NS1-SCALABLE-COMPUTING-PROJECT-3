@@ -41,3 +41,9 @@ def on_full_vehicles_states_received(topic, payload, **kwargs):
     payload = json.loads(payload)
     vehicle_id = payload['id']
     config.my_vehicles.update({vehicle_id: payload})
+
+# Callback on mqtt when mesage received
+def on_message_received(topic, payload, **kwargs):
+    print("Received message from topic '{}': {}".format(topic, payload))
+    
+    config.my_vehicle.intermediary_socket_writer.msg_send(payload)
