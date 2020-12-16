@@ -44,16 +44,11 @@ def on_full_vehicles_states_received(topic, payload, **kwargs):
 
 
 def on_rainfall_received(topic, payload, **kwargs):
-    print(payload)
     payload = json.loads(payload)
-    print(payload)
     rainfall = payload['rainfall']
-    print(rainfall)
     try:
         config.my_vehicle.wiper_controller.set_speed_by_rainfall(int(rainfall))
-        print(f'speed is now {config.my_vehicle.wiper_controller.get_speed()}')
-    except Exception as e:
-        print(e)
+    except Exception:
         pass
 
 
