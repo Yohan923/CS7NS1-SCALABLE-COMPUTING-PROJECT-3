@@ -132,6 +132,7 @@ class SpeedSensor(threading.Thread):
                 if distance<20 and (self.LOC+distance)%400==self.neighbours[sender]['location']:
                     minDis=distance
                     nearestNode=sender
+        print("nearest node: "+ str(nearestNode))
         return nearestNode
 
     def ControlSpeedAndAcceleration(self):
@@ -155,10 +156,10 @@ class SpeedSensor(threading.Thread):
     def onReceive(self,sender,msg):
         data = json.loads(msg)
         sender=str(sender)
-        # print(sender); print(msg)
 
 
         if sender != self.nid and self.outOfTransmissionRange(data):
+            print("delete "+sender)
             self.neighbours.pop(sender)
             self.visualizer.deleteCar(sender)
             return
