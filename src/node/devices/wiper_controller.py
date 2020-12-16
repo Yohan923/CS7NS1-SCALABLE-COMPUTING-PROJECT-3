@@ -81,7 +81,7 @@ class WiperController(Thread):
                 commands = re.split('\'',command)
                 message = {}
                 temp=commands[2]
-                message[commands[1]]=int(temp[1:-2])                        
+                message[commands[1]]=int(temp[2:-2])                        
                 if 'humidity' in message.keys():
                     self.set_speed_by_rainfall( message['humidity'])
 
