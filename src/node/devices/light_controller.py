@@ -70,12 +70,9 @@ class LightController(Thread):
             try:
                 command, _ = self.sock.recvfrom(100)
                 command = command.decode('utf-8')
-                print(command)
                 commands = re.split('\'',command)
                 message = {}
-                print(commands[1])
                 temp=commands[2]
-                print(temp[2:-2])
                 message[commands[1]]=int(temp[1:-2])
                 if 'light_intensity' in message.keys():
                     self.set_speed_by_photo_intensity(message['light_intensity'])
