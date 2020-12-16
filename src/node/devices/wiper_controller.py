@@ -76,9 +76,12 @@ class WiperController(Thread):
                 # command = re.split('\'',command)
                 # message = {}
                 # message[command[1]]=int(command[3])    
-                message, _ = self.sock.recvfrom(100)
-                message = message.decode('utf-8')
-                message=json.loads(message)                           
+                command, _ = self.sock.recvfrom(100)
+                command = command.decode('utf-8')
+                commands = re.split('\'',command)
+                message = {}
+                temp=commands[2]
+                message[commands[1]]=int(temp[1:-2])                        
                 if 'humidity' in message.keys():
                     self.set_speed_by_rainfall( message['humidity'])
 
