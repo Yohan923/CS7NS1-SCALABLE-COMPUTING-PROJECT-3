@@ -4,7 +4,7 @@ from threading import Thread
 import socket,select,json,time
 from threading import Thread
 import time
-import sys
+import sys,re
 import os
 
 
@@ -161,9 +161,10 @@ class Vehicle():
                         # We got a message from the network
                         command, _ = self.aodv_sock.recvfrom(2000)
                         command = command.decode('utf-8')  
-                        print(command)
-                        message = json.loads(command)
-                        print(message)
+                        command = re.split('\'',command)
+                        message = {}
+                        message[command[1]]=int(command[3])
+
 
                         if "neighbors" in message.keys():
                             keys = ["neighbors"]
