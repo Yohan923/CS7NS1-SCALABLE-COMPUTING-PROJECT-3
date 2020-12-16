@@ -5,7 +5,7 @@ COMMANDS = [
     '. ./venv/bin/activate',
     'pip install awsiotsdk',
     'pip install boto3',
-    'pip install numpy'
+    'pip install numpy',
     'pip install opensimplex',
     'pip install numpy',
     'python setup_aws.py',
