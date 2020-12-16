@@ -32,7 +32,7 @@ class PhotoSensor(Thread):
     
     def __init__(self, photo_intensity=100):
         Thread.__init__(self)
-        self._photo_intensity = photo_intensity
+        self._photo_intensity = int(photo_intensity)
 
 
     def set_photo_intensity(self, photo_intensity):
@@ -40,7 +40,7 @@ class PhotoSensor(Thread):
 
 
     def get_photo_intensity(self):
-        return self._photo_intensity
+        return int(self._photo_intensity)
 
     def send(self, message):
         self.sock.sendto(message, 0, ('localhost', PHOTO_PORT))
