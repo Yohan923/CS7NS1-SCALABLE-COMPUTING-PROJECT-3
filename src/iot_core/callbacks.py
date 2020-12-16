@@ -48,8 +48,8 @@ def on_rainfall_received(topic, payload, **kwargs):
     rainfall = payload['rainfall']
     try:
         config.my_vehicle.wiper_controller.set_speed_by_rainfall(int(rainfall))
-        if getattr(config.my_vehicle, 'rainfall_sensor', None):
-            config.my_vehicle.rainfall_sensor.set_rainfall(int(rainfall))
+        if 'humidity' in config.my_vehicle.all_sensors.keys():
+            config.my_vehicle.all_sensors['humidity'] = int(rainfall)
     except Exception:
         pass
 
@@ -59,8 +59,8 @@ def on_photointensity_received(topic, payload, **kwargs):
     photointensity = payload['photointensity']
     try:
         config.my_vehicle.light_controller.set_speed_by_photo_intensity(int(photointensity))
-        if getattr(config.my_vehicle, 'photo_sensor', None):
-            config.my_vehicle.photo_sensor.set_photo_intensity(int(photointensity))
+        if 'light_intensity' in config.my_vehicle.all_sensors.keys():
+            config.my_vehicle.all_sensors['light_intensity'] = int(photointensity)
     except Exception:
         pass
 
