@@ -27,8 +27,8 @@ if __name__ == "__main__":
     parser.add_argument("--photo_sensor", help="set light intensity. Set this to zero if no photo_sensor",default=0)
     parser.add_argument("--rainfall_sensor", help="set humidity. Set this to zero if no rainfall_sensor",default=0)
     parser.add_argument("--remote_host", help="remote host in remot vehicle pod")
-    parser.add_argument("--remote_listen_port", help="port on which to listen for updates from remote pod", default=35501)
-    parser.add_argument("--remote_write_port", help="port on remote pod to write updates to", default=35502)
+    parser.add_argument("--remote_listen_port", help="port on which to listen for updates from remote pod", default=33501)
+    parser.add_argument("--remote_write_port", help="port on remote pod to write updates to", default=33502)
 
     args = parser.parse_args()
 

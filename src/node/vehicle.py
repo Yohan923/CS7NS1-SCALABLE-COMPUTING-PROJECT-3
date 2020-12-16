@@ -55,6 +55,17 @@ class Vehicle():
         self.devices = []
         self.inputs =[]
         
+        if intermediary_socket_listener:
+            self.intermediary_socket_listener = intermediary_socket_listener
+            self.devices.append(intermediary_socket_listener)
+        else:
+            self.intermediary_socket_listener = None
+        
+        if intermediary_socket_writer:
+            self.intermediary_socket_writer = intermediary_socket_writer
+        else:
+            self.intermediary_socket_writer = None
+
         self.communication_device = communication_device
         self.devices.append(communication_device)
         self.aodv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -117,11 +128,6 @@ class Vehicle():
             self.rainfall_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  
             self.inputs.append(self.rainfall_sock)
         
-        if intermediary_socket_listener:
-            self.intermediary_socket_listener = intermediary_socket_listener
-        
-        if intermediary_socket_writer:
-            self.intermediary_socket_writer = intermediary_socket_writer
 
 
     def update(self,message,keys):
@@ -170,10 +176,10 @@ class Vehicle():
                         # We got a message from the network
                         command, _ = self.aodv_sock.recvfrom(2000)
                         command = command.decode('utf-8')  
-                        commands = re.split('\'',command)
-                        message = {}
-                        message[commands[1]]=int(commands[2])
-
+                        # commands = re.split('\'',command)
+                        # message = {}
+                        # message[commands[1]]=int(commands[2])
+                        message=json.loads(command)
 
                         if "neighbors" in message.keys():
                             keys = ["neighbors"]
