@@ -1,4 +1,5 @@
 from node.devices.mqtt_client import MQTTClient
+from iot_core.callbacks import on_full_vehicles_states_received
 import config
 import time
 
@@ -12,10 +13,7 @@ class ServerMQTTClient(MQTTClient):
     def run(self):
         self.connect()
 
-        def test_callback(topic, payload, **kwargs):
-            print("Received message from topic '{}': {}".format(topic, payload))
-
-        self.subscribe('vehicles', callback=test_callback)
+        self.subscribe('vehicles', callback=on_full_vehicles_states_received)
 
         while True:
             print(f'the current my_vehicles is {str(config.my_vehicles)}')
