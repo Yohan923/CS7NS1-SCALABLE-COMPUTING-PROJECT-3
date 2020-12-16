@@ -178,16 +178,16 @@ class Vehicle():
                         command = command.decode('utf-8')  
                         commands = re.split('\'',command)
                         message = {}
-                        print(commands[1])
+                        # print(commands[1])
                         temp=commands[2]
-                        print(temp[2:-2])
+                        # print(temp[2:-2])
                         message[commands[1]]=int(temp[1:-2])
 
                         if "neighbors" in message.keys():
                             keys = ["neighbors"]
                             self.update(message,keys)
                         elif "humidity" in message.keys():
-                            print("aodv->main "+str(message["humidity"]))
+                            # print("aodv->main "+str(message["humidity"]))
                             keys = ["humidity"]
                             self.update(message,keys)
                             self.aodv_sock.sendto(bytes(command, 'utf-8'), 0, ('localhost', WIPER_THREAD_PORT))
