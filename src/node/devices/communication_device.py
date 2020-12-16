@@ -95,7 +95,6 @@ class CommunicationDevice(threading.Thread):
         
         try:
             for n in self.neighbors.keys():
-
                 if n!= self.node_id:
                     message_type = "BROADCAST_MESSAGE_RAINFALL"
                     sender = self.node_id
@@ -843,10 +842,10 @@ class CommunicationDevice(threading.Thread):
                         self.aodv_process_rerr_message(message)
                     elif (message_type == "BROADCAST_MESSAGE_RAINFALL"):
                         print("aodv->aodv "+message)
-                        message = message.split(':', 1)
+                        message = message.split(':', 2)
                         self.aodv_process_broadcast_rainfall(message)                       
                     elif (message_type == "BROADCAST_MESSAGE_PHOTO"):
                         print("aodv->aodv "+message)
-                        message = message.split(':', 1)
+                        message = message.split(':', 2)
                         self.aodv_process_broadcast_photo(message)             
 # End of File
