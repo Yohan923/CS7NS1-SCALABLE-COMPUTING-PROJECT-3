@@ -146,7 +146,7 @@ class SpeedSensor(threading.Thread):
             else:
                 self.ACCELERATION = MIN_ACCELERATION
         
-        elif(self.SPEED < (MIN_SPEED)):
+        elif(self.SPEED < (MAX_SPEED)):
             self.ACCELERATION = MAX_ACCELERATION
             
         elif(self.SPEED > (MAX_SPEED)):
