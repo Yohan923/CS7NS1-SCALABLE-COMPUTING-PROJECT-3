@@ -159,12 +159,12 @@ class CommunicationDevice(threading.Thread):
     # Send the hello message to all the neighbors
     def aodv_send_hello_message(self):
         try:
-            
+
             message={'neighbors':list(self.neighbors.keys())}
-            message=json.dumps(message)
-            # message_bytes = bytes(message, 'utf-8')
-            # self.aodv_sock.sendto(message_bytes, 0, 
-            #                           ('localhost', AODV_PORT))
+            # message=json.dumps(message)
+            # # message_bytes = bytes(message, 'utf-8')
+            # # self.aodv_sock.sendto(message_bytes, 0, 
+            # #                           ('localhost', AODV_PORT))
         except:
             pass
             
@@ -843,10 +843,10 @@ class CommunicationDevice(threading.Thread):
                         self.aodv_process_rerr_message(message)
                     elif (message_type == "BROADCAST_MESSAGE_RAINFALL"):
                         print("aodv->aodv "+message)
-                        message = re.split(':', message)
+                        message = message.split(':', 1)
                         self.aodv_process_broadcast_rainfall(message)                       
                     elif (message_type == "BROADCAST_MESSAGE_PHOTO"):
                         print("aodv->aodv "+message)
-                        message = re.split(':', message)
+                        message = message.split(':', 1)
                         self.aodv_process_broadcast_photo(message)             
 # End of File
