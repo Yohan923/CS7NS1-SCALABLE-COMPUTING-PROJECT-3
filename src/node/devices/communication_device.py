@@ -118,17 +118,17 @@ class CommunicationDevice(threading.Thread):
         except:
             pass
 
-        try:
-            for n in self.neighbors.keys():
-                if n !=sender and n!= self.node_id:
-                    message_type = "BROADCAST_MESSAGE_RAINFALL"
-                    sender = self.node_id
-                    message = message_type + ":" + sender + ":" + str(self.rainfall_sensor_data)
-                    port = AODV_NETWORK_PORT
-                    self.aodv_send(n, int(port), message)
+        # try:
+        #     for n in self.neighbors.keys():
+        #         if n !=sender and n!= self.node_id:
+        #             message_type = "BROADCAST_MESSAGE_RAINFALL"
+        #             sender = self.node_id
+        #             message = message_type + ":" + sender + ":" + str(self.rainfall_sensor_data)
+        #             port = AODV_NETWORK_PORT
+        #             self.aodv_send(n, int(port), message)
 
-        except:
-            pass     
+        # except:
+        #     pass     
 
     def aodv_process_broadcast_photo(self,message):
         sender = message[1]
@@ -141,19 +141,19 @@ class CommunicationDevice(threading.Thread):
         except:
             pass
 
-        try:
-            for n in self.neighbors.keys():
-                if n !=sender and n!= self.node_id:
-                    message_type = "BROADCAST_MESSAGE_PHOTO"
-                    sender = self.node_id
-                    message = message_type + ":" + sender + ":" + str(self.photo_sensor_data)
-                    port = AODV_NETWORK_PORT
-                    self.aodv_send(n, int(port), message)
-                    logging.debug("['" + message_type + "', '" + sender + "', " + 
-                                  "Sending photo_sensor_data message to " + str(n) + "']")
+        # try:
+        #     for n in self.neighbors.keys():
+        #         if n !=sender and n!= self.node_id:
+        #             message_type = "BROADCAST_MESSAGE_PHOTO"
+        #             sender = self.node_id
+        #             message = message_type + ":" + sender + ":" + str(self.photo_sensor_data)
+        #             port = AODV_NETWORK_PORT
+        #             self.aodv_send(n, int(port), message)
+        #             logging.debug("['" + message_type + "', '" + sender + "', " + 
+        #                           "Sending photo_sensor_data message to " + str(n) + "']")
 
-        except:
-            pass  
+        # except:
+        #     pass  
 
 
     # Send the hello message to all the neighbors
