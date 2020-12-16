@@ -47,8 +47,7 @@ def on_rainfall_received(topic, payload, **kwargs):
     payload = json.loads(payload)
     rainfall = payload['rainfall']
     try:
-        int(rainfall)
-        config.my_vehicle.wiper_controller.set_speed_by_rainfall(rainfall)
+        config.my_vehicle.wiper_controller.set_speed_by_rainfall(int(rainfall))
     except Exception:
         pass
 
@@ -57,8 +56,7 @@ def on_photointensity_received(topic, payload, **kwargs):
     payload = json.loads(payload)
     photointensity = payload['photointensity']
     try:
-        int(photointensity)
-        config.my_vehicle.light_controller.set_speed_by_photo_intensity(photointensity)
+        config.my_vehicle.light_controller.set_speed_by_photo_intensity(int(photointensity))
     except Exception:
         pass
 
